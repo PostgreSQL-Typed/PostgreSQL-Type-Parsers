@@ -1,0 +1,15 @@
+import type { ObjectFunction } from "../types/ObjectFunction";
+
+export const arrayParser = (object: any) => (value: string | null) => {
+	const Object = object as ObjectFunction;
+
+	if (value === null) return null;
+	//* If the value doesn't start with { and end with }, it's not an ARRAY.
+	if (!value.startsWith("{") || !value.endsWith("}")) return null;
+	//* Removes the { and } from the string, make an extra space between circles and then split on the extra space.
+	let values = value.slice(1, -1).split('","').join('", "').split(", ");
+	//* Removes the quotes from the strings
+	values = values.map(v => v.slice(1, -1));
+	//* Returns the values as Circle objects
+	return values.map(v => Object.from(v));
+};

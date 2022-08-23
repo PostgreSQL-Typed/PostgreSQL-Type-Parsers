@@ -1,0 +1,39 @@
+{
+	"name": "postgresql-type-parsers",
+	"version": "1.0.0",
+	"description": "Easy to use types for PostgreSQL data types",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
+	"repository": "https://github.com/PostgreSQL-Typed/PostgreSQL-Type-Parsers",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"dev": "tsc -w",
+		"build": "tsc",
+		"test": "jest --verbose",
+		"test:watch": "jest --verbose --watch",
+		"test:ci": "jest --verbose --ci"
+	},
+	"keywords": [
+		"postgresql",
+		"pg",
+		"typed",
+		"types",
+		"typescript"
+	],
+	"author": "Bas950",
+	"license": "MPL-2.0",
+	"devDependencies": {
+		"@types/jest": "^28.1.6",
+		"@types/pg": "^8.6.5",
+		"jest": "^28.1.3",
+		"source-map-support": "^0.5.21",
+		"ts-jest": "^28.0.7",
+		"typescript": "^4.7.4"
+	},
+	"dependencies": {
+		"pg": "^8.7.3",
+		"postgresql-data-types": "^1.0.0"
+	}
+}
