@@ -6,6 +6,8 @@ Easy to use types for PostgreSQL data types
 - [Usage](#usage)
   - [Circle](#circle)
   - [Interval](#interval)
+  - [LineSegment](#linesegment)
+  - [Point](#point)
 
 ## Installation
 
@@ -23,6 +25,11 @@ pnpm i postgresql-type-parsers
 ## Usage
 
 ### Circle
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`circle`][circle]
+- [`_circle`][circle] (`circle[]`)
 
 ```ts
 import { Circle } from "postgresql-type-parsers";
@@ -53,6 +60,11 @@ circle1.equals(circle2); // true
 ```
 
 ### Interval
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`interval`][interval]
+- [`_interval`][interval] (`interval[]`)
 
 ```ts
 import { Interval } from "postgresql-type-parsers";
@@ -110,3 +122,89 @@ interval6.toJSON(); // { years: 1, months: 2, days: 3, hours: 4, minutes: 5, sec
 //* It has a `equals()` method that returns whether two intervals are equal:
 interval6.equals(interval5); // true
 ```
+
+### LineSegment
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`lseg`][lseg]
+- [`_lseg`][lseg] (`lseg[]`)
+
+```ts
+import { LineSegment, Point } from "postgresql-type-parsers";
+
+//* LineSegment can be created in the following ways:
+const lineSegment1 = LineSegment.from("[(1,2),(3,4)]");
+const lineSegment2 = LineSegment.from({
+	a: Point.from(1, 2),
+	b: Point.from(3, 4)
+});
+const lineSegment3 = LineSegment.from({
+	a: {
+		x: 1,
+		y: 2
+	},
+	b: {
+		x: 3,
+		y: 4
+	}
+});
+const lineSegment4 = LineSegment.from(Point.from(1, 2), Point.from(3, 4));
+
+//* To verify if a value is a line segment, use the `isLineSegment` method:
+if (LineSegment.isLineSegment(lineSegment1)) {
+	console.log("lineSegment1 is a line segment");
+}
+
+//* Afterwards, you can get/set the properties of the line segment:
+lineSegment1.a; // Point { x: 1, y: 2 }
+lineSegment1.b; // Point { x: 3, y: 4 }
+
+//* It has a `toString()` method that returns a string representation of the line segment:
+lineSegment1.toString(); // "[(1,2),(3,4)]"
+
+//* It has a `toJSON()` method that returns a JSON representation of the line segment:
+lineSegment1.toJSON(); // { a: { x: 1, y: 2 }, b: { x: 3, y: 4 } }
+
+//* It has a `equals()` method that returns whether two line segments are equal:
+lineSegment1.equals(lineSegment2); // true
+```
+
+### Point
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`point`][point]
+- [`_point`][point] (`point[]`)
+
+```ts
+import { Point } from "postgresql-type-parsers";
+
+//* Points can be created in the following ways:
+const point1 = Point.from("(1,2)");
+const point2 = Point.from({ x: 1, y: 2 });
+const point3 = Point.from(1, 2);
+
+//* To verify if a value is a point, use the `isPoint` method:
+if (Point.isPoint(point1)) {
+	console.log("point1 is a point");
+}
+
+//* Afterwards, you can get/set the properties of the point:
+point1.x; // 1
+point1.y; // 2
+
+//* It has a `toString()` method that returns a string representation of the point:
+point1.toString(); // "(1,2)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the point:
+point1.toJSON(); // { x: 1, y: 2 }
+
+//* It has a `equals()` method that returns whether two points are equal:
+point1.equals(point2); // true
+```
+
+[circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
+[interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
+[lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
+[point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
