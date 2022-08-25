@@ -9,6 +9,7 @@ Easy to use types for PostgreSQL data types
   - [Interval](#interval)
   - [Line](#line)
   - [LineSegment](#linesegment)
+  - [Path](#path)
   - [Point](#point)
   - [Polygon](#polygon)
 
@@ -244,6 +245,51 @@ lineSegment1.toJSON(); // { a: { x: 1, y: 2 }, b: { x: 3, y: 4 } }
 lineSegment1.equals(lineSegment2); // true
 ```
 
+### Path
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`path`][path]
+- [`_path`][path] (`path[]`)
+
+```ts
+import { Path, Point } from "postgresql-type-parsers";
+
+//* Path can be created in the following ways:
+const path1 = Path.from("((1,2),(3,4))");
+const path2 = Path.from([Point.from(1, 2), Point.from(3, 4)]); //Defaults connection to `open`
+const path3 = Path.from({
+	points: [
+		{ x: 1, y: 2 },
+		{ x: 3, y: 4 }
+	],
+	connection: "closed"
+});
+const path4 = Path.from(Point.from(1, 2), Point.from(3, 4)); //Defaults connection to `open`
+const path5 = Path.from({
+	points: [Point.from(1, 2), Point.from(3, 4)],
+	connection: "closed"
+});
+
+//* To verify if a value is a path, use the `isPath` method:
+if (Path.isPath(path1)) {
+	console.log("path1 is a path");
+}
+
+//* Afterwards, you can get/set the properties of the path:
+path1.points; // [ Point { x: 1, y: 2 }, Point { x: 3, y: 4 } ]
+path1.connection; // "open"
+
+//* It has a `toString()` method that returns a string representation of the polygon:
+path1.toString(); // "((1,2),(3,4))"
+
+//* It has a `toJSON()` method that returns a JSON representation of the polygon:
+path1.toJSON(); // { points: [ { x: 1, y: 2 }, { x: 3, y: 4 } ], connection: "open" }
+
+//* It has a `equals()` method that returns whether two polygons are equal:
+path1.equals(path2); // true
+```
+
 ### Point
 
 Used to represent the following PostgreSQL data type(s):
@@ -325,5 +371,6 @@ polygon1.equals(polygon2); // true
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
+[path]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.9
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
 [polygon]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-POLYGON
