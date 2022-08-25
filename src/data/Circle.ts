@@ -37,12 +37,14 @@ const Circle: CircleConstructor = {
 		radius?: number
 	): Circle {
 		if (typeof arg === "string") {
-			if (arg.match(/^<\(\d,\d\),\d>$/))
+			if (arg.match(/^<\(\d+(\.\d+)?,\d+(\.\d+)?\),\d+(\.\d+)?>$/)) {
+				const [x1, y1, r1] = arg.slice(2, -1).split(",");
 				return new CircleClass({
-					x: parseInt(arg.slice(2, -2).split(",")[0]),
-					y: parseInt(arg.slice(2, -2).split(",")[1]),
-					radius: parseInt(arg.slice(-2))
+					x: parseFloat(x1),
+					y: parseFloat(y1),
+					radius: parseFloat(r1)
 				});
+			}
 			throw new Error("Invalid circle string");
 		} else if (Circle.isCircle(arg)) {
 			return new CircleClass(arg.toJSON());

@@ -115,7 +115,7 @@ describe("Circle Class", () => {
 				INSERT INTO public.jestcircle (circle, _circle)
 				VALUES (
 					'<(1,2),3>',
-					'{ <(1\\,2)\\,3>, <(4\\,5)\\,6> }'
+					'{ <(1.1\\,2.2)\\,3.3>, <(4\\,5)\\,6> }'
 				)
 			`);
 
@@ -127,7 +127,7 @@ describe("Circle Class", () => {
 				Circle.from({ x: 1, y: 2, radius: 3 })
 			);
 			expect(result.rows[0]._circle).toStrictEqual([
-				Circle.from({ x: 1, y: 2, radius: 3 }),
+				Circle.from({ x: 1.1, y: 2.2, radius: 3.3 }),
 				Circle.from({ x: 4, y: 5, radius: 6 })
 			]);
 		} catch (err) {
