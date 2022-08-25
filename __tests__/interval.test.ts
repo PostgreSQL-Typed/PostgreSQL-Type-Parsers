@@ -504,8 +504,6 @@ describe("Interval Class", () => {
 	});
 
 	it("should be returned from PostgreSQL", async () => {
-		let a = Interval.from("01:02:03.456");
-		console.log(a.toString(), a.toISOString(), a.toISOString(true));
 		const client = new Client({
 			password: "password",
 			host: "localhost",
