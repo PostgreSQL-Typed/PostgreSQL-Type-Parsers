@@ -4,6 +4,7 @@ Easy to use types for PostgreSQL data types
 
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Box](#box)
   - [Circle](#circle)
   - [Interval](#interval)
   - [LineSegment](#linesegment)
@@ -23,6 +24,42 @@ pnpm i postgresql-type-parsers
 ```
 
 ## Usage
+
+### Box
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`box`][box]
+- [`_box`][box] (`box[]`)
+
+```ts
+import { Box } from "postgresql-type-parsers";
+
+//* Box can be created in the following ways:
+const box1 = Box.from("(1,2),(3,4)");
+const box2 = Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 });
+const box3 = Box.from(1, 2, 3, 4);
+
+//* To verify if a value is a box, use the `isBox` method:
+if (Box.isBox(box1)) {
+	console.log("box1 is a box");
+}
+
+//* Afterwards, you can get/set the properties of the box:
+box1.x1; // 1
+box1.y1; // 2
+box1.x2; // 3
+box1.y2; // 4
+
+//* It has a `toString()` method that returns a string representation of the box:
+box1.toString(); // "(1,2),(3,4)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the box:
+box1.toJSON(); // { x1: 1, y1: 2, x2: 3, y2: 4 }
+
+//* It has a `equals()` method that returns whether two boxes are equal:
+box1.equals(box2); // true
+```
 
 ### Circle
 
@@ -204,6 +241,7 @@ point1.toJSON(); // { x: 1, y: 2 }
 point1.equals(point2); // true
 ```
 
+[box]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.8
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
