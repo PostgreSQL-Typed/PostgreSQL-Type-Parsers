@@ -325,52 +325,52 @@ class IntervalClass implements Interval {
 		return this._years ?? 0;
 	}
 
-	get months(): number {
-		return this._months ?? 0;
-	}
-
-	get days(): number {
-		return this._days ?? 0;
-	}
-
-	get hours(): number {
-		return this._hours ?? 0;
-	}
-
-	get minutes(): number {
-		return this._minutes ?? 0;
-	}
-
-	get seconds(): number {
-		return this._seconds ?? 0;
-	}
-
-	get milliseconds(): number {
-		return this._milliseconds ?? 0;
-	}
-
 	set years(years: number) {
 		this._years = years;
+	}
+
+	get months(): number {
+		return this._months ?? 0;
 	}
 
 	set months(months: number) {
 		this._months = months;
 	}
 
+	get days(): number {
+		return this._days ?? 0;
+	}
+
 	set days(days: number) {
 		this._days = days;
+	}
+
+	get hours(): number {
+		return this._hours ?? 0;
 	}
 
 	set hours(hours: number) {
 		this._hours = hours;
 	}
 
+	get minutes(): number {
+		return this._minutes ?? 0;
+	}
+
 	set minutes(minutes: number) {
 		this._minutes = minutes;
 	}
 
+	get seconds(): number {
+		return this._seconds ?? 0;
+	}
+
 	set seconds(seconds: number) {
 		this._seconds = seconds;
+	}
+
+	get milliseconds(): number {
+		return this._milliseconds ?? 0;
 	}
 
 	set milliseconds(milliseconds: number) {

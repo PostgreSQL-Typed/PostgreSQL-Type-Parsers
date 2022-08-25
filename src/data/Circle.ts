@@ -38,11 +38,14 @@ const Circle: CircleConstructor = {
 	): Circle {
 		if (typeof arg === "string") {
 			if (arg.match(/^<\(\d+(\.\d+)?,\d+(\.\d+)?\),\d+(\.\d+)?>$/)) {
-				const [x1, y1, r1] = arg.slice(2, -1).split(",");
+				const [x, y, radius] = arg
+					.slice(2, -1)
+					.split(",")
+					.map(c => parseFloat(c));
 				return new CircleClass({
-					x: parseFloat(x1),
-					y: parseFloat(y1),
-					radius: parseFloat(r1)
+					x,
+					y,
+					radius
 				});
 			}
 			throw new Error("Invalid circle string");
@@ -50,7 +53,7 @@ const Circle: CircleConstructor = {
 			return new CircleClass(arg.toJSON());
 		} else if (typeof arg === "number") {
 			if (typeof y === "number" && typeof radius === "number") {
-				return new CircleClass({ x: arg, y: y, radius: radius });
+				return new CircleClass({ x: arg, y, radius });
 			} else {
 				throw new Error("Invalid arguments");
 			}
@@ -104,20 +107,20 @@ class CircleClass implements Circle {
 		return this._x;
 	}
 
-	get y(): number {
-		return this._y;
-	}
-
-	get radius(): number {
-		return this._radius;
-	}
-
 	set x(x: number) {
 		this._x = x;
 	}
 
+	get y(): number {
+		return this._y;
+	}
+
 	set y(y: number) {
 		this._y = y;
+	}
+
+	get radius(): number {
+		return this._radius;
 	}
 
 	set radius(radius: number) {

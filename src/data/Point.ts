@@ -31,17 +31,22 @@ interface PointConstructor {
 const Point: PointConstructor = {
 	from(arg: string | Point | PointObject | number, y?: number): Point {
 		if (typeof arg === "string") {
-			if (arg.match(/^\(\d+(\.\d+)?,\d+(\.\d+)?\)$/))
+			if (arg.match(/^\(\d+(\.\d+)?,\d+(\.\d+)?\)$/)) {
+				const [x, y] = arg
+					.slice(1, -1)
+					.split(",")
+					.map(c => parseFloat(c));
 				return new PointClass({
-					x: parseFloat(arg.slice(1, -1).split(",")[0]),
-					y: parseFloat(arg.slice(1, -1).split(",")[1])
+					x,
+					y
 				});
+			}
 			throw new Error("Invalid point string");
 		} else if (Point.isPoint(arg)) {
 			return new PointClass(arg.toJSON());
 		} else if (typeof arg === "number") {
 			if (typeof y === "number") {
-				return new PointClass({ x: arg, y: y });
+				return new PointClass({ x: arg, y });
 			} else {
 				throw new Error("Invalid arguments");
 			}
@@ -88,12 +93,12 @@ class PointClass implements Point {
 		return this._x;
 	}
 
-	get y(): number {
-		return this._y;
-	}
-
 	set x(x: number) {
 		this._x = x;
+	}
+
+	get y(): number {
+		return this._y;
 	}
 
 	set y(y: number) {

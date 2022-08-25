@@ -54,10 +54,15 @@ const LineSegment: LineSegmentConstructor = {
 					/^\[\(\d+(\.\d+)?,\d+(\.\d+)?\),\(\d+(\.\d+)?,\d+(\.\d+)?\)\]$/
 				)
 			) {
-				const [x1, y1] = arg.slice(1, -1).split("),(").join("), (").split(", ");
+				const [a, b] = arg
+					.slice(1, -1)
+					.split("),(")
+					.join("), (")
+					.split(", ")
+					.map(p => Point.from(p));
 				return new LineSegmentClass({
-					a: Point.from(x1),
-					b: Point.from(y1)
+					a,
+					b
 				});
 			}
 			throw new Error("Invalid lseg (LineSegment) string");
@@ -65,7 +70,7 @@ const LineSegment: LineSegmentConstructor = {
 			return new LineSegmentClass(arg.toJSON());
 		} else if (Point.isPoint(arg)) {
 			if (Point.isPoint(b)) {
-				return new LineSegmentClass({ a: arg, b: b });
+				return new LineSegmentClass({ a: arg, b });
 			} else {
 				throw new Error("Invalid arguments");
 			}
@@ -114,18 +119,22 @@ class LineSegmentClass implements LineSegment {
 	}
 
 	equals(
-		otherPoint: string | LineSegment | LineSegmentObject | RawLineSegmentObject
+		otherSegment:
+			| string
+			| LineSegment
+			| LineSegmentObject
+			| RawLineSegmentObject
 	): boolean {
-		if (typeof otherPoint === "string") {
-			return otherPoint === this.toString();
-		} else if (LineSegment.isLineSegment(otherPoint)) {
-			return otherPoint.toString() === this.toString();
-		} else if ("equals" in otherPoint.a && "equals" in otherPoint.b) {
-			return otherPoint.a.equals(this.a) && otherPoint.b.equals(this.b);
+		if (typeof otherSegment === "string") {
+			return otherSegment === this.toString();
+		} else if (LineSegment.isLineSegment(otherSegment)) {
+			return otherSegment.toString() === this.toString();
+		} else if ("equals" in otherSegment.a && "equals" in otherSegment.b) {
+			return otherSegment.a.equals(this.a) && otherSegment.b.equals(this.b);
 		} else {
 			return (
-				Point.from(otherPoint.a).equals(this.a) &&
-				Point.from(otherPoint.b).equals(this.b)
+				Point.from(otherSegment.a).equals(this.a) &&
+				Point.from(otherSegment.b).equals(this.b)
 			);
 		}
 	}
@@ -134,12 +143,12 @@ class LineSegmentClass implements LineSegment {
 		return this._a;
 	}
 
-	get b(): Point {
-		return this._b;
-	}
-
 	set a(a: Point) {
 		this._a = a;
+	}
+
+	get b(): Point {
+		return this._b;
 	}
 
 	set b(b: Point) {
