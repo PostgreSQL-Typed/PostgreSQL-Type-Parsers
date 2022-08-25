@@ -19,7 +19,11 @@ interface LineSegment {
 	toString(): string;
 	toJSON(): RawLineSegmentObject;
 	equals(
-		otherBuffer: string | LineSegment | LineSegmentObject | RawLineSegmentObject
+		otherSegment:
+			| string
+			| LineSegment
+			| LineSegmentObject
+			| RawLineSegmentObject
 	): boolean;
 
 	a: Point;

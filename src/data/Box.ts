@@ -14,7 +14,7 @@ interface BoxObject {
 interface Box {
 	toString(): string;
 	toJSON(): BoxObject;
-	equals(otherBuffer: string | Box | BoxObject): boolean;
+	equals(otherBox: string | Box | BoxObject): boolean;
 
 	x1: number;
 	y1: number;

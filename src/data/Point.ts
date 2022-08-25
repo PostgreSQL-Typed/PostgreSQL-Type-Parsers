@@ -12,7 +12,7 @@ interface PointObject {
 interface Point {
 	toString(): string;
 	toJSON(): PointObject;
-	equals(otherBuffer: string | Point | PointObject): boolean;
+	equals(otherPoint: string | Point | PointObject): boolean;
 
 	x: number;
 	y: number;

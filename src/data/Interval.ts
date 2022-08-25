@@ -20,7 +20,7 @@ interface Interval {
 	toString(): string;
 	toISOString(short?: boolean): string;
 	toJSON(): IntervalObject;
-	equals(otherBuffer: string | Interval | IntervalObject): boolean;
+	equals(otherInterval: string | Interval | IntervalObject): boolean;
 
 	years: number;
 	months: number;

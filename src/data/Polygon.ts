@@ -17,7 +17,7 @@ interface Polygon {
 	toString(): string;
 	toJSON(): RawPolygonObject;
 	equals(
-		otherBuffer: string | Polygon | PolygonObject | RawPolygonObject | Point[]
+		otherPolygon: string | Polygon | PolygonObject | RawPolygonObject | Point[]
 	): boolean;
 
 	points: Point[];

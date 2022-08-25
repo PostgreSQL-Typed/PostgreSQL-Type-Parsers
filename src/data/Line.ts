@@ -13,7 +13,7 @@ interface LineObject {
 interface Line {
 	toString(): string;
 	toJSON(): LineObject;
-	equals(otherBuffer: string | Line | LineObject): boolean;
+	equals(otherLine: string | Line | LineObject): boolean;
 
 	a: number;
 	b: number;

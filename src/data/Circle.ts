@@ -13,7 +13,7 @@ interface CircleObject {
 interface Circle {
 	toString(): string;
 	toJSON(): CircleObject;
-	equals(otherBuffer: string | Circle | CircleObject): boolean;
+	equals(otherCircle: string | Circle | CircleObject): boolean;
 
 	x: number;
 	y: number;
