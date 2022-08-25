@@ -113,6 +113,12 @@ describe("Polygon Class", () => {
 				}).toString()
 			)
 		).toBe(false);
+		expect(
+			polygon.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })])
+		).toBe(true);
+		expect(
+			polygon.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })])
+		).toBe(false);
 	});
 
 	it("get points", () => {

@@ -97,7 +97,7 @@ class PolygonClass implements Polygon {
 	}
 
 	equals(
-		otherPolygon: string | Polygon | PolygonObject | RawPolygonObject
+		otherPolygon: string | Polygon | PolygonObject | RawPolygonObject | Point[]
 	): boolean {
 		if (typeof otherPolygon === "string") {
 			return otherPolygon === this.toString();
@@ -108,12 +108,9 @@ class PolygonClass implements Polygon {
 			otherPolygon.every(Point.isPoint)
 		) {
 			return (
-				Array.isArray(otherPolygon.points) &&
 				Array.isArray(this._points) &&
-				otherPolygon.points.length === this._points.length &&
-				otherPolygon.points.every((val, index) =>
-					(val as Point).equals(this._points[index])
-				)
+				otherPolygon.length === this._points.length &&
+				otherPolygon.every((val, index) => val.equals(this._points[index]))
 			);
 		} else {
 			return (
@@ -139,4 +136,4 @@ class PolygonClass implements Polygon {
 types.setTypeParser(DataType.polygon as any, parser(Polygon));
 types.setTypeParser(DataType._polygon as any, arrayParser(Polygon));
 
-export { Polygon, PolygonObject };
+export { Polygon, PolygonObject, RawPolygonObject };
