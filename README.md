@@ -7,6 +7,7 @@ Easy to use types for PostgreSQL data types
   - [Box](#box)
   - [Circle](#circle)
   - [Interval](#interval)
+  - [Line](#line)
   - [LineSegment](#linesegment)
   - [Point](#point)
 
@@ -160,6 +161,41 @@ interval6.toJSON(); // { years: 1, months: 2, days: 3, hours: 4, minutes: 5, sec
 interval6.equals(interval5); // true
 ```
 
+### Line
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`line`][line]
+- [`_line`][line] (`line[]`)
+
+```ts
+import { Line } from "postgresql-type-parsers";
+
+//* Lines can be created in the following ways:
+const line1 = Line.from({ a: 1, b: 2, c: 3 });
+const line2 = Line.from("{1,2,3}");
+const line3 = Line.from(1, 2, 3); //a, b, c
+
+//* To verify if a value is a line, use the `isLine` method:
+if (Line.isLine(line1)) {
+	console.log("line1 is a line");
+}
+
+//* Afterwards, you can get/set the properties of the line:
+line1.a; // 1
+line1.b; // 2
+line1.c; // 3
+
+//* It has a `toString()` method that returns a string representation of the line:
+line1.toString(); // "{1,2,3}"
+
+//* It has a `toJSON()` method that returns a JSON representation of the line:
+line1.toJSON(); // { a: 1, b: 2, c: 3 }
+
+//* It has a `equals()` method that returns whether two lines are equal:
+line1.equals(line2); // true
+```
+
 ### LineSegment
 
 Used to represent the following PostgreSQL data type(s):
@@ -244,5 +280,6 @@ point1.equals(point2); // true
 [box]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.8
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
+[line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
