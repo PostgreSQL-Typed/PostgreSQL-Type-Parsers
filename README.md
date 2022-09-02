@@ -6,6 +6,7 @@ Easy to use types for PostgreSQL data types
 - [Usage](#usage)
   - [Box](#box)
   - [Circle](#circle)
+  - [Date](#date)
   - [Interval](#interval)
   - [Line](#line)
   - [LineSegment](#linesegment)
@@ -97,6 +98,52 @@ circle1.toJSON(); // { x: 1, y: 2, radius: 3 }
 
 //* It has a `equals()` method that returns whether two circles are equal:
 circle1.equals(circle2); // true
+```
+
+### Date
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`date`][date]
+- [`_date`][date] (`date[]`)
+
+```ts
+import { Date } from "postgresql-type-parsers";
+import { DateTime } from "luxon";
+
+//* Date can be created in the following ways:
+const date1 = Date.from("2020-01-01");
+const date2 = Date.from({ year: 2020, month: 1, day: 1 });
+const date3 = Date.from(2020, 1, 1); //year, month, day
+const date4 = Date.from(DateTime.fromISO("2020-01-01")); // Luxon DateTime
+const date5 = Date.from(new globalThis.Date("2020-01-01")); // JavaScript Date
+
+//* To verify if a value is a date, use the `isDate` method:
+if (Date.isDate(date1)) {
+	console.log("date1 is a date");
+}
+
+//* Afterwards, you can get/set the properties of the date:
+date1.year; // 2020
+date1.month; // 1
+date1.day; // 1
+
+//* It has a `toString()` method that returns a string representation of the date:
+date1.toString(); // "2020-01-01"
+
+//* It has a `toJSON()` method that returns a JSON representation of the date:
+date1.toJSON(); // { year: 2020, month: 1, day: 1 }
+
+//* It has a `equals()` method that returns whether two dates are equal:
+date1.equals(date2); // true
+
+//* It has a `toDateTime()` method that returns a `DateTime` representation of the date: (defaults to the current timezone)
+date1.toDateTime(); // DateTime { year: 2020, month: 1, day: 1 }
+date1.toDateTime("America/New_York"); // DateTime { year: 2020, month: 1, day: 1, zone: "America/New_York" }
+
+//* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
+date1.toJSDate(); // Date { year: 2020, month: 1, day: 1 }
+date1.toJSDate("America/New_York"); // Date { year: 2020, month: 1, day: 1, zone: "America/New_York" }
 ```
 
 ### Interval
@@ -368,6 +415,7 @@ polygon1.equals(polygon2); // true
 
 [box]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.8
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
+[date]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-DATETIME-INPUT
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
