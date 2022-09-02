@@ -1,3 +1,3 @@
-export type ObjectFunction = {
-	from: (value: string) => any;
+export type ObjectFunction<T = any, V = string> = {
+	from: (value: V) => T;
 };

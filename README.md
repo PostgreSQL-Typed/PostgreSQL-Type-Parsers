@@ -7,6 +7,7 @@ Easy to use types for PostgreSQL data types
   - [Box](#box)
   - [Circle](#circle)
   - [Date](#date)
+  - [DateRange](#daterange)
   - [Interval](#interval)
   - [Line](#line)
   - [LineSegment](#linesegment)
@@ -144,6 +145,80 @@ date1.toDateTime("America/New_York"); // DateTime { year: 2020, month: 1, day: 1
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
 date1.toJSDate(); // Date { year: 2020, month: 1, day: 1 }
 date1.toJSDate("America/New_York"); // Date { year: 2020, month: 1, day: 1, zone: "America/New_York" }
+```
+
+### DateRange
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`daterange`][range]
+- [`_daterange`][range] (`daterange[]`)
+
+```ts
+import {
+	Date,
+	DateRange,
+	LowerRange,
+	UpperRange
+} from "postgresql-type-parsers";
+
+//* DateRange can be created in the following ways:
+const dateRange1 = DateRange.from("[2022-09-02,2022-10-03)");
+const dateRange2 = DateRange.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: {
+		lower: { year: 2022, month: 9, day: 2 },
+		upper: { year: 2022, month: 10, day: 3 }
+	}
+});
+const dateRange3 = DateRange.from(
+	LowerRange.include,
+	UpperRange.exclude,
+	Date.from({ year: 2022, month: 9, day: 2 }),
+	Date.from({ year: 2022, month: 10, day: 3 })
+); //lower, upper, lowerValue, upperValue
+const dateRange4 = DateRange.from(LowerRange.include, UpperRange.exclude, {
+	lower: { year: 2022, month: 9, day: 2 },
+	upper: { year: 2022, month: 10, day: 3 }
+}); //lower, upper, value
+
+//* To verify if a value is a date range, use the `isRange` method:
+if (DateRange.isRange(dateRange1)) {
+	console.log("dateRange1 is a date range");
+}
+
+//* Afterwards, you can get/set the properties of the date range:
+dateRange1.lower; // LowerRange.include
+dateRange1.upper; // UpperRange.exclude
+dateRange1.value; // { lower: { year: 2022, month: 9, day: 2 }, upper: { year: 2022, month: 10, day: 3 } }
+
+//* There are also readonly properties for the lower and upper values:
+dateRange1.lowerValue; // Date { year: 2022, month: 9, day: 2 }
+dateRange1.upperValue; // Date { year: 2022, month: 10, day: 3 }
+
+//* It has a `toString()` method that returns a string representation of the date range:
+dateRange1.toString(); // "[2022-09-02,2022-10-03)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the date range:
+dateRange1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: { lower: { year: 2022, month: 9, day: 2 }, upper: { year: 2022, month: 10, day: 3 } } }
+
+//* It has a `equals()` method that returns whether two date ranges are equal:
+dateRange1.equals(dateRange2); // true
+
+//* It has a `isEmpty()` method that returns whether the date range is empty:
+dateRange1.isEmpty(); // false
+const dateRange5 = DateRange.from("[2022-09-02,2022-09-02)");
+dateRange5.isEmpty(); // true
+const dateRange6 = DateRange.from("empty");
+dateRange6.isEmpty(); // true
+
+//! Note that if a DateRange is empty, it will have a `null` value.
+dateRange5.value; // null
+dateRange6.value; // null
+
+//* It has a `isWithinRange()` method that returns whether a date is within the range:
+dateRange1.isWithinRange(Date.from("2022-09-15")); // true
 ```
 
 ### Interval
@@ -422,3 +497,4 @@ polygon1.equals(polygon2); // true
 [path]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.9
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
 [polygon]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-POLYGON
+[range]: https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-IO
