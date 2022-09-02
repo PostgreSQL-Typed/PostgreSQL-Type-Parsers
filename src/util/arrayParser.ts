@@ -17,5 +17,5 @@ export const arrayParser =
 		//* Removes the quotes from the strings
 		if (delimiter.includes('"')) values = values.map(v => v.slice(1, -1));
 		//* Returns the values as Circle objects
-		return values.map(v => Object.from(v));
+		return values.map(Object.from);
 	};
