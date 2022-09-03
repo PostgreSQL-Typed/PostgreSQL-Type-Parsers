@@ -7,6 +7,7 @@ Easy to use types for PostgreSQL data types
   - [Box](#box)
   - [Circle](#circle)
   - [Date](#date)
+  - [DateMultiRange](#datemultirange)
   - [DateRange](#daterange)
   - [Interval](#interval)
   - [Line](#line)
@@ -145,6 +146,73 @@ date1.toDateTime("America/New_York"); // DateTime { year: 2020, month: 1, day: 1
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
 date1.toJSDate(); // Date { year: 2020, month: 1, day: 1 }
 date1.toJSDate("America/New_York"); // Date { year: 2020, month: 1, day: 1, zone: "America/New_York" }
+```
+
+### DateMultiRange
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`datemultirange`][multirange]
+- [`_datemultirange`][multirange] (`datemultirange[]`)
+
+```ts
+import { DateMultiRange, DateRange } from "postgresql-type-parsers";
+
+//* DateMultiRange can be created in the following ways:
+const dateMultiRange1 = DateMultiRange.from(
+	"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01)}"
+);
+const dateMultiRange2 = DateMultiRange.from({
+	ranges: [
+		DateRange.from("[1999-01-08,2022-01-01)"),
+		DateRange.from("[2023-01-08,2024-01-01)")
+	]
+});
+const dateMultiRange3 = DateMultiRange.from([
+	DateRange.from("[1999-01-08,2022-01-01)"),
+	DateRange.from("[2023-01-08,2024-01-01)")
+]);
+const dateMultiRange4 = DateMultiRange.from(
+	DateRange.from("[1999-01-08,2022-01-01)"),
+	DateRange.from("[2023-01-08,2024-01-01)")
+);
+const dateMultiRange5 = DateMultiRange.from({
+	ranges: [
+		{
+			lower: LowerRange.include,
+			upper: UpperRange.exclude,
+			value: [
+				{ year: 1999, month: 1, day: 8 },
+				{ year: 2022, month: 1, day: 1 }
+			]
+		},
+		{
+			lower: "(",
+			upper: "]",
+			value: [
+				{ year: 2023, month: 1, day: 8 },
+				{ year: 2024, month: 1, day: 1 }
+			]
+		}
+	]
+});
+
+//* To verify if a value is a date multi range, use the `isMultiRange` method:
+if (DateMultiRange.isMultiRange(dateMultiRange1)) {
+	console.log("dateMultiRange1 is a date multi range");
+}
+
+//* Afterwards, you can get/set the properties of the date multi range:
+dateMultiRange1.ranges; // [DateRange, DateRange]
+
+//* It has a `toString()` method that returns a string representation of the date multi range:
+dateMultiRange1.toString(); // "{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01)}"
+
+//* It has a `toJSON()` method that returns a JSON representation of the date multi range:
+dateMultiRange1.toJSON(); // { ranges: [{ lower: "[", upper: ")", value: [Date, Date] }, { lower: "[", upper: ")", value: [Date, Date] }] }
+
+//* It has a `equals()` method that returns whether two date multi ranges are equal:
+dateMultiRange1.equals(dateMultiRange2); // true
 ```
 
 ### DateRange
@@ -496,6 +564,7 @@ polygon1.equals(polygon2); // true
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
+[multirange]: https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-CONSTRUCT
 [path]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.9
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
 [polygon]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-POLYGON
