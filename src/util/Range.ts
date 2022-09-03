@@ -4,6 +4,7 @@ enum LowerRange {
 	include = "[",
 	exclude = "("
 }
+type LowerRangeType = "[" | "(";
 
 const lowerRange = ["[", "("];
 
@@ -11,18 +12,19 @@ enum UpperRange {
 	include = "]",
 	exclude = ")"
 }
+type UpperRangeType = "]" | ")";
 
 const upperRange = ["]", ")"];
 
 interface RangeObject<DataType> {
-	lower: LowerRange;
-	upper: UpperRange;
+	lower: LowerRange | LowerRangeType;
+	upper: UpperRange | UpperRangeType;
 	value: [DataType, DataType] | null;
 }
 
 interface RawRangeObject<DataTypeObject> {
-	lower: LowerRange;
-	upper: UpperRange;
+	lower: LowerRange | LowerRangeType;
+	upper: UpperRange | UpperRangeType;
 	value: [DataTypeObject, DataTypeObject] | null;
 }
 
@@ -39,8 +41,8 @@ interface Range<DataType, DataTypeObject> {
 	): boolean;
 	isWithinRange(value: DataType | DataTypeObject): boolean;
 
-	lower: LowerRange;
-	upper: UpperRange;
+	lower: LowerRange | LowerRangeType;
+	upper: UpperRange | UpperRangeType;
 	value: [DataType, DataType] | null;
 	readonly empty: boolean;
 }
@@ -151,8 +153,8 @@ const getRange = <
 
 	class RangeClass implements Range<DataType, DataTypeObject> {
 		private _identifier = identifier;
-		private _lower: LowerRange;
-		private _upper: UpperRange;
+		private _lower: LowerRange | LowerRangeType;
+		private _upper: UpperRange | UpperRangeType;
 		private _value: [DataType, DataType] | null;
 
 		constructor(data: RangeObject<DataType> | RawRangeObject<DataTypeObject>) {
@@ -268,21 +270,21 @@ const getRange = <
 			);
 		}
 
-		get lower(): LowerRange {
+		get lower(): LowerRange | LowerRangeType {
 			return this._lower;
 		}
 
-		set lower(value: LowerRange) {
+		set lower(value: LowerRange | LowerRangeType) {
 			if (!lowerRange.includes(value))
 				throw new Error("Invalid lower range argument");
 			this._lower = value;
 		}
 
-		get upper(): UpperRange {
+		get upper(): UpperRange | UpperRangeType {
 			return this._upper;
 		}
 
-		set upper(value: UpperRange) {
+		set upper(value: UpperRange | UpperRangeType) {
 			if (!upperRange.includes(value))
 				throw new Error("Invalid upper range argument");
 			this._upper = value;
@@ -319,5 +321,7 @@ export {
 	RangeObject,
 	RawRangeObject,
 	LowerRange,
-	UpperRange
+	LowerRangeType,
+	UpperRange,
+	UpperRangeType
 };
