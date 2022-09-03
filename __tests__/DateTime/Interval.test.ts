@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Interval } from "../src";
+import { Interval } from "../../src";
 
 describe("Interval Class", () => {
 	it("should create a interval from a string", () => {

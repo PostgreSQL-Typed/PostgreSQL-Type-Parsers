@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Box } from "../src";
+import { Box } from "../../src";
 
 describe("Box Class", () => {
 	it("should create a box from a string", () => {

@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Point } from "../src";
+import { Point } from "../../src";
 
 describe("Point Class", () => {
 	it("should create a point from a string", () => {

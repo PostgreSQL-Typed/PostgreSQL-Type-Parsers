@@ -4,17 +4,19 @@ Easy to use types for PostgreSQL data types
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Box](#box)
-  - [Circle](#circle)
-  - [Date](#date)
-  - [DateMultiRange](#datemultirange)
-  - [DateRange](#daterange)
-  - [Interval](#interval)
-  - [Line](#line)
-  - [LineSegment](#linesegment)
-  - [Path](#path)
-  - [Point](#point)
-  - [Polygon](#polygon)
+  - [Date/Time Types](#datetime-types)
+    - [Date](#date)
+    - [DateMultiRange](#datemultirange)
+    - [DateRange](#daterange)
+    - [Interval](#interval)
+  - [Geometric Types](#geometric-types)
+    - [Box](#box)
+    - [Circle](#circle)
+    - [Line](#line)
+    - [LineSegment](#linesegment)
+    - [Path](#path)
+    - [Point](#point)
+    - [Polygon](#polygon)
 
 ## Installation
 
@@ -31,76 +33,12 @@ pnpm i postgresql-type-parsers
 
 ## Usage
 
-### Box
+## Date/Time Types
 
-Used to represent the following PostgreSQL data type(s):
-
-- [`box`][box]
-- [`_box`][box] (`box[]`)
-
-```ts
-import { Box } from "postgresql-type-parsers";
-
-//* Box can be created in the following ways:
-const box1 = Box.from("(1,2),(3,4)");
-const box2 = Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 });
-const box3 = Box.from(1, 2, 3, 4);
-
-//* To verify if a value is a box, use the `isBox` method:
-if (Box.isBox(box1)) {
-	console.log("box1 is a box");
-}
-
-//* Afterwards, you can get/set the properties of the box:
-box1.x1; // 1
-box1.y1; // 2
-box1.x2; // 3
-box1.y2; // 4
-
-//* It has a `toString()` method that returns a string representation of the box:
-box1.toString(); // "(1,2),(3,4)"
-
-//* It has a `toJSON()` method that returns a JSON representation of the box:
-box1.toJSON(); // { x1: 1, y1: 2, x2: 3, y2: 4 }
-
-//* It has a `equals()` method that returns whether two boxes are equal:
-box1.equals(box2); // true
-```
-
-### Circle
-
-Used to represent the following PostgreSQL data type(s):
-
-- [`circle`][circle]
-- [`_circle`][circle] (`circle[]`)
-
-```ts
-import { Circle } from "postgresql-type-parsers";
-
-//* Circles can be created in the following ways:
-const circle1 = Circle.from({ x: 1, y: 2, radius: 3 });
-const circle2 = Circle.from("<(1,2),3>");
-const circle3 = Circle.from(1, 2, 3); //x, y, radius
-
-//* To verify if a value is a circle, use the `isCircle` method:
-if (Circle.isCircle(circle1)) {
-	console.log("circle1 is a circle");
-}
-
-//* Afterwards, you can get/set the properties of the circle:
-circle1.x; // 1
-circle1.y; // 2
-circle1.radius; // 3
-
-//* It has a `toString()` method that returns a string representation of the circle:
-circle1.toString(); // "<(1,2),3>"
-
-//* It has a `toJSON()` method that returns a JSON representation of the circle:
-circle1.toJSON(); // { x: 1, y: 2, radius: 3 }
-
-//* It has a `equals()` method that returns whether two circles are equal:
-circle1.equals(circle2); // true
-```
+- [Date](#date)
+- [DateMultiRange](#datemultirange)
+- [DateRange](#daterange)
+- [Interval](#interval)
 
 ### Date
 
@@ -353,6 +291,87 @@ interval6.toJSON(); // { years: 1, months: 2, days: 3, hours: 4, minutes: 5, sec
 
 //* It has a `equals()` method that returns whether two intervals are equal:
 interval6.equals(interval5); // true
+```
+
+## Geometric Types
+
+- [Box](#box)
+- [Circle](#circle)
+- [Line](#line)
+- [LineSegment](#linesegment)
+- [Path](#path)
+- [Point](#point)
+- [Polygon](#polygon)
+
+### Box
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`box`][box]
+- [`_box`][box] (`box[]`)
+
+```ts
+import { Box } from "postgresql-type-parsers";
+
+//* Box can be created in the following ways:
+const box1 = Box.from("(1,2),(3,4)");
+const box2 = Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 });
+const box3 = Box.from(1, 2, 3, 4);
+
+//* To verify if a value is a box, use the `isBox` method:
+if (Box.isBox(box1)) {
+	console.log("box1 is a box");
+}
+
+//* Afterwards, you can get/set the properties of the box:
+box1.x1; // 1
+box1.y1; // 2
+box1.x2; // 3
+box1.y2; // 4
+
+//* It has a `toString()` method that returns a string representation of the box:
+box1.toString(); // "(1,2),(3,4)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the box:
+box1.toJSON(); // { x1: 1, y1: 2, x2: 3, y2: 4 }
+
+//* It has a `equals()` method that returns whether two boxes are equal:
+box1.equals(box2); // true
+```
+
+### Circle
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`circle`][circle]
+- [`_circle`][circle] (`circle[]`)
+
+```ts
+import { Circle } from "postgresql-type-parsers";
+
+//* Circles can be created in the following ways:
+const circle1 = Circle.from({ x: 1, y: 2, radius: 3 });
+const circle2 = Circle.from("<(1,2),3>");
+const circle3 = Circle.from(1, 2, 3); //x, y, radius
+
+//* To verify if a value is a circle, use the `isCircle` method:
+if (Circle.isCircle(circle1)) {
+	console.log("circle1 is a circle");
+}
+
+//* Afterwards, you can get/set the properties of the circle:
+circle1.x; // 1
+circle1.y; // 2
+circle1.radius; // 3
+
+//* It has a `toString()` method that returns a string representation of the circle:
+circle1.toString(); // "<(1,2),3>"
+
+//* It has a `toJSON()` method that returns a JSON representation of the circle:
+circle1.toJSON(); // { x: 1, y: 2, radius: 3 }
+
+//* It has a `equals()` method that returns whether two circles are equal:
+circle1.equals(circle2); // true
 ```
 
 ### Line

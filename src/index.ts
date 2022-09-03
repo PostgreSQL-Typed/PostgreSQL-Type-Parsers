@@ -1,16 +1,16 @@
 import "source-map-support/register";
 
-export * from "./data/Box";
-export * from "./data/Circle";
-export * from "./data/Date";
-export * from "./data/DateMultiRange";
-export * from "./data/DateRange";
-export * from "./data/Interval";
-export * from "./data/Line";
-export * from "./data/LineSegment";
-export * from "./data/Path";
-export * from "./data/Point";
-export * from "./data/Polygon";
+export * from "./data/DateTime/Date";
+export * from "./data/DateTime/DateMultiRange";
+export * from "./data/DateTime/DateRange";
+export * from "./data/DateTime/Interval";
+export * from "./data/Geometric/Box";
+export * from "./data/Geometric/Circle";
+export * from "./data/Geometric/Line";
+export * from "./data/Geometric/LineSegment";
+export * from "./data/Geometric/Path";
+export * from "./data/Geometric/Point";
+export * from "./data/Geometric/Polygon";
 export {
 	LowerRange,
 	LowerRangeType,

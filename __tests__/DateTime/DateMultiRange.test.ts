@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { DateMultiRange, DateRange, LowerRange, UpperRange } from "../src";
+import { DateMultiRange, DateRange, LowerRange, UpperRange } from "../../src";
 
 describe("DateMultiRange Class", () => {
 	it("should create a date multi range from a string", () => {

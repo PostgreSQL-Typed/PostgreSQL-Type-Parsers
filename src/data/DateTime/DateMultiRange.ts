@@ -1,9 +1,15 @@
 import { types } from "pg";
 import { DataType } from "postgresql-data-types";
 
-import { arrayParser } from "../util/arrayParser";
-import { getMultiRange, MultiRange, MultiRangeConstructor, MultiRangeObject, RawMultiRangeObject } from "../util/MultiRange";
-import { parser } from "../util/parser";
+import { arrayParser } from "../../util/arrayParser";
+import {
+  getMultiRange,
+  MultiRange,
+  MultiRangeConstructor,
+  MultiRangeObject,
+  RawMultiRangeObject,
+} from "../../util/MultiRange";
+import { parser } from "../../util/parser";
 import { Date, DateObject } from "./Date";
 import { DateRange } from "./DateRange";
 

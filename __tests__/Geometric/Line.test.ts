@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Line } from "../src";
+import { Line } from "../../src";
 
 describe("Line Class", () => {
 	it("should create a line from a string", () => {

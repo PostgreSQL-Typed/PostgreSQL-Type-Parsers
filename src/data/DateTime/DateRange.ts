@@ -1,9 +1,9 @@
 import { types } from "pg";
 import { DataType } from "postgresql-data-types";
 
-import { arrayParser } from "../util/arrayParser";
-import { parser } from "../util/parser";
-import { getRange, Range, RangeConstructor, RangeObject, RawRangeObject } from "../util/Range";
+import { arrayParser } from "../../util/arrayParser";
+import { parser } from "../../util/parser";
+import { getRange, Range, RangeConstructor, RangeObject, RawRangeObject } from "../../util/Range";
 import { Date, DateObject } from "./Date";
 
 type DateRangeObject = RangeObject<Date>;

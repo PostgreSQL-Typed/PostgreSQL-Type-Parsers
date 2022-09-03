@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { LineSegment, Point } from "../src";
+import { LineSegment, Point } from "../../src";
 
 describe("LineSegment Class", () => {
 	it("should create a line segment from a string", () => {

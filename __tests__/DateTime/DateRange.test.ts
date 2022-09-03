@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Date, DateRange, LowerRange, UpperRange } from "../src";
+import { Date, DateRange, LowerRange, UpperRange } from "../../src";
 
 describe("DateRange Class", () => {
 	it("should create a date range from a string", () => {

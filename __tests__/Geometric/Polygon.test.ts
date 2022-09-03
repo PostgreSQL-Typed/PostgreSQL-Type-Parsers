@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Point, Polygon } from "../src";
+import { Point, Polygon } from "../../src";
 
 describe("Polygon Class", () => {
 	it("should create a polygon from a string", () => {

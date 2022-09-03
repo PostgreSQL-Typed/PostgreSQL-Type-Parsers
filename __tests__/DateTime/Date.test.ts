@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { Client } from "pg";
 
-import { Date } from "../src";
+import { Date } from "../../src";
 
 describe("Date Class", () => {
 	it("should create a date from a string", () => {

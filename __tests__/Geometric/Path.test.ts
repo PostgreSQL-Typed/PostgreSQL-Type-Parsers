@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Path, Point } from "../src";
+import { Path, Point } from "../../src";
 
 describe("Path Class", () => {
 	it("should create a path from a string", () => {

@@ -1,8 +1,8 @@
 import { types } from "pg";
 import { DataType } from "postgresql-data-types";
 
-import { arrayParser } from "../util/arrayParser";
-import { parser } from "../util/parser";
+import { arrayParser } from "../../util/arrayParser";
+import { parser } from "../../util/parser";
 import { Point, PointObject } from "./Point";
 
 interface PolygonObject {

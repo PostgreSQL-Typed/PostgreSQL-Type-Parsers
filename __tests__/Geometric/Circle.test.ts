@@ -1,6 +1,6 @@
 import { Client } from "pg";
 
-import { Circle } from "../src";
+import { Circle } from "../../src";
 
 describe("Circle Class", () => {
 	it("should create a circle from a string", () => {

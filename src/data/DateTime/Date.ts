@@ -2,8 +2,8 @@ import { DateTime, Zone } from "luxon";
 import { types } from "pg";
 import { DataType } from "postgresql-data-types";
 
-import { arrayParser } from "../util/arrayParser";
-import { parser } from "../util/parser";
+import { arrayParser } from "../../util/arrayParser";
+import { parser } from "../../util/parser";
 
 interface DateObject {
 	year: number;
