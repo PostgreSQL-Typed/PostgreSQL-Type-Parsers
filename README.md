@@ -167,21 +167,27 @@ const dateRange1 = DateRange.from("[2022-09-02,2022-10-03)");
 const dateRange2 = DateRange.from({
 	lower: LowerRange.include,
 	upper: UpperRange.exclude,
-	value: {
-		lower: { year: 2022, month: 9, day: 2 },
-		upper: { year: 2022, month: 10, day: 3 }
-	}
+	value: [
+		{ year: 2022, month: 9, day: 2 }, // lowerValue
+		{ year: 2022, month: 10, day: 3 } // upperValue
+	]
 });
-const dateRange3 = DateRange.from(
-	LowerRange.include,
-	UpperRange.exclude,
-	Date.from({ year: 2022, month: 9, day: 2 }),
-	Date.from({ year: 2022, month: 10, day: 3 })
-); //lower, upper, lowerValue, upperValue
-const dateRange4 = DateRange.from(LowerRange.include, UpperRange.exclude, {
-	lower: { year: 2022, month: 9, day: 2 },
-	upper: { year: 2022, month: 10, day: 3 }
-}); //lower, upper, value
+const dateRange3 = DateRange.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		Date.from({ year: 2022, month: 9, day: 2 }), // lowerValue
+		Date.from({ year: 2022, month: 10, day: 3 }) // upperValue
+	]
+});
+const dateRange4 = DateRange.from(
+	Date.from({ year: 2022, month: 9, day: 2 }), // lowerValue
+	Date.from({ year: 2022, month: 10, day: 3 }) // upperValue
+); // Defaults to [lowerValue, upperValue)
+const dateRange5 = DateRange.from([
+	Date.from({ year: 2022, month: 9, day: 2 }), //lowerValue
+	Date.from({ year: 2022, month: 10, day: 3 }) //upperValue
+]); // Defaults to [lowerValue, upperValue)
 
 //* To verify if a value is a date range, use the `isRange` method:
 if (DateRange.isRange(dateRange1)) {
@@ -191,31 +197,27 @@ if (DateRange.isRange(dateRange1)) {
 //* Afterwards, you can get/set the properties of the date range:
 dateRange1.lower; // LowerRange.include
 dateRange1.upper; // UpperRange.exclude
-dateRange1.value; // { lower: { year: 2022, month: 9, day: 2 }, upper: { year: 2022, month: 10, day: 3 } }
-
-//* There are also readonly properties for the lower and upper values:
-dateRange1.lowerValue; // Date { year: 2022, month: 9, day: 2 }
-dateRange1.upperValue; // Date { year: 2022, month: 10, day: 3 }
+dateRange1.value; // [Date { year: 2022, month: 9, day: 2 }, Date { year: 2022, month: 10, day: 3 }]
 
 //* It has a `toString()` method that returns a string representation of the date range:
 dateRange1.toString(); // "[2022-09-02,2022-10-03)"
 
 //* It has a `toJSON()` method that returns a JSON representation of the date range:
-dateRange1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: { lower: { year: 2022, month: 9, day: 2 }, upper: { year: 2022, month: 10, day: 3 } } }
+dateRange1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: [ { year: 2022, month: 9, day: 2 }, { year: 2022, month: 10, day: 3 } ] }
 
 //* It has a `equals()` method that returns whether two date ranges are equal:
 dateRange1.equals(dateRange2); // true
 
-//* It has a `isEmpty()` method that returns whether the date range is empty:
-dateRange1.isEmpty(); // false
-const dateRange5 = DateRange.from("[2022-09-02,2022-09-02)");
-dateRange5.isEmpty(); // true
-const dateRange6 = DateRange.from("empty");
-dateRange6.isEmpty(); // true
+//* It has a `empty` readonly property that returns whether the date range is empty:
+dateRange1.empty; // false
+const dateRange6 = DateRange.from("[2022-09-02,2022-09-02)");
+dateRange6.empty; // true
+const dateRange7 = DateRange.from("empty");
+dateRange7.empty; // true
 
 //! Note that if a DateRange is empty, it will have a `null` value.
-dateRange5.value; // null
 dateRange6.value; // null
+dateRange7.value; // null
 
 //* It has a `isWithinRange()` method that returns whether a date is within the range:
 dateRange1.isWithinRange(Date.from("2022-09-15")); // true
