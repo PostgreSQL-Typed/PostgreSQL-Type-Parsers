@@ -4,6 +4,7 @@ export * from "./data/DateTime/Date";
 export * from "./data/DateTime/DateMultiRange";
 export * from "./data/DateTime/DateRange";
 export * from "./data/DateTime/Interval";
+export * from "./data/DateTime/Time";
 export * from "./data/Geometric/Box";
 export * from "./data/Geometric/Circle";
 export * from "./data/Geometric/Line";

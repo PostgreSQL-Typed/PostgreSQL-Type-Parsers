@@ -9,6 +9,7 @@ Easy to use types for PostgreSQL data types
     - [DateMultiRange](#datemultirange)
     - [DateRange](#daterange)
     - [Interval](#interval)
+    - [Time](#time)
   - [Geometric Types](#geometric-types)
     - [Box](#box)
     - [Circle](#circle)
@@ -39,6 +40,7 @@ pnpm i postgresql-type-parsers
 - [DateMultiRange](#datemultirange)
 - [DateRange](#daterange)
 - [Interval](#interval)
+- [Time](#time)
 
 ### Date
 
@@ -291,6 +293,56 @@ interval6.toJSON(); // { years: 1, months: 2, days: 3, hours: 4, minutes: 5, sec
 
 //* It has a `equals()` method that returns whether two intervals are equal:
 interval6.equals(interval5); // true
+```
+
+### Time
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`time`][time]
+- [`_time`][time] (`time[]`)
+
+```ts
+import { Time } from "postgresql-type-parsers";
+import { DateTime } from "luxon";
+
+//* Times can be created in the following ways:
+const time1 = Time.from("12:34:56.789"); // Note milliseconds are ignored
+const time2 = Time.from(12, 34, 56); // hours, minutes, seconds
+const time3 = Time.from({
+	hours: 12,
+	minutes: 34,
+	seconds: 56
+});
+const time4 = Time.from(DateTime.fromISO("2020-01-01 12:34:56")); // Luxon DateTime
+const time5 = Time.from(new globalThis.Date("2020-01-01 12:34:56")); // JavaScript Date
+
+//* To verify if a value is a time, use the `isTime` method:
+if (Time.isTime(time1)) {
+	console.log("time1 is a time");
+}
+
+//* Afterwards, you can get/set the properties of the time:
+time1.hours; // 12
+time1.minutes; // 34
+time1.seconds; // 56
+
+//* It has a `toString()` method that returns a string representation of the time:
+time1.toString(); // "12:34:56"
+
+//* It has a `toJSON()` method that returns a JSON representation of the time:
+time1.toJSON(); // { hours: 12, minutes: 34, seconds: 56 }
+
+//* It has a `equals()` method that returns whether two times are equal:
+time1.equals(time2); // true
+
+//* It has a `toDateTime()` method that returns a `DateTime` representation of the date: (defaults to the current timezone)
+time1.toDateTime(); // DateTime { hours: 12, minutes: 34, seconds: 56 }
+time1.toDateTime("America/New_York"); // DateTime { hours: 12, minutes: 34, seconds: 56, zone: "America/New_York" }
+
+//* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
+time1.toJSDate(); // Date { hours: 12, minutes: 34, seconds: 56 }
+time1.toJSDate("America/New_York"); // Date { hours: 12, minutes: 34, seconds: 56, zone: "America/New_York" }
 ```
 
 ## Geometric Types
