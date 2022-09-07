@@ -46,8 +46,8 @@ pnpm i postgresql-type-parsers
 
 Used to represent the following PostgreSQL data type(s):
 
-- [`date`][date]
-- [`_date`][date] (`date[]`)
+- [`date`][datetime]
+- [`_date`][datetime] (`date[]`)
 
 ```ts
 import { Date } from "postgresql-type-parsers";
@@ -299,8 +299,8 @@ interval6.equals(interval5); // true
 
 Used to represent the following PostgreSQL data type(s):
 
-- [`time`][time]
-- [`_time`][time] (`time[]`)
+- [`time`][datetime]
+- [`_time`][datetime] (`time[]`)
 
 ```ts
 import { Time } from "postgresql-type-parsers";
@@ -631,7 +631,7 @@ polygon1.equals(polygon2); // true
 
 [box]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.8
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
-[date]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-DATETIME-INPUT
+[datetime]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-DATETIME-INPUT
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
