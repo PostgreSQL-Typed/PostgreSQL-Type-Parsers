@@ -10,6 +10,7 @@ Easy to use types for PostgreSQL data types
     - [DateRange](#daterange)
     - [Interval](#interval)
     - [Time](#time)
+    - [Timestamp](#timestamp)
     - [TimeTZ](#timetz)
   - [Geometric Types](#geometric-types)
     - [Box](#box)
@@ -42,6 +43,7 @@ pnpm i postgresql-type-parsers
 - [DateRange](#daterange)
 - [Interval](#interval)
 - [Time](#time)
+- [Timestamp](#timestamp)
 - [TimeTZ](#timetz)
 
 ### Date
@@ -345,6 +347,72 @@ time1.toDateTime("America/New_York"); // DateTime { hours: 12, minutes: 34, seco
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
 time1.toJSDate(); // Date { hours: 12, minutes: 34, seconds: 56 }
 time1.toJSDate("America/New_York"); // Date { hours: 12, minutes: 34, seconds: 56, zone: "America/New_York" }
+```
+
+### Timestamp
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`timestamp`][datetime]
+- [`_timestamp`][datetime] (`timestamp[]`)
+
+```ts
+import { Timestamp } from "postgresql-type-parsers";
+import { DateTime } from "luxon";
+
+//* Timestamps can be created in the following ways:
+const timestamp1 = Timestamp.from("2020-01-01 12:34:56.789");
+const timestamp2 = Timestamp.from("2020-01-01T12:34:56.789Z"); // ISO8601
+const timestamp3 = Timestamp.from(2020, 1, 1, 12, 34, 56.789); // year, month, day, hours, minutes, seconds
+const timestamp4 = Timestamp.from({
+	year: 2020,
+	month: 1,
+	day: 1,
+	hours: 12,
+	minutes: 34,
+	seconds: 56.789
+});
+const timestamp5 = Timestamp.from(DateTime.fromISO("2020-01-01T12:34:56.789Z")); // Luxon DateTime
+const timestamp6 = Timestamp.from(
+	new globalThis.Date("2020-01-01T12:34:56.789Z")
+); // JavaScript Date
+
+//* To verify if a value is a timestamp, use the `isTimestamp` method:
+if (Timestamp.isTimestamp(timestamp1)) {
+	console.log("timestamp1 is a timestamp");
+}
+
+//* Afterwards, you can get/set the properties of the timestamp:
+timestamp1.year; // 2020
+timestamp1.month; // 1
+timestamp1.day; // 1
+timestamp1.hours; // 12
+timestamp1.minutes; // 34
+timestamp1.seconds; // 56.789
+
+//* It has a `toString()` method that returns a string representation of the timestamp:
+timestamp1.toString(); // "2020-01-01 12:34:56.789"
+
+//* It has a `toISO()` method that returns an ISO8601 representation of the timestamp:
+timestamp1.toISO(); // "2020-01-01T12:34:56.789Z"
+
+//* It has a `toJSON()` method that returns a JSON representation of the timestamp:
+timestamp1.toJSON(); // { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789 }
+
+//* It has a `equals()` method that returns whether two timestamps are equal:
+timestamp1.equals(timestamp2); // true
+
+//* It has a `toDate()` method that returns a `Date` representation of the timestamp:
+timestamp1.toDate(); // Date { year: 2020, month: 1, day: 1 }
+
+//* It has a `toTime()` method that returns a `Time` representation of the timestamp:
+timestamp1.toTime(); // Time { hours: 12, minutes: 34, seconds: 56 }
+
+//* It has a `toDateTime()` method that returns a `DateTime` representation of the date: (defaults to the current timezone)
+timestamp1.toDateTime(); // DateTime { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789 }
+
+//* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
+timestamp1.toJSDate(); // Date { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789 }
 ```
 
 ### TimeTZ
