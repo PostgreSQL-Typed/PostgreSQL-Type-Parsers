@@ -10,6 +10,7 @@ Easy to use types for PostgreSQL data types
     - [DateRange](#daterange)
     - [Interval](#interval)
     - [Time](#time)
+    - [TimeTZ](#timetz)
   - [Geometric Types](#geometric-types)
     - [Box](#box)
     - [Circle](#circle)
@@ -41,6 +42,7 @@ pnpm i postgresql-type-parsers
 - [DateRange](#daterange)
 - [Interval](#interval)
 - [Time](#time)
+- [TimeTZ](#timetz)
 
 ### Date
 
@@ -343,6 +345,64 @@ time1.toDateTime("America/New_York"); // DateTime { hours: 12, minutes: 34, seco
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
 time1.toJSDate(); // Date { hours: 12, minutes: 34, seconds: 56 }
 time1.toJSDate("America/New_York"); // Date { hours: 12, minutes: 34, seconds: 56, zone: "America/New_York" }
+```
+
+### TimeTZ
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`timetz`][datetime]
+- [`_timetz`][datetime] (`timetz[]`)
+
+```ts
+import { TimeTZ, OffsetDirection } from "postgresql-type-parsers";
+import { DateTime } from "luxon";
+
+//* TimeTZs can be created in the following ways:
+const timeTZ1 = TimeTZ.from("12:34:56.789-05:00");
+const timeTZ2 = TimeTZ.from(12, 34, 56.789, 5, 0, OffsetDirection.minus); // hours, minutes, seconds, offsetHours, offsetMinutes, direction
+const timeTZ3 = TimeTZ.from({
+	hours: 12,
+	minutes: 34,
+	seconds: 56.789,
+	offset: {
+		hours: 5,
+		minutes: 0
+		direction: "minus"
+	}
+});
+const timeTZ4 = TimeTZ.from(DateTime.fromISO("2020-01-01T12:34:56.789-05:00")); // Luxon DateTime
+const timeTZ5 = TimeTZ.from(new globalThis.Date("2020-01-01T12:34:56.789-05:00")); // JavaScript Date
+const timeTZ6 = TimeTZ.from("12:34:56.789 America/Jamaica"); // Using IANA timezone
+const timeTZ7 = TimeTZ.from("12:34:56.789 EST"); // Using IANA timezone abbreviation
+
+//* To verify if a value is a timeTZ, use the `isTimeTZ` method:
+if (TimeTZ.isTimeTZ(timeTZ1)) {
+	console.log("timeTZ1 is a timeTZ");
+}
+
+//* Afterwards, you can get/set the properties of the timeTZ:
+timeTZ1.hours; // 12
+timeTZ1.minutes; // 34
+timeTZ1.seconds; // 56.789
+timeTZ1.offset.hours; // 5
+timeTZ1.offset.minutes; // 0
+timeTZ1.offset.direction; // "minus"
+
+//* It has a `toString()` method that returns a string representation of the timeTZ:
+timeTZ1.toString(); // "12:34:56.789-05:00"
+
+//* It has a `toJSON()` method that returns a JSON representation of the timeTZ:
+timeTZ1.toJSON(); // { hours: 12, minutes: 34, seconds: 56.789, offset: { hours: 5, minutes: 0, direction: "minus" } }
+
+//* It has a `equals()` method that returns whether two timeTZs are equal:
+timeTZ1.equals(timeTZ2); // true
+
+//* It has a `toDateTime()` method that returns a `DateTime` representation of the date: (defaults to the current timezone)
+timeTZ1.toDateTime(); // DateTime { hours: 12, minutes: 34, seconds: 56.789, zone: "EST" }
+
+//* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
+timeTZ1.toJSDate(); // Date { hours: 12, minutes: 34, seconds: 56.789, zone: "EST" }
 ```
 
 ## Geometric Types
