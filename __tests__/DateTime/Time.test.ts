@@ -3,7 +3,7 @@ import { Client } from "pg";
 
 import { Time } from "../../src";
 
-describe("Date Class", () => {
+describe("Time Class", () => {
 	it("should create a time from a string", () => {
 		const time = Time.from("04:05:06.789");
 		expect(time).not.toBeNull();
