@@ -5,6 +5,7 @@ import { DataType } from "postgresql-data-types";
 import { Offset } from "../../types/Offset";
 import { OffsetDirection, OffsetDirectionType } from "../../types/OffsetDirection";
 import { arrayParser } from "../../util/arrayParser";
+import { isISOEquivalent } from "../../util/isISOEquivalent";
 import { parser } from "../../util/parser";
 import { validateTimeZone } from "../../util/validateTimeZone";
 
@@ -244,19 +245,22 @@ class TimeTZClass implements TimeTZ {
 		};
 	}
 
-	equals(otherTime: string | TimeTZ | TimeTZObject): boolean {
-		if (typeof otherTime === "string") {
-			return otherTime === this.toString();
-		} else if (TimeTZ.isTimeTZ(otherTime)) {
-			return otherTime.toString() === this.toString();
+	equals(otherTimeTZ: string | TimeTZ | TimeTZObject): boolean {
+		if (typeof otherTimeTZ === "string") {
+			return otherTimeTZ === this.toString();
+		} else if (TimeTZ.isTimeTZ(otherTimeTZ)) {
+			return isISOEquivalent(
+				`${DateTime.now().toISODate()}T${otherTimeTZ.toString()}`,
+				`${DateTime.now().toISODate()}T${this.toString()}`
+			);
 		} else {
 			return (
-				otherTime.hour === this._hour &&
-				otherTime.minute === this._minute &&
-				otherTime.second === this._second &&
-				otherTime.offset.hour === this._offset.hour &&
-				otherTime.offset.minute === this._offset.minute &&
-				otherTime.offset.direction === this._offset.direction
+				otherTimeTZ.hour === this._hour &&
+				otherTimeTZ.minute === this._minute &&
+				otherTimeTZ.second === this._second &&
+				otherTimeTZ.offset.hour === this._offset.hour &&
+				otherTimeTZ.offset.minute === this._offset.minute &&
+				otherTimeTZ.offset.direction === this._offset.direction
 			);
 		}
 	}

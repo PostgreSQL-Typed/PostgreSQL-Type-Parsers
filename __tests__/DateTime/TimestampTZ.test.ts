@@ -281,6 +281,40 @@ describe("TimestampTZ Class", () => {
 				}).toString()
 			)
 		).toBe(false);
+		expect(
+			timestamptz.equals(
+				TimestampTZ.from({
+					year: 2004,
+					month: 10,
+					day: 19,
+					hour: 2,
+					minute: 5,
+					second: 6,
+					offset: {
+						hour: 1,
+						minute: 0,
+						direction: "minus"
+					}
+				})
+			)
+		).toBe(true);
+		expect(
+			timestamptz.equals(
+				TimestampTZ.from({
+					year: 2004,
+					month: 10,
+					day: 19,
+					hour: 2,
+					minute: 5,
+					second: 6,
+					offset: {
+						hour: 2,
+						minute: 0,
+						direction: "minus"
+					}
+				})
+			)
+		).toBe(false);
 	});
 
 	it("get year", () => {

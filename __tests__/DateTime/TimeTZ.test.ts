@@ -216,6 +216,34 @@ describe("TimeTZ Class", () => {
 				}).toString()
 			)
 		).toBe(false);
+		expect(
+			timetz.equals(
+				TimeTZ.from({
+					hour: 6,
+					minute: 5,
+					second: 6,
+					offset: {
+						hour: 1,
+						minute: 0,
+						direction: "plus"
+					}
+				})
+			)
+		).toBe(true);
+		expect(
+			timetz.equals(
+				TimeTZ.from({
+					hour: 6,
+					minute: 5,
+					second: 6,
+					offset: {
+						hour: 2,
+						minute: 0,
+						direction: "plus"
+					}
+				})
+			)
+		).toBe(false);
 	});
 
 	it("get hour", () => {

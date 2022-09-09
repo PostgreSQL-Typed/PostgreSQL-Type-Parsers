@@ -479,6 +479,8 @@ timestampTZ1.toJSON(); // { year: 2020, month: 1, day: 1, hours: 12, minutes: 34
 
 //* It has a `equals()` method that returns whether two timestampTZs are equal:
 timestampTZ1.equals(timestampTZ2); // true
+// Note: When passing a TimestampTZ to the `equals` method, the offset of both TimestampTZs are converted to UTC before comparing.
+// If you don't want this behavior, pass the TimestampTZ as a string or object to the `equals` method.
 
 //* It has a `toDate()` method that returns a `Date` representation of the timestampTZ:
 timestampTZ1.toDate(); // Date { year: 2020, month: 1, day: 1 }
@@ -543,6 +545,8 @@ timeTZ1.toJSON(); // { hours: 12, minutes: 34, seconds: 56.789, offset: { hours:
 
 //* It has a `equals()` method that returns whether two timeTZs are equal:
 timeTZ1.equals(timeTZ2); // true
+// Note: When passing a TimeTZ to the `equals` method, the offset of both TimeTZs are converted to UTC before comparing.
+// If you don't want this behavior, pass the TimeTZ as a string or object to the `equals` method.
 
 //* It has a `toDateTime()` method that returns a `DateTime` representation of the date: (defaults to the current timezone)
 timeTZ1.toDateTime(); // DateTime { hours: 12, minutes: 34, seconds: 56.789, zone: "EST" }

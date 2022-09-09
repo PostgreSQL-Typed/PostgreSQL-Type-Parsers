@@ -5,6 +5,7 @@ import { DataType } from "postgresql-data-types";
 import { Offset } from "../../types/Offset";
 import { OffsetDirection, OffsetDirectionType } from "../../types/OffsetDirection";
 import { arrayParser } from "../../util/arrayParser";
+import { isISOEquivalent } from "../../util/isISOEquivalent";
 import { parser } from "../../util/parser";
 import { validateTimeZone } from "../../util/validateTimeZone";
 import { Date } from "./Date";
@@ -313,7 +314,7 @@ class TimestampTZClass implements TimestampTZ {
 		if (typeof otherTimestampTZ === "string") {
 			return otherTimestampTZ === this.toString();
 		} else if (TimestampTZ.isTimestampTZ(otherTimestampTZ)) {
-			return otherTimestampTZ.toString() === this.toString();
+			return isISOEquivalent(otherTimestampTZ.toISO(), this.toISO());
 		} else {
 			return (
 				otherTimestampTZ.year === this._year &&
