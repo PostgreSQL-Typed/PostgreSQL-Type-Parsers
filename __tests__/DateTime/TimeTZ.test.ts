@@ -305,6 +305,47 @@ describe("TimeTZ Class", () => {
 		expect(timetz.second).toBe(3);
 	});
 
+	it("get offset", () => {
+		const timetz = TimeTZ.from({
+			hour: 4,
+			minute: 5,
+			second: 6,
+			offset: {
+				hour: 1,
+				minute: 0,
+				direction: "minus"
+			}
+		});
+		expect(timetz.offset).toEqual({
+			hour: 1,
+			minute: 0,
+			direction: "minus"
+		});
+	});
+
+	it("set offset", () => {
+		const timetz = TimeTZ.from({
+			hour: 4,
+			minute: 5,
+			second: 6,
+			offset: {
+				hour: 1,
+				minute: 0,
+				direction: "minus"
+			}
+		});
+		timetz.offset = {
+			hour: 2,
+			minute: 0,
+			direction: "plus"
+		};
+		expect(timetz.offset).toEqual({
+			hour: 2,
+			minute: 0,
+			direction: "plus"
+		});
+	});
+
 	it("toDateTime()", () => {
 		const timetz = TimeTZ.from({
 			hour: 4,
