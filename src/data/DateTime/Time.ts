@@ -50,7 +50,7 @@ const Time: TimeConstructor = {
 		if (typeof arg === "string") {
 			if (
 				arg.match(
-					/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(.[0-9]?[0-9]?[0-9])?$/
+					/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/
 				)
 			) {
 				const [hour, minute, second] = arg.split(":").map(c => parseInt(c));
