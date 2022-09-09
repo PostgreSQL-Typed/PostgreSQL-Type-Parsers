@@ -50,7 +50,7 @@ describe("TimeTZ Class", () => {
 	});
 
 	it("should create a timetz from a DateTime", () => {
-		const time = TimeTZ.from(
+		const timetz = TimeTZ.from(
 			DateTime.fromObject({
 				hour: 4,
 				minute: 5,
@@ -58,12 +58,12 @@ describe("TimeTZ Class", () => {
 				millisecond: 789
 			}).setZone("America/New_York")
 		);
-		expect(time).not.toBeNull();
+		expect(timetz).not.toBeNull();
 	});
 
 	it("should create a timetz from a JavaScript Date", () => {
-		const time = TimeTZ.from(new globalThis.Date(2022, 9, 2, 4, 5, 6, 789));
-		expect(time).not.toBeNull();
+		const timetz = TimeTZ.from(new globalThis.Date(2022, 9, 2, 4, 5, 6, 789));
+		expect(timetz).not.toBeNull();
 	});
 
 	it("isTimeTZ()", () => {
@@ -291,7 +291,7 @@ describe("TimeTZ Class", () => {
 	});
 
 	it("set second", () => {
-		const time = TimeTZ.from({
+		const timetz = TimeTZ.from({
 			hour: 4,
 			minute: 5,
 			second: 6,
@@ -301,12 +301,12 @@ describe("TimeTZ Class", () => {
 				direction: "minus"
 			}
 		});
-		time.second = 3;
-		expect(time.second).toBe(3);
+		timetz.second = 3;
+		expect(timetz.second).toBe(3);
 	});
 
 	it("toDateTime()", () => {
-		const time = TimeTZ.from({
+		const timetz = TimeTZ.from({
 			hour: 4,
 			minute: 5,
 			second: 6,
@@ -316,13 +316,13 @@ describe("TimeTZ Class", () => {
 				direction: "minus"
 			}
 		});
-		expect(time.toDateTime()).toStrictEqual(
+		expect(timetz.toDateTime()).toStrictEqual(
 			DateTime.fromISO(`${DateTime.now().toISODate()}T04:05:06-01:00`)
 		);
 	});
 
 	it("toJSDate()", () => {
-		const time = TimeTZ.from({
+		const timetz = TimeTZ.from({
 			hour: 4,
 			minute: 5,
 			second: 6,
@@ -332,7 +332,7 @@ describe("TimeTZ Class", () => {
 				direction: "minus"
 			}
 		});
-		expect(time.toJSDate()).toBeInstanceOf(globalThis.Date);
+		expect(timetz.toJSDate()).toBeInstanceOf(globalThis.Date);
 	});
 
 	it("should be returned from PostgreSQL", async () => {
