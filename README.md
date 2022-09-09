@@ -23,6 +23,8 @@ Easy to use types for PostgreSQL data types
     - [Path](#path)
     - [Point](#point)
     - [Polygon](#polygon)
+  - [UUID Type](#uuid-type)
+    - [UUID](#uuid)
 
 ## Installation
 
@@ -1043,6 +1045,46 @@ polygon1.toJSON(); // { points: [ { x: 1, y: 2 }, { x: 3, y: 4 } ] }
 polygon1.equals(polygon2); // true
 ```
 
+## UUID Type
+
+- [UUID](#uuid)
+
+### UUID
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`uuid`][uuid]
+- [`_uuid`][uuid] (`uuid[]`)
+
+```ts
+import { UUID } from "postgresql-type-parsers";
+
+//* UUIDs can be created in the following ways:
+const uuid1 = UUID.from("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+const uuid2 = UUID.from({
+	uuid: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+});
+const uuid3 = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"); //Will be converted to lowercase
+const uuid4 = UUID.generate(); //Generates a random UUID using `node:crypto`
+
+//* To verify if a value is a UUID, use the `isUUID` method:
+if (UUID.isUUID(uuid1)) {
+	console.log("uuid1 is a UUID");
+}
+
+//* Afterwards, you can get/set the properties of the UUID:
+uuid1.uuid; // "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+
+//* It has a `toString()` method that returns a string representation of the UUID:
+uuid1.toString(); // "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+
+//* It has a `toJSON()` method that returns a JSON representation of the UUID:
+uuid1.toJSON(); // { uuid: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11" }
+
+//* It has a `equals()` method that returns whether two UUIDs are equal:
+uuid1.equals(uuid2); // true
+```
+
 [box]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.8
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
 [datetime]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-DATETIME-INPUT
@@ -1054,3 +1096,4 @@ polygon1.equals(polygon2); // true
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
 [polygon]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-POLYGON
 [range]: https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-IO
+[uuid]: https://www.postgresql.org/docs/current/datatype-uuid.html
