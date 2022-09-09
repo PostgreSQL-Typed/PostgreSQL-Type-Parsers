@@ -6,6 +6,7 @@ export * from "./data/DateTime/DateRange";
 export * from "./data/DateTime/Interval";
 export * from "./data/DateTime/Time";
 export * from "./data/DateTime/Timestamp";
+export * from "./data/DateTime/TimestampRange";
 export * from "./data/DateTime/TimestampTZ";
 export * from "./data/DateTime/TimeTZ";
 export * from "./data/Geometric/Box";

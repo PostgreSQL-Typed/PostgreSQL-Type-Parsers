@@ -11,6 +11,7 @@ Easy to use types for PostgreSQL data types
     - [Interval](#interval)
     - [Time](#time)
     - [Timestamp](#timestamp)
+    - [TimestampRange](#timestamprange)
     - [TimestampTZ](#timestamptz)
     - [TimeTZ](#timetz)
   - [Geometric Types](#geometric-types)
@@ -45,6 +46,7 @@ pnpm i postgresql-type-parsers
 - [Interval](#interval)
 - [Time](#time)
 - [Timestamp](#timestamp)
+- [TimestampRange](#timestamprange)
 - [TimestampTZ](#timestamptz)
 - [TimeTZ](#timetz)
 
@@ -415,6 +417,100 @@ timestamp1.toDateTime(); // DateTime { year: 2020, month: 1, day: 1, hours: 12, 
 
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
 timestamp1.toJSDate(); // Date { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789 }
+```
+
+### TimestampRange
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`tsrange`][range]
+- [`_tsrange`][range] (`tsrange[]`)
+
+```ts
+import {
+	Timestamp,
+	TimestampRange,
+	LowerRange,
+	UpperRange
+} from "postgresql-type-parsers";
+
+//* TimestampRange can be created in the following ways:
+const timestampRange1 = TimestampRange.from(
+	"[2004-10-19T10:23:54.678Z,2004-11-19T10:23:54.678Z)"
+);
+const timestampRange2 = TimestampRange.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		{
+			year: 2004,
+			month: 10,
+			day: 19,
+			hour: 10,
+			minute: 23,
+			second: 54.678
+		}, // lowerValue
+		{
+			year: 2004,
+			month: 11,
+			day: 19,
+			hour: 10,
+			minute: 23,
+			second: 54.678
+		} // upperValue
+	]
+});
+const timestampRange3 = TimestampRange.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		Timestamp.from("2004-10-19T10:23:54.678Z"), // lowerValue
+		Timestamp.from("2004-11-19T10:23:54.678Z") // upperValue
+	]
+});
+const timestampRange4 = TimestampRange.from(
+	Timestamp.from("2004-10-19T10:23:54.678Z"), // lowerValue
+	Timestamp.from("2004-11-19T10:23:54.678Z") // upperValue
+); // Defaults to [lowerValue, upperValue)
+const timestampRange5 = TimestampRange.from([
+	Timestamp.from("2004-10-19T10:23:54.678Z"), // lowerValue
+	Timestamp.from("2004-11-19T10:23:54.678Z") // upperValue
+]); // Defaults to [lowerValue, upperValue)
+
+//* To verify if a value is a timestamp range, use the `isRange` method:
+if (TimestampRange.isRange(timestampRange1)) {
+	console.log("timestampRange1 is a timestamp range");
+}
+
+//* Afterwards, you can get/set the properties of the timestamp range:
+timestampRange1.lower; // LowerRange.include
+timestampRange1.upper; // UpperRange.exclude
+timestampRange1.value; // [Timestamp, Timestamp]
+
+//* It has a `toString()` method that returns a string representation of the timestamp range:
+timestampRange1.toString(); // "[2004-10-19 10:23:54.678,2004-11-19 10:23:54.678)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the timestamp range:
+timestampRange1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: [Timestamp, Timestamp] }
+
+//* It has a `equals()` method that returns whether two timestamp ranges are equal:
+timestampRange1.equals(timestampRange2); // true
+
+//* It has a `empty` readonly property that returns whether the timestamp range is empty:
+timestampRange1.empty; // false
+const timestampRange6 = TimestampRange.from(
+	"[2004-10-19T10:23:54.678Z,2004-10-19T10:23:54.678Z)"
+);
+timestampRange6.empty; // true
+const timestampRange7 = TimestampRange.from("empty");
+timestampRange7.empty; // true
+
+//! Note that if a TimestampRange is empty, it will have a `null` value.
+timestampRange6.value; // null
+timestampRange7.value; // null
+
+//* It has a `isWithinRange()` method that returns whether a timestamp is within the range:
+timestampRange1.isWithinRange(Timestamp.from("2004-10-25T01:45:21.321Z")); // true
 ```
 
 ### TimestampTZ
