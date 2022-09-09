@@ -11,6 +11,7 @@ Easy to use types for PostgreSQL data types
     - [Interval](#interval)
     - [Time](#time)
     - [Timestamp](#timestamp)
+    - [TimestampTZ](#timestamptz)
     - [TimeTZ](#timetz)
   - [Geometric Types](#geometric-types)
     - [Box](#box)
@@ -44,6 +45,7 @@ pnpm i postgresql-type-parsers
 - [Interval](#interval)
 - [Time](#time)
 - [Timestamp](#timestamp)
+- [TimestampTZ](#timestamptz)
 - [TimeTZ](#timetz)
 
 ### Date
@@ -413,6 +415,82 @@ timestamp1.toDateTime(); // DateTime { year: 2020, month: 1, day: 1, hours: 12, 
 
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the date: (defaults to the current timezone)
 timestamp1.toJSDate(); // Date { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789 }
+```
+
+### TimestampTZ
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`timestamptz`][datetime]
+- [`_timestamptz`][datetime] (`timestamptz[]`)
+
+```ts
+import { TimestampTZ } from "postgresql-type-parsers";
+import { DateTime } from "luxon";
+
+//* TimestampTZs can be created in the following ways:
+const timestampTZ1 = TimestampTZ.from("2020-01-01 12:34:56.789 +01:00");
+const timestampTZ2 = TimestampTZ.from("2020-01-01T12:34:56.789+01:00"); // ISO8601
+const timestampTZ3 = TimestampTZ.from(2020, 1, 1, 12, 34, 56.789, 1, 0, "plus"); // year, month, day, hours, minutes, seconds, offsetHours, offsetMinutes, offsetDirection
+const timestampTZ4 = TimestampTZ.from({
+	year: 2020,
+	month: 1,
+	day: 1,
+	hours: 12,
+	minutes: 34,
+	seconds: 56.789,
+	offset: {
+		hours: 1,
+		minutes: 0,
+		direction: "plus"
+	}
+});
+const timestampTZ5 = TimestampTZ.from(
+	DateTime.fromISO("2020-01-01T12:34:56.789Z")
+); // Luxon DateTime
+const timestampTZ6 = TimestampTZ.from(
+	new globalThis.Date("2020-01-01T12:34:56.789Z")
+); // JavaScript Date
+
+//* To verify if a value is a timestampTZ, use the `isTimestampTZ` method:
+if (TimestampTZ.isTimestampTZ(timestampTZ1)) {
+	console.log("timestampTZ1 is a timestampTZ");
+}
+
+//* Afterwards, you can get/set the properties of the timestampTZ:
+timestampTZ1.year; // 2020
+timestampTZ1.month; // 1
+timestampTZ1.day; // 1
+timestampTZ1.hours; // 12
+timestampTZ1.minutes; // 34
+timestampTZ1.seconds; // 56.789
+timestampTZ1.offset.hours; // 1
+timestampTZ1.offset.minutes; // 0
+timestampTZ1.offset.direction; // "plus"
+
+//* It has a `toString()` method that returns a string representation of the timestampTZ:
+timestampTZ1.toString(); // "2020-01-01 12:34:56.789 +01:00"
+
+//* It has a `toISO()` method that returns an ISO8601 representation of the timestampTZ:
+timestampTZ1.toISO(); // "2020-01-01T12:34:56.789+01:00"
+
+//* It has a `toJSON()` method that returns a JSON representation of the timestampTZ:
+timestampTZ1.toJSON(); // { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789, offset: { hours: 1, minutes: 0, direction: "plus" } }
+
+//* It has a `equals()` method that returns whether two timestampTZs are equal:
+timestampTZ1.equals(timestampTZ2); // true
+
+//* It has a `toDate()` method that returns a `Date` representation of the timestampTZ:
+timestampTZ1.toDate(); // Date { year: 2020, month: 1, day: 1 }
+
+//* It has a `toTimeTZ()` method that returns a `TimeTZ` representation of the timestampTZ:
+timestampTZ1.toTimeTZ(); // TimeTZ { hours: 12, minutes: 34, seconds: 56.789, offset: { hours: 1, minutes: 0, direction: "plus" } }
+
+//* It has a `toDateTime()` method that returns a `DateTime` representation of the timestampTZ:
+timestampTZ1.toDateTime(); // DateTime { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789, zone: "+01:00" }
+
+//* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the timestampTZ:
+timestampTZ1.toJSDate(); // Date { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789, zone: "+01:00" }
 ```
 
 ### TimeTZ
