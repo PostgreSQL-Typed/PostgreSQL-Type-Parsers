@@ -110,7 +110,12 @@ const getRange = <
 				)
 					throw new Error("Invalid range string");
 
-				const value = arg.slice(1, -1).split(",").map(Object.from);
+				const value = arg
+					.slice(1, -1)
+					.split(",")
+					.map(v => v.replace(/"/g, ""))
+					.map(v => v.replace(/\\/g, ""))
+					.map(Object.from);
 
 				if (value.length !== 2) throw new Error("Invalid range string");
 
