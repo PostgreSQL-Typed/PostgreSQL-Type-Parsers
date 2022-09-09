@@ -13,6 +13,7 @@ Easy to use types for PostgreSQL data types
     - [Timestamp](#timestamp)
     - [TimestampRange](#timestamprange)
     - [TimestampTZ](#timestamptz)
+    - [TimestampTZRange](#timestamptzrange)
     - [TimeTZ](#timetz)
   - [Geometric Types](#geometric-types)
     - [Box](#box)
@@ -48,6 +49,7 @@ pnpm i postgresql-type-parsers
 - [Timestamp](#timestamp)
 - [TimestampRange](#timestamprange)
 - [TimestampTZ](#timestamptz)
+- [TimestampTZRange](#timestamptzrange)
 - [TimeTZ](#timetz)
 
 ### Date
@@ -589,6 +591,112 @@ timestampTZ1.toDateTime(); // DateTime { year: 2020, month: 1, day: 1, hours: 12
 
 //* It has a `toJSDate()` method that returns a JavaScript `Date` representation of the timestampTZ:
 timestampTZ1.toJSDate(); // Date { year: 2020, month: 1, day: 1, hours: 12, minutes: 34, seconds: 56.789, zone: "+01:00" }
+```
+
+### TimestampTZRange
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`tstzrange`][range]
+- [`_tstzrange`][range] (`tstzrange[]`)
+
+```ts
+import {
+	TimestampTZ,
+	TimestampTZRange,
+	LowerRange,
+	UpperRange
+} from "postgresql-type-parsers";
+
+//* TimestampTZRange can be created in the following ways:
+const timestamptzRange1 = TimestampTZRange.from(
+	"[2004-10-19 04:05:06.789 +01:00,2004-11-19 04:05:06.789 +01:00)"
+);
+const timestamptzRange2 = TimestampTZRange.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		{
+			year: 2004,
+			month: 10,
+			day: 19,
+			hour: 4,
+			minute: 5,
+			second: 6.789,
+			offset: {
+				hour: 1,
+				minute: 0,
+				direction: "plus"
+			}
+		}, // lowerValue
+		{
+			year: 2004,
+			month: 11,
+			day: 19,
+			hour: 4,
+			minute: 5,
+			second: 6.789,
+			offset: {
+				hour: 1,
+				minute: 0,
+				direction: "plus"
+			}
+		} // upperValue
+	]
+});
+const timestamptzRange3 = TimestampTZRange.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"), // lowerValue
+		TimestampTZ.from("2004-11-19 04:05:06.789 +01:00") // upperValue
+	]
+});
+const timestamptzRange4 = TimestampTZRange.from(
+	TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"), // lowerValue
+	TimestampTZ.from("2004-11-19 04:05:06.789 +01:00") // upperValue
+); // Defaults to [lowerValue, upperValue)
+const timestamptzRange5 = TimestampTZRange.from([
+	TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"), // lowerValue
+	TimestampTZ.from("2004-11-19 04:05:06.789 +01:00") // upperValue
+]); // Defaults to [lowerValue, upperValue)
+
+//* To verify if a value is a timestamp range, use the `isRange` method:
+if (TimestampTZRange.isRange(timestamptzRange1)) {
+	console.log("timestamptzRange1 is a timestamp range");
+}
+
+//* Afterwards, you can get/set the properties of the timestamp range:
+timestamptzRange1.lower; // LowerRange.include
+timestamptzRange1.upper; // UpperRange.exclude
+timestamptzRange1.value; // [Timestamp, Timestamp]
+
+//* It has a `toString()` method that returns a string representation of the timestamp range:
+timestamptzRange1.toString(); // "[2004-10-19 10:23:54.678,2004-11-19 10:23:54.678)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the timestamp range:
+timestamptzRange1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: [Timestamp, Timestamp] }
+
+//* It has a `equals()` method that returns whether two timestamp ranges are equal:
+timestamptzRange1.equals(timestamptzRange2); // true
+
+//* It has a `empty` readonly property that returns whether the timestamp range is empty:
+timestamptzRange1.empty; // false
+const timestamptzRange6 = TimestampTZRange.from(
+	"[2004-10-19 04:05:06.789 +01:00,2004-10-19 04:05:06.789 +01:00)"
+);
+timestamptzRange6.empty; // true
+const timestamptzRange7 = TimestampTZRange.from("empty");
+timestamptzRange7.empty; // true
+
+//! Note that if a TimestampTZRange is empty, it will have a `null` value.
+timestamptzRange6.value; // null
+timestamptzRange7.value; // null
+
+//* It has a `isWithinRange()` method that returns whether a timestamp is within the range:
+timestamptzRange1.isWithinRange(
+	TimestampTZ.from("2004-10-25 01:45:21.321 +01:00")
+); // true
 ```
 
 ### TimeTZ
