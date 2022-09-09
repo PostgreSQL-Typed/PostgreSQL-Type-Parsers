@@ -1,3 +1,4 @@
+import { Timestamp, TimestampTZ } from "../../src";
 import { ObjectFunction } from "../types/ObjectFunction";
 
 enum LowerRange {
@@ -247,18 +248,50 @@ const getRange = <
 		}
 
 		private _greaterThan(value1: DataType, value2: DataType) {
+			if (
+				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
+				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
+			)
+				return (
+					value1.toDateTime("utc").toISO() > value2.toDateTime("utc").toISO()
+				);
+
 			return value1.toString() > value2.toString();
 		}
 
 		private _greaterThanOrEqual(value1: DataType, value2: DataType) {
+			if (
+				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
+				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
+			)
+				return (
+					value1.toDateTime("utc").toISO() >= value2.toDateTime("utc").toISO()
+				);
+
 			return value1.toString() >= value2.toString();
 		}
 
 		private _lessThan(value1: DataType, value2: DataType) {
+			if (
+				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
+				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
+			)
+				return (
+					value1.toDateTime("utc").toISO() < value2.toDateTime("utc").toISO()
+				);
+
 			return value1.toString() < value2.toString();
 		}
 
 		private _lessThanOrEqual(value1: DataType, value2: DataType) {
+			if (
+				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
+				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
+			)
+				return (
+					value1.toDateTime("utc").toISO() <= value2.toDateTime("utc").toISO()
+				);
+
 			return value1.toString() <= value2.toString();
 		}
 
