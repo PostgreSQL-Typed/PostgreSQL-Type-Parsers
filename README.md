@@ -23,6 +23,8 @@ Easy to use types for PostgreSQL data types
     - [Path](#path)
     - [Point](#point)
     - [Polygon](#polygon)
+  - [Network Address Types](#network-address-types)
+    - [IPAddress](#ipaddress)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1045,6 +1047,78 @@ polygon1.toJSON(); // { points: [ { x: 1, y: 2 }, { x: 3, y: 4 } ] }
 polygon1.equals(polygon2); // true
 ```
 
+## Network Address Types
+
+- [IPAddress](#ipaddress)
+
+### IPAddress
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`inet`][inet]
+- [`_inet`][inet] (`inet[]`)
+- [`cidr`][cidr]
+- [`_cidr`][cidr] (`cidr[]`)
+
+```ts
+import { IPAddress } from "postgresql-type-parsers";
+import { Address4, Address6 } from "ip-address";
+
+//* IP addresses can be created in the following ways:
+const ipAddress1 = IPAddress.from("192.168.100.128/25");
+const ipAddress2 = IPAddress.from("192.168.100.128");
+const ipAddress3 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
+const ipAddress4 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348");
+const ipAddress5 = IPAddress.from({
+	IPAddress: "192.168.100.128/25"
+});
+const ipAddress6 = IPAddress.from({
+	IPAddress: "192.168.100.128"
+});
+const ipAddress7 = IPAddress.from({
+	IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64"
+});
+const ipAddress8 = IPAddress.from({
+	IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348"
+});
+
+//* To verify if a value is an IP address, use the `isIPAddress` method:
+if (IPAddress.isIPAddress(ipAddress1)) {
+	console.log("ipAddress1 is an IP address");
+}
+
+//* Afterwards, you can get/set the properties of the IP address:
+ipAddress1.IPAddress; // "192.168.100.128/25"
+ipAddress1.IPAddressMinusSuffix; // "192.168.100.128"
+ipAddress1.version; // "IPv4"
+ipAddress1.subnet; // "/25"
+ipAddress1.subnetMask; // 25
+ipAddress1.startAddress; // "192.168.100.128"
+ipAddress1.endAddress; // "192.168.100.255"
+
+//* It has a `toString()` method that returns a string representation of the IP address:
+ipAddress1.toString(); // "192.168.100.128/25"
+
+//* It has a `toJSON()` method that returns a JSON representation of the IP address:
+ipAddress1.toJSON(); // { IPAddress: "192.168.100.128/25" }
+
+//* It has a `equals()` method that returns whether two IP addresses are equal:
+ipAddress2.equals(ipAddress6); // true
+
+//* It has a `contains()` method that returns whether an IP address contains another IP address:
+const ipAddress9 = IPAddress.from("192.168.1.1/24");
+const ipAddress10 = IPAddress.from("192.168.1.128");
+ipAddress9.contains(ipAddress10); // true
+
+//* It has a `toIPAddress4()` method that returns an Address4 representation of the IP address:
+ipAddress1.toIPAddress4(); // Address4 { address: 192.168.100.128/25 }
+ipAddress3.toIPAddress4(); // null
+
+//* It has a `toIPAddress6()` method that returns an Address6 representation of the IP address:
+ipAddress1.toIPAddress6(); // null
+ipAddress3.toIPAddress6(); // Address6 { address: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64" }
+```
+
 ## UUID Type
 
 - [UUID](#uuid)
@@ -1086,8 +1160,10 @@ uuid1.equals(uuid2); // true
 ```
 
 [box]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.8
+[cidr]: https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-CIDR
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
 [datetime]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-DATETIME-INPUT
+[inet]: https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-INET
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG

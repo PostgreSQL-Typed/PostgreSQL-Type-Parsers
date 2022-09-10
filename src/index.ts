@@ -17,9 +17,11 @@ export * from "./data/Geometric/LineSegment";
 export * from "./data/Geometric/Path";
 export * from "./data/Geometric/Point";
 export * from "./data/Geometric/Polygon";
+export * from "./data/NetworkAddress/IPAddress";
 export * from "./data/UUID/UUID";
-export { OffsetDirection, OffsetDirectionType } from "./types/OffsetDirection";
-export { Offset } from "./types/Offset";
+export * from "./types/IPType";
+export * from "./types/Offset";
+export * from "./types/OffsetDirection";
 export {
 	LowerRange,
 	LowerRangeType,
