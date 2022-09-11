@@ -25,6 +25,7 @@ Easy to use types for PostgreSQL data types
     - [Polygon](#polygon)
   - [Network Address Types](#network-address-types)
     - [IPAddress](#ipaddress)
+    - [MACAddress](#macaddress)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1050,6 +1051,7 @@ polygon1.equals(polygon2); // true
 ## Network Address Types
 
 - [IPAddress](#ipaddress)
+- [MACAddress](#macaddress)
 
 ### IPAddress
 
@@ -1119,6 +1121,44 @@ ipAddress1.toIPAddress6(); // null
 ipAddress3.toIPAddress6(); // Address6 { address: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64" }
 ```
 
+### MACAddress
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`macaddr`][macaddr]
+- [`_macaddr`][macaddr] (`macaddr[]`)
+
+```ts
+import { MACAddress } from "postgresql-type-parsers";
+
+//* MAC addresses can be created in the following ways:
+const macAddress1 = MACAddress.from("08:00:2b:01:02:03");
+const macAddress2 = MACAddress.from({
+	MACAddress: "08:00:2b:01:02:03"
+});
+const macAddress3 = MACAddress.from(8796814508547);
+
+//* To verify if a value is a MAC address, use the `isMACAddress` method:
+if (MACAddress.isMACAddress(macAddress1)) {
+	console.log("macAddress1 is a MAC address");
+}
+
+//* Afterwards, you can get/set the properties of the MAC address:
+macAddress1.MACAddress; // "08:00:2b:01:02:03"
+
+//* It has a `toString()` method that returns a string representation of the MAC address:
+macAddress1.toString(); // "08:00:2b:01:02:03"
+
+//* It has a `toLong()` method that returns a long representation of the MAC address:
+macAddress1.toLong(); // 8796814508547
+
+//* It has a `toJSON()` method that returns a JSON representation of the MAC address:
+macAddress1.toJSON(); // { MACAddress: "08:00:2b:01:02:03" }
+
+//* It has a `equals()` method that returns whether two MAC addresses are equal:
+macAddress1.equals(macAddress2); // true
+```
+
 ## UUID Type
 
 - [UUID](#uuid)
@@ -1167,6 +1207,7 @@ uuid1.equals(uuid2); // true
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
+[macaddr]: https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-MACADDR
 [multirange]: https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-CONSTRUCT
 [path]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.9
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5
