@@ -26,6 +26,7 @@ Easy to use types for PostgreSQL data types
   - [Network Address Types](#network-address-types)
     - [IPAddress](#ipaddress)
     - [MACAddress](#macaddress)
+    - [MACAddress8](#macaddress8)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1052,6 +1053,7 @@ polygon1.equals(polygon2); // true
 
 - [IPAddress](#ipaddress)
 - [MACAddress](#macaddress)
+- [MACAddress8](#macaddress8)
 
 ### IPAddress
 
@@ -1159,6 +1161,44 @@ macAddress1.toJSON(); // { MACAddress: "08:00:2b:01:02:03" }
 macAddress1.equals(macAddress2); // true
 ```
 
+### MACAddress8
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`macaddr8`][macaddr8]
+- [`_macaddr8`][macaddr8] (`macaddr8[]`)
+
+```ts
+import { MACAddress8 } from "postgresql-type-parsers";
+
+//* MAC addresses can be created in the following ways:
+const macAddress1 = MACAddress8.from("08:00:2b:01:02:03:04:05");
+const macAddress2 = MACAddress8.from({
+	MACAddress8: "08:00:2b:01:02:03:04:05"
+});
+const macAddress3 = MACAddress8.from(BigInt("576508035632137221"));
+
+//* To verify if a value is a MAC address, use the `isMACAddress8` method:
+if (MACAddress8.isMACAddress8(macAddress1)) {
+	console.log("macAddress1 is a MAC address 8");
+}
+
+//* Afterwards, you can get/set the properties of the MAC address:
+macAddress1.MACAddress8; // "08:00:2b:01:02:03:04:05"
+
+//* It has a `toString()` method that returns a string representation of the MAC address:
+macAddress1.toString(); // "08:00:2b:01:02:03:04:05"
+
+//* It has a `toLong()` method that returns a long representation of the MAC address:
+macAddress1.toLong(); // BigInt("576508035632137221")
+
+//* It has a `toJSON()` method that returns a JSON representation of the MAC address:
+macAddress1.toJSON(); // { MACAddress8: "08:00:2b:01:02:03:04:05" }
+
+//* It has a `equals()` method that returns whether two MAC addresses are equal:
+macAddress1.equals(macAddress2); // true
+```
+
 ## UUID Type
 
 - [UUID](#uuid)
@@ -1208,6 +1248,7 @@ uuid1.equals(uuid2); // true
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
 [macaddr]: https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-MACADDR
+[macaddr8]: https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-MACADDR8
 [multirange]: https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-CONSTRUCT
 [path]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.9
 [point]: https://www.postgresql.org/docs/current/datatype-geometric.html#id-1.5.7.16.5

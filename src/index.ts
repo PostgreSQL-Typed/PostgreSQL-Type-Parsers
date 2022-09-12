@@ -19,6 +19,7 @@ export * from "./data/Geometric/Point";
 export * from "./data/Geometric/Polygon";
 export * from "./data/NetworkAddress/IPAddress";
 export * from "./data/NetworkAddress/MACAddress";
+export * from "./data/NetworkAddress/MACAddress8";
 export * from "./data/UUID/UUID";
 export * from "./types/IPType";
 export * from "./types/Offset";
