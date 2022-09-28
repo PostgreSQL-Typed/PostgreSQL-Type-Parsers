@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"ip-address": "^8.1.0",
-		"jsprim": "^1.4.2",
+		"jsprim": "^2.0.2",
 		"luxon": "^3.0.3",
 		"pg": "^8.8.0",
 		"postgresql-data-types": "^1.0.0"
