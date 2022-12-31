@@ -69,27 +69,25 @@ const LineSegment: LineSegmentConstructor = {
 					b
 				});
 			}
-			throw new Error("Invalid lseg (LineSegment) string");
+			throw new Error("Invalid LineSegment string");
 		} else if (LineSegment.isLineSegment(arg)) {
 			return new LineSegmentClass(arg.toJSON());
 		} else if (Point.isPoint(arg)) {
 			if (Point.isPoint(b)) {
 				return new LineSegmentClass({ a: arg, b });
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid LineSegment array, invalid points");
 			}
-		} else if (
-			"a" in arg &&
-			"b" in arg &&
-			Point.isPoint(arg.a) &&
-			Point.isPoint(arg.b)
-		) {
-			return new LineSegmentClass(arg as LineSegmentObject);
+		} else if ("a" in arg && "b" in arg) {
+			try {
+				arg.a = Point.from(arg.a);
+				arg.b = Point.from(arg.b);
+			} catch {
+				throw new Error("Invalid LineSegment object");
+			}
+			return new LineSegmentClass(arg);
 		} else {
-			return new LineSegmentClass({
-				a: Point.from(arg.a),
-				b: Point.from(arg.b)
-			});
+			throw new Error("Invalid LineSegment object");
 		}
 	},
 	isLineSegment(obj: any): obj is LineSegment {

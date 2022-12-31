@@ -8,12 +8,25 @@ describe("Path Class", () => {
 		expect(path).not.toBeNull();
 	});
 
+	it("should error when creating a path from an invalid string", () => {
+		expect(() => Path.from("()")).toThrow("Invalid Path string");
+	});
+
 	it("should create a path from a object", () => {
 		const path = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 			connection: "open"
 		});
 		expect(path).not.toBeNull();
+	});
+
+	it("should error when creating a path from an invalid object", () => {
+		expect(() =>
+			Path.from({
+				points: [],
+				connection: "open"
+			})
+		).toThrow("Invalid Path object, too few points");
 	});
 
 	it("should create a path from a raw object", () => {
@@ -27,14 +40,43 @@ describe("Path Class", () => {
 		expect(path).not.toBeNull();
 	});
 
+	it("should error when creating a path from an invalid raw object", () => {
+		expect(() => Path.from({} as any)).toThrow("Invalid Path object");
+		expect(() =>
+			Path.from({
+				points: [],
+				connection: "open"
+			})
+		).toThrow("Invalid Path object, too few points");
+		expect(() =>
+			Path.from({
+				points: [
+					{ x: 1, y: 2 },
+					{ x: 3, y: 4 }
+				],
+				connection: "anything" as any
+			})
+		).toThrow("Invalid Path object, invalid connection");
+	});
+
 	it("should create a path from points", () => {
 		const path = Path.from([Point.from(1, 2), Point.from(3, 4)]);
 		expect(path).not.toBeNull();
 	});
 
+	it('should error when creating a path from an invalid "points" array', () => {
+		expect(() => Path.from([])).toThrow("Invalid Path object, too few points");
+	});
+
 	it("should create a path from points", () => {
 		const path = Path.from(Point.from(1, 2), Point.from(3, 4));
 		expect(path).not.toBeNull();
+	});
+
+	it('should error when creating a path from an invalid "points" array', () => {
+		expect(() => Path.from(Point.from(1, 2), "a" as any)).toThrow(
+			"Invalid Path array, invalid points"
+		);
 	});
 
 	it("isPath()", () => {

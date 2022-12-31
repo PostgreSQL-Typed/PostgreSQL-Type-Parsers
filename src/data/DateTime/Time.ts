@@ -60,7 +60,7 @@ const Time: TimeConstructor = {
 					second: second
 				});
 			}
-			throw new Error("Invalid time string");
+			throw new Error("Invalid Time string");
 		} else if (Time.isTime(arg)) {
 			const newlyMadeTime = new TimeClass(arg.toJSON());
 			if (
@@ -69,7 +69,7 @@ const Time: TimeConstructor = {
 					.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)
 			)
 				return newlyMadeTime;
-			throw new Error("Invalid time class");
+			throw new Error("Invalid Time class");
 		} else if (typeof arg === "number") {
 			if (typeof minute === "number" && typeof second === "number") {
 				const newlyMadeTime = new TimeClass({
@@ -83,9 +83,9 @@ const Time: TimeConstructor = {
 						.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)
 				)
 					return newlyMadeTime;
-				throw new Error("Invalid time arguments");
+				throw new Error("Invalid Time array, numbers only");
 			}
-			throw new Error("Invalid time arguments");
+			throw new Error("Invalid Time array, numbers only");
 		} else if (arg instanceof DateTime) {
 			return new TimeClass({
 				hour: arg.hour,
@@ -99,6 +99,20 @@ const Time: TimeConstructor = {
 				second: arg.getSeconds()
 			});
 		} else {
+			if (
+				!(
+					typeof arg === "object" &&
+					"hour" in arg &&
+					typeof arg.hour === "number" &&
+					"minute" in arg &&
+					typeof arg.minute === "number" &&
+					"second" in arg &&
+					typeof arg.second === "number"
+				)
+			) {
+				throw new Error("Invalid Time object");
+			}
+
 			const newlyMadeTime = new TimeClass(arg);
 			if (
 				newlyMadeTime
@@ -107,7 +121,7 @@ const Time: TimeConstructor = {
 			)
 				return newlyMadeTime;
 
-			throw new Error("Invalid time arguments");
+			throw new Error("Invalid Time object");
 		}
 	},
 	isTime(obj: any): obj is Time {

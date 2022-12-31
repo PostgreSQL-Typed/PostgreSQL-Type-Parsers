@@ -141,7 +141,7 @@ const TimestampTZ: TimestampTZConstructor = {
 						.map(x => parseFloat(x));
 
 				const offset = validateTimeZone(zone);
-				if (offset === false) throw new Error(`Invalid timezone: ${zone}`);
+				if (offset === false) throw new Error(`Invalid TimestampTZ string`);
 
 				const offsetHour = Math.floor(Math.abs(offset) / 60),
 					offsetMinute = Math.abs(offset) % 60;
@@ -163,7 +163,7 @@ const TimestampTZ: TimestampTZConstructor = {
 					}
 				});
 			}
-			throw new Error("Invalid timestamp string");
+			throw new Error("Invalid TimestampTZ string");
 		} else if (TimestampTZ.isTimestampTZ(arg)) {
 			const newlyMadeTimestampTZ = new TimestampTZClass(arg.toJSON());
 			if (
@@ -174,7 +174,7 @@ const TimestampTZ: TimestampTZConstructor = {
 					)
 			)
 				return newlyMadeTimestampTZ;
-			throw new Error("Invalid timestamp class");
+			throw new Error("Invalid TimestampTZ class");
 		} else if (typeof arg === "number") {
 			if (
 				typeof month === "number" &&
@@ -184,7 +184,9 @@ const TimestampTZ: TimestampTZConstructor = {
 				typeof second === "number" &&
 				typeof offsetHour === "number" &&
 				typeof offsetMinute === "number" &&
-				typeof offsetDirection === "string"
+				typeof offsetDirection === "string" &&
+				(offsetDirection === OffsetDirection.plus ||
+					offsetDirection === OffsetDirection.minus)
 			) {
 				const newlyMadeTimestampTZ = new TimestampTZClass({
 					year: arg,
@@ -207,25 +209,53 @@ const TimestampTZ: TimestampTZConstructor = {
 						)
 				)
 					return newlyMadeTimestampTZ;
-				throw new Error("Invalid timestamp arguments");
+				throw new Error(
+					"Invalid TimestampTZ array, numbers and OffsetDirection"
+				);
 			}
-			throw new Error("Invalid timestamp arguments");
+			throw new Error("Invalid TimestampTZ array, numbers and OffsetDirection");
 		} else if (arg instanceof DateTime || arg instanceof globalThis.Date) {
 			return TimestampTZ.from(
 				arg instanceof DateTime ? arg.toISO() : arg.toISOString()
 			);
 		} else {
-			const newlyMadeTimestamp = new TimestampTZClass(arg);
 			if (
-				newlyMadeTimestamp
-					.toString()
-					.match(
-						/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?\s[+-]([0-1][0-9]|2[0-3])(:([0-5][0-9]))?$/
-					)
-			)
-				return newlyMadeTimestamp;
+				typeof arg === "object" &&
+				"year" in arg &&
+				typeof arg.year === "number" &&
+				"month" in arg &&
+				typeof arg.month === "number" &&
+				"day" in arg &&
+				typeof arg.day === "number" &&
+				"hour" in arg &&
+				typeof arg.hour === "number" &&
+				"minute" in arg &&
+				typeof arg.minute === "number" &&
+				"second" in arg &&
+				typeof arg.second === "number" &&
+				"offset" in arg &&
+				typeof arg.offset === "object" &&
+				"hour" in arg.offset &&
+				typeof arg.offset.hour === "number" &&
+				"minute" in arg.offset &&
+				typeof arg.offset.minute === "number" &&
+				"direction" in arg.offset &&
+				typeof arg.offset.direction === "string" &&
+				(arg.offset.direction === OffsetDirection.plus ||
+					arg.offset.direction === OffsetDirection.minus)
+			) {
+				const newlyMadeTimestamp = new TimestampTZClass(arg);
+				if (
+					newlyMadeTimestamp
+						.toString()
+						.match(
+							/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?\s[+-]([0-1][0-9]|2[0-3])(:([0-5][0-9]))?$/
+						)
+				)
+					return newlyMadeTimestamp;
+			}
 
-			throw new Error("Invalid timestamp arguments");
+			throw new Error("Invalid TimestampTZ object");
 		}
 	},
 	isTimestampTZ(obj: any): obj is TimestampTZ {

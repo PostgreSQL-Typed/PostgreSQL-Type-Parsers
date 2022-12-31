@@ -109,7 +109,7 @@ const getRange = <
 					!upper ||
 					!upperRange.includes(upper)
 				)
-					throw new Error("Invalid range string");
+					throw new Error(`Invalid ${identifier} string`);
 
 				const value = arg
 					.slice(1, -1)
@@ -118,7 +118,7 @@ const getRange = <
 					.map(v => v.replace(/\\/g, ""))
 					.map(Object.from);
 
-				if (value.length !== 2) throw new Error("Invalid range string");
+				if (value.length !== 2) throw new Error(`Invalid ${identifier} string`);
 
 				return new RangeClass({
 					lower: lower as LowerRange,
@@ -145,10 +145,41 @@ const getRange = <
 						value: arg as [DataType, DataType]
 					});
 				} else {
-					throw new Error("Invalid arguments");
+					if (Array.isArray(arg) && arg.length > 2)
+						throw new Error(`Invalid ${identifier} array, too many values`);
+					else if (Array.isArray(arg) && arg.length < 2)
+						throw new Error(`Invalid ${identifier} array, too few values`);
+					throw new Error(
+						`Invalid ${identifier} array, invalid ${identifier.replace(
+							"Range",
+							""
+						)}s`
+					);
 				}
 			} else {
-				return new RangeClass(arg);
+				if (
+					"lower" in arg &&
+					lowerRange.includes(arg.lower) &&
+					"upper" in arg &&
+					upperRange.includes(arg.upper) &&
+					"value" in arg &&
+					(arg.value === null || Array.isArray(arg.value))
+				) {
+					if (arg.value !== null) {
+						if (arg.value.length > 2)
+							throw new Error(`Invalid ${identifier} object, too many values`);
+						else if (arg.value.length < 2)
+							throw new Error(`Invalid ${identifier} object, too few values`);
+						try {
+							arg.value = arg.value.map(Object.from) as [DataType, DataType];
+						} catch {
+							throw new Error(`Invalid ${identifier} object`);
+						}
+					}
+					return new RangeClass(arg);
+				} else {
+					throw new Error(`Invalid ${identifier} object, 2`);
+				}
 			}
 		},
 		isRange(obj: any): obj is Range<DataType, DataTypeObject> {

@@ -48,16 +48,22 @@ const Circle: CircleConstructor = {
 					radius
 				});
 			}
-			throw new Error("Invalid circle string");
+			throw new Error("Invalid Circle string");
 		} else if (Circle.isCircle(arg)) {
 			return new CircleClass(arg.toJSON());
 		} else if (typeof arg === "number") {
 			if (typeof y === "number" && typeof radius === "number") {
 				return new CircleClass({ x: arg, y, radius });
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid Circle array, invalid numbers");
 			}
 		} else {
+			if (
+				!("x" in arg && typeof arg.x === "number") ||
+				!("y" in arg && typeof arg.y === "number") ||
+				!("radius" in arg && typeof arg.radius === "number")
+			)
+				throw new Error("Invalid Circle object");
 			return new CircleClass(arg);
 		}
 	},

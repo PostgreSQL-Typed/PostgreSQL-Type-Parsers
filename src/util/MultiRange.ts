@@ -76,7 +76,7 @@ const getMultiRange = <
 			if (typeof arg === "string") {
 				const [begin, end] = [arg.at(0), arg.at(-1)];
 				if (begin !== "{" || end !== "}")
-					throw new Error("Invalid MultiRange string");
+					throw new Error(`Invalid ${identifier} string`);
 
 				const halfRanges = arg.slice(1, -1).split(","),
 					halfRangesEven = halfRanges.filter((_, i) => i % 2 === 0),
@@ -85,21 +85,38 @@ const getMultiRange = <
 						.map((range, i) => `${range},${halfRangesOdd[i]}`)
 						.map(Object.from);
 
-				if (!ranges.length) throw new Error("Invalid MultiRange string");
+				if (!ranges.length) throw new Error(`Invalid ${identifier} string`);
 
 				return MultiRange.from(ranges);
 			} else if (MultiRange.isMultiRange(arg)) {
 				return new MultiRangeClass(arg.toJSON());
 			} else if (Array.isArray(arg) || isObjectFunc(arg)) {
-				if (extraRanges.every(isObjectFunc)) {
+				if (
+					[...(isObjectFunc(arg) ? [arg] : arg), ...extraRanges].every(
+						isObjectFunc
+					)
+				) {
 					return new MultiRangeClass({
 						ranges: [...(isObjectFunc(arg) ? [arg] : arg), ...extraRanges]
 					});
 				} else {
-					throw new Error("Invalid arguments");
+					throw new Error(
+						`Invalid ${identifier} array, invalid ${identifier.replace(
+							"Multi",
+							""
+						)}s`
+					);
 				}
 			} else {
-				return new MultiRangeClass(arg);
+				if ("ranges" in arg && Array.isArray(arg.ranges)) {
+					try {
+						arg.ranges = arg.ranges.map(Object.from);
+						return new MultiRangeClass(arg);
+					} catch {
+						throw new Error(`Invalid ${identifier} object`);
+					}
+				}
+				throw new Error(`Invalid ${identifier} object`);
 			}
 		},
 		isMultiRange(obj: any): obj is MultiRange<DataType, DataTypeObject> {

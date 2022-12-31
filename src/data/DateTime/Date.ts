@@ -56,7 +56,7 @@ const Date: DateConstructor = {
 					day
 				});
 			}
-			throw new Error("Invalid date string");
+			throw new Error("Invalid Date string");
 		} else if (Date.isDate(arg)) {
 			const newlyMadeDate = new DateClass(arg.toJSON());
 			if (
@@ -65,7 +65,7 @@ const Date: DateConstructor = {
 					.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
 			)
 				return newlyMadeDate;
-			throw new Error("Invalid date class");
+			throw new Error("Invalid Date class");
 		} else if (typeof arg === "number") {
 			if (typeof month === "number" && typeof day === "number") {
 				const newlyMadeDate = new DateClass({
@@ -79,9 +79,9 @@ const Date: DateConstructor = {
 						.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
 				)
 					return newlyMadeDate;
-				throw new Error("Invalid date arguments");
+				throw new Error("Invalid Date array, numbers only");
 			}
-			throw new Error("Invalid date arguments");
+			throw new Error("Invalid Date array, numbers only");
 		} else if (arg instanceof DateTime) {
 			return new DateClass({
 				year: arg.year,
@@ -95,6 +95,19 @@ const Date: DateConstructor = {
 				day: arg.getDate()
 			});
 		} else {
+			if (
+				!(
+					typeof arg === "object" &&
+					"year" in arg &&
+					typeof arg.year === "number" &&
+					"month" in arg &&
+					typeof arg.month === "number" &&
+					"day" in arg &&
+					typeof arg.day === "number"
+				)
+			)
+				throw new Error("Invalid Date object");
+
 			const newlyMadeDate = new DateClass(arg);
 			if (
 				newlyMadeDate
@@ -103,7 +116,7 @@ const Date: DateConstructor = {
 			)
 				return newlyMadeDate;
 
-			throw new Error("Invalid date arguments");
+			throw new Error("Invalid Date object");
 		}
 	},
 	isDate(obj: any): obj is Date {

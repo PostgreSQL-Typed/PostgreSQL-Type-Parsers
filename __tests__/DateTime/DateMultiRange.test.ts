@@ -10,6 +10,14 @@ describe("DateMultiRange Class", () => {
 		expect(dateMultiRange).not.toBeNull();
 	});
 
+	it("should error when creating a date multi range from an invalid string", () => {
+		expect(() => {
+			DateMultiRange.from(
+				"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)"
+			);
+		}).toThrow("Invalid DateMultiRange string");
+	});
+
 	it("should create a date multi range from a object", () => {
 		const dateMultiRange = DateMultiRange.from({
 			ranges: [
@@ -19,6 +27,12 @@ describe("DateMultiRange Class", () => {
 			]
 		});
 		expect(dateMultiRange).not.toBeNull();
+	});
+
+	it("should error when creating a date multi range from an invalid object", () => {
+		expect(() => {
+			DateMultiRange.from({} as any);
+		}).toThrow("Invalid DateMultiRange object");
 	});
 
 	it("should create a date multi range from a raw object", () => {
@@ -53,6 +67,14 @@ describe("DateMultiRange Class", () => {
 		expect(dateMultiRange).not.toBeNull();
 	});
 
+	it("should error when creating a date multi range from an invalid raw object", () => {
+		expect(() => {
+			DateMultiRange.from({
+				ranges: ["range1", "range2"]
+			} as any);
+		}).toThrow("Invalid DateMultiRange object");
+	});
+
 	it("should create a date multi range from date ranges", () => {
 		const dateMultiRange = DateMultiRange.from([
 			DateRange.from("[1999-01-08,2022-01-01)"),
@@ -62,6 +84,12 @@ describe("DateMultiRange Class", () => {
 		expect(dateMultiRange).not.toBeNull();
 	});
 
+	it("should error when creating a date multi range from invalid date ranges", () => {
+		expect(() => {
+			DateMultiRange.from(["range1", "range2"] as any);
+		}).toThrow("Invalid DateMultiRange array, invalid DateRanges");
+	});
+
 	it("should create a date multi range from date ranges", () => {
 		const dateMultiRange = DateMultiRange.from(
 			DateRange.from("[1999-01-08,2022-01-01)"),
@@ -69,6 +97,15 @@ describe("DateMultiRange Class", () => {
 			DateRange.from("[2025-01-08,2026-01-01)")
 		);
 		expect(dateMultiRange).not.toBeNull();
+	});
+
+	it("should error when creating a date multi range from invalid date ranges", () => {
+		expect(() => {
+			DateMultiRange.from(
+				DateRange.from("[1999-01-08,2022-01-01)"),
+				"range2" as any
+			);
+		}).toThrow("Invalid DateMultiRange array, invalid DateRanges");
 	});
 
 	it("isPath()", () => {

@@ -107,6 +107,12 @@ describe("Interval Class", () => {
 		).toBe(true);
 	});
 
+	it("should error when creating a interval from a invalid string", () => {
+		expect(() => Interval.from("I guess 2 days seems fine")).toThrow(
+			"Invalid Interval string"
+		);
+	});
+
 	it("should create a interval from numbers", () => {
 		const interval = Interval.from(1, 2, 3, 4, 5, 6, 7);
 		expect(interval).not.toBeNull();
@@ -121,6 +127,40 @@ describe("Interval Class", () => {
 				milliseconds: 7
 			})
 		).toBe(true);
+	});
+
+	it("should error when creating a interval from a invalid numbers", () => {
+		expect(() => Interval.from(1, 2, 3, 4, 5, 6, "7" as any)).toThrow(
+			"Invalid Interval array, numbers only"
+		);
+	});
+
+	it("should create a interval from an object", () => {
+		const interval = Interval.from({
+			years: 1,
+			months: 2,
+			days: 3,
+			hours: 4,
+			minutes: 5,
+			seconds: 6,
+			milliseconds: 7
+		});
+		expect(interval).not.toBeNull();
+	});
+
+	it("should error when creating a interval from a invalid object", () => {
+		expect(() => Interval.from({} as any)).toThrow("Invalid Interval object");
+		expect(() =>
+			Interval.from({
+				years: 1,
+				months: 2,
+				days: 3,
+				hours: 4,
+				minutes: 5,
+				seconds: 6,
+				milliseconds: "7" as any
+			})
+		).toThrow("Invalid Interval object");
 	});
 
 	it("isInterval()", () => {

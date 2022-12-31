@@ -74,19 +74,39 @@ const Path: PathConstructor = {
 					connection: "closed"
 				});
 			}
-			throw new Error("Invalid path string");
+			throw new Error("Invalid Path string");
 		} else if (Path.isPath(arg)) {
-			return new PathClass(arg.toJSON());
+			if (arg.points.length) return new PathClass(arg.toJSON());
+			else throw new Error("Invalid Path object, too few points");
 		} else if (Array.isArray(arg) || Point.isPoint(arg)) {
-			if (extraPoints.every(Point.isPoint)) {
+			if (![...(Point.isPoint(arg) ? [arg] : arg)].length)
+				throw new Error("Invalid Path object, too few points");
+
+			if (
+				[...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints].every(
+					Point.isPoint
+				)
+			) {
 				return new PathClass({
 					points: [...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints],
 					connection: "open"
 				});
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid Path array, invalid points");
 			}
 		} else {
+			if (!("points" in arg)) throw new Error("Invalid Path object");
+			if (!arg.points.length)
+				throw new Error("Invalid Path object, too few points");
+			if (!arg.points.every(Point.isPoint)) {
+				try {
+					arg.points = arg.points.map(Point.from);
+				} catch {
+					throw new Error("Invalid Path object, invalid points");
+				}
+			}
+			if (arg.connection !== "open" && arg.connection !== "closed")
+				throw new Error("Invalid Path object, invalid connection");
 			return new PathClass(arg);
 		}
 	},

@@ -8,14 +8,33 @@ describe("Circle Class", () => {
 		expect(circle).not.toBeNull();
 	});
 
+	it("should error when creating a circle from an invalid string", () => {
+		expect(() => Circle.from("()")).toThrow("Invalid Circle string");
+	});
+
 	it("should create a circle from a object", () => {
 		const circle = Circle.from({ x: 1, y: 2, radius: 3 });
 		expect(circle).not.toBeNull();
 	});
 
+	it("should error when creating a circle from an invalid object", () => {
+		expect(() =>
+			Circle.from({
+				x: 1,
+				y: 2
+			} as any)
+		).toThrow("Invalid Circle object");
+	});
+
 	it("should create a circle from numbers", () => {
 		const circle = Circle.from(1, 2, 3);
 		expect(circle).not.toBeNull();
+	});
+
+	it("should error when creating a circle from invalid numbers", () => {
+		expect(() => Circle.from(1, 2, "3" as any)).toThrow(
+			"Invalid Circle array, invalid numbers"
+		);
 	});
 
 	it("isCircle()", () => {

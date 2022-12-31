@@ -13,6 +13,12 @@ describe("Timestamp Class", () => {
 		expect(timestamp3).not.toBeNull();
 	});
 
+	it("should error when creating a timestamp from an invalid string", () => {
+		expect(() => Timestamp.from("2004-10-19ABC04:05:06.789")).toThrow(
+			"Invalid Timestamp string"
+		);
+	});
+
 	it("should create a timestamp from a object", () => {
 		const timestamp = Timestamp.from({
 			year: 2004,
@@ -25,9 +31,29 @@ describe("Timestamp Class", () => {
 		expect(timestamp).not.toBeNull();
 	});
 
+	it("should error when creating a timestamp from an invalid object", () => {
+		expect(() => Timestamp.from({} as any)).toThrow("Invalid Timestamp object");
+		expect(() =>
+			Timestamp.from({
+				year: 2004,
+				month: 10,
+				day: 19,
+				hour: 4,
+				minute: 5,
+				second: "6"
+			} as any)
+		).toThrow("Invalid Timestamp object");
+	});
+
 	it("should create a timestamp from numbers", () => {
 		const timestamp = Timestamp.from(2004, 10, 19, 10, 23, 54.678);
 		expect(timestamp).not.toBeNull();
+	});
+
+	it("should error when creating a timestamptz from invalid numbers", () => {
+		expect(() => Timestamp.from(2004, 10, 19, 4, 5, "invalid" as any)).toThrow(
+			"Invalid Timestamp array, numbers only"
+		);
 	});
 
 	it("should create a timestamp from a DateTime", () => {

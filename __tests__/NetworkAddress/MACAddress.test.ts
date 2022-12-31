@@ -12,6 +12,9 @@ describe("MACAddress Class", () => {
 		expect(address3).not.toBeNull();
 		const address4 = MACAddress.from("08-00-2b-01-02-03");
 		expect(address4).not.toBeNull();
+	});
+
+	it("should error when creating a MAC address from an invalid string", () => {
 		expect(() => MACAddress.from("08:00:2b:01:02:03:04:05")).toThrowError(
 			"Invalid MACAddress, too many octets"
 		);
@@ -25,11 +28,26 @@ describe("MACAddress Class", () => {
 		expect(address).not.toBeNull();
 	});
 
+	it("should error when creating a MAC address from an invalid number", () => {
+		expect(() => MACAddress.from(998796814508547)).toThrowError(
+			"MACAddress must be 48-bit"
+		);
+	});
+
 	it("should create a MAC address from a object", () => {
 		const address1 = MACAddress.from({ MACAddress: "08:00:2b:01:02:03" });
 		expect(address1).not.toBeNull();
 		const address2 = MACAddress.from({ MACAddress: "08002b010203" });
 		expect(address2).not.toBeNull();
+	});
+
+	it("should error when creating a MAC address from an invalid object", () => {
+		expect(() =>
+			MACAddress.from({ MACAddress: "08:00:2b:01:02:03:04:05" })
+		).toThrowError("Invalid MACAddress, too many octets");
+		expect(() => MACAddress.from({ MACAddress: "08:00:2b:01" })).toThrowError(
+			"Invalid MACAddress, too few octets"
+		);
 	});
 
 	it("isMACAddress()", () => {

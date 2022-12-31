@@ -8,12 +8,22 @@ describe("LineSegment Class", () => {
 		expect(segment).not.toBeNull();
 	});
 
+	it("should error when creating a line segment from an invalid string", () => {
+		expect(() => LineSegment.from("()")).toThrow("Invalid LineSegment string");
+	});
+
 	it("should create a line segment from a object", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
 			b: Point.from(3, 4)
 		});
 		expect(segment).not.toBeNull();
+	});
+
+	it("should error when creating a line segment from an invalid object", () => {
+		expect(() => LineSegment.from({} as any)).toThrow(
+			"Invalid LineSegment object"
+		);
 	});
 
 	it("should create a line segment from a raw object", () => {
@@ -30,9 +40,21 @@ describe("LineSegment Class", () => {
 		expect(segment).not.toBeNull();
 	});
 
+	it("should error when creating a line segment from an invalid raw object", () => {
+		expect(() => LineSegment.from({} as any)).toThrow(
+			"Invalid LineSegment object"
+		);
+	});
+
 	it("should create a line segment from points", () => {
 		const segment = LineSegment.from(Point.from(1, 2), Point.from(3, 4));
 		expect(segment).not.toBeNull();
+	});
+
+	it("should error when creating a line segment from invalid points", () => {
+		expect(() => LineSegment.from(Point.from(1, 2), {} as any)).toThrow(
+			"Invalid LineSegment array, invalid points"
+		);
 	});
 
 	it("isLineSegment()", () => {

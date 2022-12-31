@@ -8,14 +8,26 @@ describe("Point Class", () => {
 		expect(point).not.toBeNull();
 	});
 
+	it("should error when creating a point from an invalid string", () => {
+		expect(() => Point.from("()")).toThrow("Invalid Point string");
+	});
+
 	it("should create a point from a object", () => {
 		const point = Point.from({ x: 1, y: 2 });
 		expect(point).not.toBeNull();
 	});
 
+	it("should error when creating a point from an invalid object", () => {
+		expect(() => Point.from({} as any)).toThrow("Invalid Point object");
+	});
+
 	it("should create a point from numbers", () => {
 		const point = Point.from(1, 2);
 		expect(point).not.toBeNull();
+	});
+
+	it("should error when creating a point from invalid numbers", () => {
+		expect(() => Point.from(1, "a" as any)).toThrow("Invalid Point arguments");
 	});
 
 	it("isPoint()", () => {

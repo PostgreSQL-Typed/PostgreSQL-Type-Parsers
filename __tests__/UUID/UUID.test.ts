@@ -4,13 +4,51 @@ import { UUID } from "../../src";
 
 describe("UUID Class", () => {
 	it("should create a uuid from a string", () => {
-		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
-		expect(uuid).not.toBeNull();
+		const uuid1 = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
+		expect(uuid1).not.toBeNull();
+		const uuid2 = UUID.from("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+		expect(uuid2).not.toBeNull();
+	});
+
+	it("should error when creating a uuid from an invalid string", () => {
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1")).toThrow(
+			"Invalid UUID string"
+		);
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111")).toThrow(
+			"Invalid UUID string"
+		);
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G")).toThrow(
+			"Invalid UUID string"
+		);
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g")).toThrow(
+			"Invalid UUID string"
+		);
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 ")).toThrow(
+			"Invalid UUID string"
+		);
 	});
 
 	it("should create a uuid from a object", () => {
 		const uuid = UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" });
 		expect(uuid).not.toBeNull();
+	});
+
+	it("should error when creating a uuid from an invalid object", () => {
+		expect(() =>
+			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1" })
+		).toThrow("Invalid UUID object");
+		expect(() =>
+			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111" })
+		).toThrow("Invalid UUID object");
+		expect(() =>
+			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G" })
+		).toThrow("Invalid UUID object");
+		expect(() =>
+			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g" })
+		).toThrow("Invalid UUID object");
+		expect(() =>
+			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 " })
+		).toThrow("Invalid UUID object");
 	});
 
 	it("should create a uuid from a newly generated uuid", () => {

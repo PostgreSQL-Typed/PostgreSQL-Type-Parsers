@@ -53,7 +53,7 @@ const Box: BoxConstructor = {
 					y2
 				});
 			}
-			throw new Error("Invalid box string");
+			throw new Error("Invalid Box string");
 		} else if (Box.isBox(arg)) {
 			return new BoxClass(arg.toJSON());
 		} else if (typeof arg === "number") {
@@ -64,9 +64,16 @@ const Box: BoxConstructor = {
 			) {
 				return new BoxClass({ x1: arg, y1, x2, y2 });
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid Box array, invalid numbers");
 			}
 		} else {
+			if (
+				!("x1" in arg && typeof arg.x1 === "number") ||
+				!("y1" in arg && typeof arg.y1 === "number") ||
+				!("x2" in arg && typeof arg.x2 === "number") ||
+				!("y2" in arg && typeof arg.y2 === "number")
+			)
+				throw new Error("Invalid Box object");
 			return new BoxClass(arg);
 		}
 	},

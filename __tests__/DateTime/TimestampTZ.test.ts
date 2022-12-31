@@ -21,6 +21,21 @@ describe("TimestampTZ Class", () => {
 		expect(timestamptz7).not.toBeNull();
 	});
 
+	it("should error when creating a timestamptz from an invalid string", () => {
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789")).toThrow(
+			"Invalid TimestampTZ string"
+		);
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:")).toThrow(
+			"Invalid TimestampTZ string"
+		);
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:0")).toThrow(
+			"Invalid TimestampTZ string"
+		);
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:00:00")).toThrow(
+			"Invalid TimestampTZ string"
+		);
+	});
+
 	it("should create a timestamptz from a object", () => {
 		const timestamptz1 = TimestampTZ.from({
 			year: 2004,
@@ -52,11 +67,38 @@ describe("TimestampTZ Class", () => {
 		expect(timestamptz2).not.toBeNull();
 	});
 
+	it("should error when creating a timestamptz from an invalid object", () => {
+		expect(() => TimestampTZ.from({} as any)).toThrow(
+			"Invalid TimestampTZ object"
+		);
+		expect(() =>
+			TimestampTZ.from({
+				year: 2004,
+				month: 10,
+				day: 19,
+				hour: 4,
+				minute: 5,
+				second: 6,
+				offset: {
+					hour: 1,
+					minute: 0,
+					direction: "invalid"
+				}
+			} as any)
+		).toThrow("Invalid TimestampTZ object");
+	});
+
 	it("should create a timestamptz from numbers", () => {
 		const timestamptz1 = TimestampTZ.from(2004, 10, 19, 4, 5, 6, 1, 0, "plus");
 		expect(timestamptz1).not.toBeNull();
 		const timestamptz2 = TimestampTZ.from(2004, 10, 19, 4, 5, 6, 1, 0, "minus");
 		expect(timestamptz2).not.toBeNull();
+	});
+
+	it("should error when creating a timestamptz from invalid numbers", () => {
+		expect(() =>
+			TimestampTZ.from(2004, 10, 19, 4, 5, 6, 1, 0, "invalid" as any)
+		).toThrow("Invalid TimestampTZ array, numbers and OffsetDirection");
 	});
 
 	it("should create a timestamptz from a DateTime", () => {

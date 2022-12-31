@@ -90,7 +90,7 @@ const Interval: IntervalConstructor = {
 					),
 					isoMatches = ISORegex.exec(arg);
 
-				if (!isoMatches) throw new Error("Invalid interval string");
+				if (!isoMatches) throw new Error("Invalid Interval string");
 
 				const [
 					,
@@ -178,11 +178,28 @@ const Interval: IntervalConstructor = {
 					seconds,
 					milliseconds
 				});
-			} else {
-				throw new Error("Invalid arguments");
 			}
+			throw new Error("Invalid Interval array, numbers only");
 		} else {
-			return new IntervalClass(arg);
+			if (
+				typeof arg === "object" &&
+				(!("years" in arg) || typeof arg.years === "number") &&
+				(!("months" in arg) || typeof arg.months === "number") &&
+				(!("days" in arg) || typeof arg.days === "number") &&
+				(!("hours" in arg) || typeof arg.hours === "number") &&
+				(!("minutes" in arg) || typeof arg.minutes === "number") &&
+				(!("seconds" in arg) || typeof arg.seconds === "number") &&
+				(!("milliseconds" in arg) || typeof arg.milliseconds === "number") &&
+				("years" in arg ||
+					"months" in arg ||
+					"days" in arg ||
+					"hours" in arg ||
+					"minutes" in arg ||
+					"seconds" in arg ||
+					"milliseconds" in arg)
+			)
+				return new IntervalClass(arg);
+			throw new Error("Invalid Interval object");
 		}
 	},
 	isInterval(obj: any): obj is Interval {

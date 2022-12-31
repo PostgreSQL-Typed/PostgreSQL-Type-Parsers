@@ -101,7 +101,7 @@ const Timestamp: TimestampConstructor = {
 					second: second + (milisecond ? milisecond : 0)
 				});
 			}
-			throw new Error("Invalid timestamp string");
+			throw new Error("Invalid Timestamp string");
 		} else if (Timestamp.isTimestamp(arg)) {
 			const newlyMadeTimestamp = new TimestampClass(arg.toJSON());
 			if (
@@ -112,7 +112,7 @@ const Timestamp: TimestampConstructor = {
 					)
 			)
 				return newlyMadeTimestamp;
-			throw new Error("Invalid timestamp class");
+			throw new Error("Invalid Timestamp class");
 		} else if (typeof arg === "number") {
 			if (
 				typeof month === "number" &&
@@ -137,9 +137,9 @@ const Timestamp: TimestampConstructor = {
 						)
 				)
 					return newlyMadeTimestamp;
-				throw new Error("Invalid timestamp arguments");
+				throw new Error("Invalid Timestamp arguments");
 			}
-			throw new Error("Invalid timestamp arguments");
+			throw new Error("Invalid Timestamp array, numbers only");
 		} else if (arg instanceof DateTime) {
 			return new TimestampClass({
 				year: arg.year,
@@ -159,6 +159,26 @@ const Timestamp: TimestampConstructor = {
 				second: arg.getSeconds() + arg.getMilliseconds() / 1000
 			});
 		} else {
+			if (
+				!(
+					typeof arg === "object" &&
+					"year" in arg &&
+					typeof arg.year === "number" &&
+					"month" in arg &&
+					typeof arg.month === "number" &&
+					"day" in arg &&
+					typeof arg.day === "number" &&
+					"hour" in arg &&
+					typeof arg.hour === "number" &&
+					"minute" in arg &&
+					typeof arg.minute === "number" &&
+					"second" in arg &&
+					typeof arg.second === "number"
+				)
+			) {
+				throw new Error("Invalid Timestamp object");
+			}
+
 			const newlyMadeTimestamp = new TimestampClass(arg);
 			if (
 				newlyMadeTimestamp
@@ -169,7 +189,7 @@ const Timestamp: TimestampConstructor = {
 			)
 				return newlyMadeTimestamp;
 
-			throw new Error("Invalid timestamp arguments");
+			throw new Error("Invalid Timestamp object");
 		}
 	},
 	isTimestamp(obj: any): obj is Timestamp {

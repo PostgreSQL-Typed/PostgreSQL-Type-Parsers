@@ -44,16 +44,23 @@ const Line: LineConstructor = {
 					c
 				});
 			}
-			throw new Error("Invalid line string");
+			throw new Error("Invalid Line string");
 		} else if (Line.isLine(arg)) {
 			return new LineClass(arg.toJSON());
 		} else if (typeof arg === "number") {
 			if (typeof b === "number" && typeof c === "number") {
 				return new LineClass({ a: arg, b, c });
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid Line array, invalid numbers");
 			}
 		} else {
+			if (
+				!("a" in arg && typeof arg.a === "number") ||
+				!("b" in arg && typeof arg.b === "number") ||
+				!("c" in arg && typeof arg.c === "number")
+			)
+				throw new Error("Invalid Line object");
+
 			return new LineClass(arg);
 		}
 	},

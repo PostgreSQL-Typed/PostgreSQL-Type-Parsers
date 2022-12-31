@@ -9,6 +9,12 @@ describe("Date Class", () => {
 		expect(date).not.toBeNull();
 	});
 
+	it("should error when creating a date from an invalid string", () => {
+		expect(() => {
+			Date.from("2022-09-02T00:00:00.000Z");
+		}).toThrow("Invalid Date string");
+	});
+
 	it("should create a date from a object", () => {
 		const date = Date.from({
 			year: 2022,
@@ -18,9 +24,28 @@ describe("Date Class", () => {
 		expect(date).not.toBeNull();
 	});
 
+	it("should error when creating a date from an invalid object", () => {
+		expect(() => {
+			Date.from({} as any);
+		}).toThrow("Invalid Date object");
+		expect(() => {
+			Date.from({
+				year: 2022,
+				month: 9,
+				day: "2"
+			} as any);
+		}).toThrow("Invalid Date object");
+	});
+
 	it("should create a date from numbers", () => {
 		const date = Date.from(2022, 9, 2);
 		expect(date).not.toBeNull();
+	});
+
+	it("should error when creating a date from invalid numbers", () => {
+		expect(() => {
+			Date.from(2022, 9, "2" as any);
+		}).toThrow("Invalid Date array, numbers only");
 	});
 
 	it("should create a date from a DateTime", () => {

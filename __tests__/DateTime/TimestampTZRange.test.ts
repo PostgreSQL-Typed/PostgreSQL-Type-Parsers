@@ -10,6 +10,12 @@ describe("TimestampTZRange Class", () => {
 		expect(timestampTZRange).not.toBeNull();
 	});
 
+	it("should error when creating a timestamptz range from an invalid string", () => {
+		expect(() => {
+			TimestampTZRange.from("2004-10-19 04:05:06.789 +01:00");
+		}).toThrow("Invalid TimestampTZRange string");
+	});
+
 	it("should create a timestamptz range from a object", () => {
 		const timestampTZRange = TimestampTZRange.from({
 			lower: LowerRange.include,
@@ -20,6 +26,39 @@ describe("TimestampTZRange Class", () => {
 			]
 		});
 		expect(timestampTZRange).not.toBeNull();
+	});
+
+	it("should error when creating a timestamptz range from an invalid object", () => {
+		expect(() => {
+			TimestampTZRange.from({
+				lower: LowerRange.include,
+				upper: UpperRange.exclude,
+				value: [] as any
+			});
+		}).toThrow("Invalid TimestampTZRange object, too few values");
+
+		expect(() => {
+			TimestampTZRange.from({
+				lower: LowerRange.include,
+				upper: UpperRange.exclude,
+				value: [
+					TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"),
+					TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"),
+					TimestampTZ.from("2004-10-19 04:05:06.789 +01:00")
+				] as any
+			});
+		}).toThrow("Invalid TimestampTZRange object, too many values");
+
+		expect(() => {
+			TimestampTZRange.from({
+				lower: "heya",
+				upper: UpperRange.exclude,
+				value: [
+					TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"),
+					TimestampTZ.from("2004-11-19 04:05:06.789 +01:00")
+				]
+			} as any);
+		}).toThrow("Invalid TimestampTZRange object");
 	});
 
 	it("should create a timestamptz range from a raw object", () => {
@@ -58,6 +97,12 @@ describe("TimestampTZRange Class", () => {
 		expect(timestampTZRange).not.toBeNull();
 	});
 
+	it("should error when creating a timestamptz range from an invalid raw object", () => {
+		expect(() => {
+			TimestampTZRange.from({} as any);
+		}).toThrow("Invalid TimestampTZRange object");
+	});
+
 	it("should create a timestamptz range from arguments", () => {
 		const timestampTZRange = TimestampTZRange.from(
 			TimestampTZ.from({
@@ -90,6 +135,27 @@ describe("TimestampTZRange Class", () => {
 		expect(timestampTZRange).not.toBeNull();
 	});
 
+	it("should error when creating a timestamptz range from an invalid arguments", () => {
+		expect(() => {
+			TimestampTZRange.from(
+				TimestampTZ.from({
+					year: 2004,
+					month: 10,
+					day: 19,
+					hour: 4,
+					minute: 5,
+					second: 6.789,
+					offset: {
+						hour: 1,
+						minute: 0,
+						direction: "plus"
+					}
+				}),
+				"timestamp" as any
+			);
+		}).toThrow("Invalid TimestampTZRange array, invalid TimestampTZs");
+	});
+
 	it("should create a timestamptz range from array", () => {
 		const timestampTZRange = TimestampTZRange.from([
 			TimestampTZ.from({
@@ -120,6 +186,24 @@ describe("TimestampTZRange Class", () => {
 			})
 		]);
 		expect(timestampTZRange).not.toBeNull();
+	});
+
+	it("should error when creating a timestamptz range from an invalid array", () => {
+		expect(() => {
+			TimestampTZRange.from([] as any);
+		}).toThrow("Invalid TimestampTZRange array, too few values");
+
+		expect(() => {
+			TimestampTZRange.from([
+				TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"),
+				TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"),
+				TimestampTZ.from("2004-10-19 04:05:06.789 +01:00")
+			] as any);
+		}).toThrow("Invalid TimestampTZRange array, too many values");
+
+		expect(() => {
+			TimestampTZRange.from(["timestamp", "timestamp"] as any);
+		}).toThrow("Invalid TimestampTZRange array, invalid TimestampTZs");
 	});
 
 	it("should create a timestamptz range from a DateRange", () => {

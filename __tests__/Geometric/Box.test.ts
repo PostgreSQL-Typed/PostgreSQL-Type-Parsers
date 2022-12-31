@@ -8,14 +8,28 @@ describe("Box Class", () => {
 		expect(box).not.toBeNull();
 	});
 
+	it("should error when creating a box from an invalid string", () => {
+		expect(() => Box.from("()")).toThrow("Invalid Box string");
+	});
+
 	it("should create a box from a object", () => {
 		const box = Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 });
 		expect(box).not.toBeNull();
 	});
 
+	it("should error when creating a box from an invalid object", () => {
+		expect(() => Box.from({} as any)).toThrow("Invalid Box object");
+	});
+
 	it("should create a box from numbers", () => {
 		const box = Box.from(1, 2, 3, 4);
 		expect(box).not.toBeNull();
+	});
+
+	it("should error when creating a box from invalid numbers", () => {
+		expect(() => Box.from(1, 2, 3, "a" as any)).toThrow(
+			"Invalid Box array, invalid numbers"
+		);
 	});
 
 	it("isBox()", () => {

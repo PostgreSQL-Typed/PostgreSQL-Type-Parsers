@@ -9,6 +9,10 @@ describe("Time Class", () => {
 		expect(time).not.toBeNull();
 	});
 
+	it("should error when creating a time from an invalid string", () => {
+		expect(() => Time.from("04:abc:06.789")).toThrow("Invalid Time string");
+	});
+
 	it("should create a time from a object", () => {
 		const time = Time.from({
 			hour: 4,
@@ -18,9 +22,26 @@ describe("Time Class", () => {
 		expect(time).not.toBeNull();
 	});
 
+	it("should error when creating a time from an invalid object", () => {
+		expect(() => Time.from({} as any)).toThrow("Invalid Time object");
+		expect(() =>
+			Time.from({
+				hour: 4,
+				minute: 5,
+				second: "invalid"
+			} as any)
+		).toThrow("Invalid Time object");
+	});
+
 	it("should create a time from numbers", () => {
 		const time = Time.from(4, 5, 6);
 		expect(time).not.toBeNull();
+	});
+
+	it("should error when creating a time from invalid numbers", () => {
+		expect(() => Time.from(4, 5, "number" as any)).toThrow(
+			"Invalid Time array, numbers only"
+		);
 	});
 
 	it("should create a time from a DateTime", () => {

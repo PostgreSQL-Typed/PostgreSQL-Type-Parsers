@@ -8,11 +8,23 @@ describe("Polygon Class", () => {
 		expect(polygon).not.toBeNull();
 	});
 
+	it("should error when creating a polygon from an invalid string", () => {
+		expect(() => Polygon.from("()")).toThrow("Invalid Polygon string");
+	});
+
 	it("should create a polygon from a object", () => {
 		const polygon = Polygon.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
 		});
 		expect(polygon).not.toBeNull();
+	});
+
+	it("should error when creating a polygon from an invalid object", () => {
+		expect(() =>
+			Polygon.from({
+				points: []
+			})
+		).toThrow("Invalid Polygon object, too few points");
 	});
 
 	it("should create a polygon from a raw object", () => {
@@ -25,14 +37,37 @@ describe("Polygon Class", () => {
 		expect(polygon).not.toBeNull();
 	});
 
+	it("should error when creating a polygon from an invalid raw object", () => {
+		expect(() =>
+			Polygon.from({
+				points: []
+			})
+		).toThrow("Invalid Polygon object, too few points");
+	});
+
 	it("should create a polygon from points", () => {
 		const polygon = Polygon.from([Point.from(1, 2), Point.from(3, 4)]);
 		expect(polygon).not.toBeNull();
 	});
 
+	it('should error when creating a polygon from an invalid "points" array', () => {
+		expect(() => Polygon.from([])).toThrow(
+			"Invalid Polygon array, too few points"
+		);
+		expect(() => Polygon.from([Point.from(1, 2), "a" as any])).toThrow(
+			"Invalid Polygon array, invalid points"
+		);
+	});
+
 	it("should create a polygon from points", () => {
 		const polygon = Polygon.from(Point.from(1, 2), Point.from(3, 4));
 		expect(polygon).not.toBeNull();
+	});
+
+	it('should error when creating a polygon from an invalid "points" array', () => {
+		expect(() => Polygon.from(Point.from(1, 2), "a" as any)).toThrow(
+			"Invalid Polygon array, invalid points"
+		);
 	});
 
 	it("isPolygon()", () => {

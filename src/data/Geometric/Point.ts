@@ -41,17 +41,24 @@ const Point: PointConstructor = {
 					y
 				});
 			}
-			throw new Error("Invalid point string");
+			throw new Error("Invalid Point string");
 		} else if (Point.isPoint(arg)) {
 			return new PointClass(arg.toJSON());
 		} else if (typeof arg === "number") {
 			if (typeof y === "number") {
 				return new PointClass({ x: arg, y });
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid Point arguments");
 			}
 		} else {
-			return new PointClass(arg);
+			if (
+				"x" in arg &&
+				"y" in arg &&
+				typeof arg.x === "number" &&
+				typeof arg.y === "number"
+			)
+				return new PointClass(arg);
+			else throw new Error("Invalid Point object");
 		}
 	},
 	isPoint(obj: any): obj is Point {

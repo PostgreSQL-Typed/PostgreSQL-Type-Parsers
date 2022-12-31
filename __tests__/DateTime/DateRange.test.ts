@@ -8,6 +8,12 @@ describe("DateRange Class", () => {
 		expect(dateRange).not.toBeNull();
 	});
 
+	it("should error when creating a date range from an invalid string", () => {
+		expect(() => {
+			DateRange.from("2022-10-03");
+		}).toThrow("Invalid DateRange string");
+	});
+
 	it("should create a date range from a object", () => {
 		const dateRange = DateRange.from({
 			lower: LowerRange.include,
@@ -18,6 +24,36 @@ describe("DateRange Class", () => {
 			]
 		});
 		expect(dateRange).not.toBeNull();
+	});
+
+	it("should error when creating a date range from an invalid object", () => {
+		expect(() => {
+			DateRange.from({
+				lower: LowerRange.include,
+				upper: UpperRange.exclude,
+				value: [] as any
+			});
+		}).toThrow("Invalid DateRange object, too few values");
+
+		expect(() => {
+			DateRange.from({
+				lower: LowerRange.include,
+				upper: UpperRange.exclude,
+				value: [
+					Date.from("2022-10-03"),
+					Date.from("2022-11-03"),
+					Date.from("2022-12-03")
+				] as any
+			});
+		}).toThrow("Invalid DateRange object, too many values");
+
+		expect(() => {
+			DateRange.from({
+				lower: "heya",
+				upper: UpperRange.exclude,
+				value: [Date.from("2022-10-03"), Date.from("2022-11-03")]
+			} as any);
+		}).toThrow("Invalid DateRange object");
 	});
 
 	it("should create a date range from a raw object", () => {
@@ -32,6 +68,12 @@ describe("DateRange Class", () => {
 		expect(dateRange).not.toBeNull();
 	});
 
+	it("should error when creating a date range from an invalid raw object", () => {
+		expect(() => {
+			DateRange.from({} as any);
+		}).toThrow("Invalid DateRange object");
+	});
+
 	it("should create a date range from arguments", () => {
 		const dateRange = DateRange.from(
 			Date.from({ year: 2022, month: 9, day: 2 }),
@@ -40,12 +82,43 @@ describe("DateRange Class", () => {
 		expect(dateRange).not.toBeNull();
 	});
 
+	it("should error when creating a date range from an invalid arguments", () => {
+		expect(() => {
+			DateRange.from(
+				Date.from({
+					year: 2004,
+					month: 10,
+					day: 20
+				}),
+				"date" as any
+			);
+		}).toThrow("Invalid DateRange array, invalid Dates");
+	});
+
 	it("should create a date range from array", () => {
 		const dateRange = DateRange.from([
 			Date.from({ year: 2022, month: 9, day: 2 }),
 			Date.from({ year: 2022, month: 10, day: 3 })
 		]);
 		expect(dateRange).not.toBeNull();
+	});
+
+	it("should error when creating a date range from an invalid array", () => {
+		expect(() => {
+			DateRange.from([] as any);
+		}).toThrow("Invalid DateRange array, too few values");
+
+		expect(() => {
+			DateRange.from([
+				Date.from("2004-10-19"),
+				Date.from("2004-10-19"),
+				Date.from("2004-10-19")
+			] as any);
+		}).toThrow("Invalid DateRange array, too many values");
+
+		expect(() => {
+			DateRange.from(["date", "date"] as any);
+		}).toThrow("Invalid DateRange array, invalid Dates");
 	});
 
 	it("should create a date range from a DateRange", () => {

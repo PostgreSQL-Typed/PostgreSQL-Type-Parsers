@@ -122,7 +122,7 @@ const TimeTZ: TimeTZConstructor = {
 					}
 				});
 			}
-			throw new Error("Invalid time string");
+			throw new Error("Invalid TimeTZ string");
 		} else if (TimeTZ.isTimeTZ(arg)) {
 			const newlyMadeTime = new TimeTZClass(arg.toJSON());
 			if (
@@ -133,14 +133,16 @@ const TimeTZ: TimeTZConstructor = {
 					)
 			)
 				return newlyMadeTime;
-			throw new Error("Invalid time class");
+			throw new Error("Invalid TimeTZ object");
 		} else if (typeof arg === "number") {
 			if (
 				typeof minute === "number" &&
 				typeof second === "number" &&
 				typeof offsetHour === "number" &&
 				typeof offsetMinute === "number" &&
-				typeof offsetDirection === "string"
+				typeof offsetDirection === "string" &&
+				(offsetDirection === OffsetDirection.plus ||
+					offsetDirection === OffsetDirection.minus)
 			) {
 				const newlyMadeTime = new TimeTZClass({
 					hour: arg,
@@ -160,9 +162,9 @@ const TimeTZ: TimeTZConstructor = {
 						)
 				)
 					return newlyMadeTime;
-				throw new Error("Invalid time arguments");
+				throw new Error("Invalid TimeTZ array, numbers and OffsetDirection");
 			}
-			throw new Error("Invalid time arguments");
+			throw new Error("Invalid TimeTZ array, numbers and OffsetDirection");
 		} else if (arg instanceof DateTime || arg instanceof globalThis.Date) {
 			arg = arg instanceof DateTime ? arg : DateTime.fromJSDate(arg);
 			const isoString = arg.toISO().split("T")[1];
@@ -172,6 +174,29 @@ const TimeTZ: TimeTZConstructor = {
 				return TimeTZ.from(isoString);
 			}
 		} else {
+			if (
+				!(
+					typeof arg === "object" &&
+					"hour" in arg &&
+					typeof arg.hour === "number" &&
+					"minute" in arg &&
+					typeof arg.minute === "number" &&
+					"second" in arg &&
+					typeof arg.second === "number" &&
+					"offset" in arg &&
+					typeof arg.offset === "object" &&
+					"hour" in arg.offset &&
+					typeof arg.offset.hour === "number" &&
+					"minute" in arg.offset &&
+					typeof arg.offset.minute === "number" &&
+					"direction" in arg.offset &&
+					typeof arg.offset.direction === "string" &&
+					(arg.offset.direction === OffsetDirection.plus ||
+						arg.offset.direction === OffsetDirection.minus)
+				)
+			)
+				throw new Error("Invalid TimeTZ object");
+
 			const newlyMadeTime = new TimeTZClass(arg);
 			if (
 				newlyMadeTime
@@ -182,7 +207,7 @@ const TimeTZ: TimeTZConstructor = {
 			)
 				return newlyMadeTime;
 
-			throw new Error("Invalid time arguments");
+			throw new Error("Invalid TimeTZ object");
 		}
 	},
 	isTimeTZ(obj: any): obj is TimeTZ {

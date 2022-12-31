@@ -8,14 +8,28 @@ describe("Line Class", () => {
 		expect(line).not.toBeNull();
 	});
 
+	it("should error when creating a line from an invalid string", () => {
+		expect(() => Line.from("()")).toThrow("Invalid Line string");
+	});
+
 	it("should create a line from a object", () => {
 		const line = Line.from({ a: 1, b: 2, c: 3 });
 		expect(line).not.toBeNull();
 	});
 
+	it("should error when creating a line from an invalid object", () => {
+		expect(() => Line.from({} as any)).toThrow("Invalid Line object");
+	});
+
 	it("should create a line from numbers", () => {
 		const line = Line.from(1, 2, 3);
 		expect(line).not.toBeNull();
+	});
+
+	it("should error when creating a line from invalid numbers", () => {
+		expect(() => Line.from(1, 2, {} as any)).toThrow(
+			"Invalid Line array, invalid numbers"
+		);
 	});
 
 	it("isLine()", () => {

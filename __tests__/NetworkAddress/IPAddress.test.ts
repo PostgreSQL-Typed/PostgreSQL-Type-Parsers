@@ -10,6 +10,12 @@ describe("IPAddress Class", () => {
 		expect(ip2).not.toBeNull();
 	});
 
+	it("should error when creating a IP address from an invalid string", () => {
+		expect(() => IPAddress.from("The Netherlands")).toThrowError(
+			"Invalid IP Address string"
+		);
+	});
+
 	it("should create a IP address from a object", () => {
 		const ip1 = IPAddress.from({
 			IPAddress: "192.168.100.128/25"
@@ -19,6 +25,14 @@ describe("IPAddress Class", () => {
 			IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64"
 		});
 		expect(ip2).not.toBeNull();
+	});
+
+	it("should error when creating a IP address from an invalid object", () => {
+		expect(() =>
+			IPAddress.from({
+				IPAddress: "The Netherlands"
+			})
+		).toThrowError("Invalid IP Address string");
 	});
 
 	it("isIPAddresss()", () => {

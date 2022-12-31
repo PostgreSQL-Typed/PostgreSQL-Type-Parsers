@@ -10,6 +10,12 @@ describe("TimestampRange Class", () => {
 		expect(timestampRange).not.toBeNull();
 	});
 
+	it("should error when creating a timestamp range from an invalid string", () => {
+		expect(() => {
+			TimestampRange.from("2004-10-19T10:23:54.678Z");
+		}).toThrow("Invalid TimestampRange string");
+	});
+
 	it("should create a timestamp range from a object", () => {
 		const timestampRange = TimestampRange.from({
 			lower: LowerRange.include,
@@ -20,6 +26,39 @@ describe("TimestampRange Class", () => {
 			]
 		});
 		expect(timestampRange).not.toBeNull();
+	});
+
+	it("should error when creating a timestamp range from an invalid object", () => {
+		expect(() => {
+			TimestampRange.from({
+				lower: LowerRange.include,
+				upper: UpperRange.exclude,
+				value: [] as any
+			});
+		}).toThrow("Invalid TimestampRange object, too few values");
+
+		expect(() => {
+			TimestampRange.from({
+				lower: LowerRange.include,
+				upper: UpperRange.exclude,
+				value: [
+					Timestamp.from("2004-10-19 04:05:06.789"),
+					Timestamp.from("2004-10-19 04:05:06.789"),
+					Timestamp.from("2004-10-19 04:05:06.789")
+				] as any
+			});
+		}).toThrow("Invalid TimestampRange object, too many values");
+
+		expect(() => {
+			TimestampRange.from({
+				lower: "heya",
+				upper: UpperRange.exclude,
+				value: [
+					Timestamp.from("2004-10-19 04:05:06.789"),
+					Timestamp.from("2004-11-19 04:05:06.789")
+				]
+			} as any);
+		}).toThrow("Invalid TimestampRange object");
 	});
 
 	it("should create a timestamp range from a raw object", () => {
@@ -48,6 +87,12 @@ describe("TimestampRange Class", () => {
 		expect(timestampRange).not.toBeNull();
 	});
 
+	it("should error when creating a timestamp range from an invalid raw object", () => {
+		expect(() => {
+			TimestampRange.from({} as any);
+		}).toThrow("Invalid TimestampRange object");
+	});
+
 	it("should create a timestamp range from arguments", () => {
 		const timestampRange = TimestampRange.from(
 			Timestamp.from({
@@ -70,6 +115,22 @@ describe("TimestampRange Class", () => {
 		expect(timestampRange).not.toBeNull();
 	});
 
+	it("should error when creating a timestamp range from an invalid arguments", () => {
+		expect(() => {
+			TimestampRange.from(
+				Timestamp.from({
+					year: 2004,
+					month: 10,
+					day: 19,
+					hour: 4,
+					minute: 5,
+					second: 6.789
+				}),
+				"timestamp" as any
+			);
+		}).toThrow("Invalid TimestampRange array, invalid Timestamps");
+	});
+
 	it("should create a timestamp range from array", () => {
 		const timestampRange = TimestampRange.from([
 			Timestamp.from({
@@ -90,6 +151,24 @@ describe("TimestampRange Class", () => {
 			})
 		]);
 		expect(timestampRange).not.toBeNull();
+	});
+
+	it("should error when creating a timestamptz range from an invalid array", () => {
+		expect(() => {
+			TimestampRange.from([] as any);
+		}).toThrow("Invalid TimestampRange array, too few values");
+
+		expect(() => {
+			TimestampRange.from([
+				Timestamp.from("2004-10-19 04:05:06.789"),
+				Timestamp.from("2004-10-19 04:05:06.789"),
+				Timestamp.from("2004-10-19 04:05:06.789")
+			] as any);
+		}).toThrow("Invalid TimestampRange array, too many values");
+
+		expect(() => {
+			TimestampRange.from(["timestamp", "timestamp"] as any);
+		}).toThrow("Invalid TimestampRange array, invalid Timestamps");
 	});
 
 	it("should create a timestamp range from a DateRange", () => {

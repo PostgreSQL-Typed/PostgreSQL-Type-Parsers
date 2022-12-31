@@ -47,7 +47,16 @@ const UUID: UUIDConstructor = {
 		} else if (UUID.isUUID(arg)) {
 			return new UUIDClass(arg.toJSON());
 		} else {
-			return new UUIDClass(arg);
+			if (
+				typeof arg === "object" &&
+				"UUID" in arg &&
+				typeof arg.UUID === "string" &&
+				arg.UUID.match(
+					/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i
+				)
+			)
+				return new UUIDClass(arg);
+			throw new Error("Invalid UUID object");
 		}
 	},
 	generate(options?: RandomUUIDOptions): UUID {

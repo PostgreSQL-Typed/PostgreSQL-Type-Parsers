@@ -55,18 +55,39 @@ const Polygon: PolygonConstructor = {
 					points
 				});
 			}
-			throw new Error("Invalid polygon string");
+			throw new Error("Invalid Polygon string");
 		} else if (Polygon.isPolygon(arg)) {
+			if (!arg.points.length)
+				throw new Error("Invalid Polygon object, too few points");
+			if (!arg.points.every(Point.isPoint))
+				throw new Error("Invalid Polygon object, invalid points");
 			return new PolygonClass(arg.toJSON());
 		} else if (Array.isArray(arg) || Point.isPoint(arg)) {
-			if (extraPoints.every(Point.isPoint)) {
+			if (![...(Point.isPoint(arg) ? [arg] : arg)].length)
+				throw new Error("Invalid Polygon array, too few points");
+
+			if (
+				[...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints].every(
+					Point.isPoint
+				)
+			) {
 				return new PolygonClass({
 					points: [...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints]
 				});
 			} else {
-				throw new Error("Invalid arguments");
+				throw new Error("Invalid Polygon array, invalid points");
 			}
 		} else {
+			if (!("points" in arg)) throw new Error("Invalid Polygon object");
+			if (!arg.points.length)
+				throw new Error("Invalid Polygon object, too few points");
+			if (!arg.points.every(Point.isPoint)) {
+				try {
+					arg.points = arg.points.map(Point.from);
+				} catch {
+					throw new Error("Invalid Polygon object, invalid points");
+				}
+			}
 			return new PolygonClass(arg);
 		}
 	},

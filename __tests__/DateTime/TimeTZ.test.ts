@@ -17,6 +17,16 @@ describe("TimeTZ Class", () => {
 		expect(timetz5).not.toBeNull();
 	});
 
+	it("should error when creating a timetz from an invalid string", () => {
+		expect(() => TimeTZ.from("04:05:06.789")).toThrow("Invalid TimeTZ string");
+		expect(() => TimeTZ.from("04:05:06.789+01:")).toThrow(
+			"Invalid TimeTZ string"
+		);
+		expect(() => TimeTZ.from("04:05:06.789+01:0")).toThrow(
+			"Invalid TimeTZ string"
+		);
+	});
+
 	it("should create a timetz from a object", () => {
 		const timetz1 = TimeTZ.from({
 			hour: 4,
@@ -42,11 +52,36 @@ describe("TimeTZ Class", () => {
 		expect(timetz2).not.toBeNull();
 	});
 
+	it("should error when creating a timetz from an invalid object", () => {
+		expect(() => TimeTZ.from({} as any)).toThrow("Invalid TimeTZ object");
+		expect(() =>
+			TimeTZ.from({
+				hour: 4,
+				minute: 5,
+				second: 6,
+				offset: {
+					hour: 1,
+					minute: 0,
+					direction: "invalid"
+				}
+			} as any)
+		).toThrow("Invalid TimeTZ object");
+	});
+
 	it("should create a timetz from numbers", () => {
 		const timetz1 = TimeTZ.from(4, 5, 6, 1, 0, "plus");
 		expect(timetz1).not.toBeNull();
 		const timetz2 = TimeTZ.from(4, 5, 6, 1, 0, "minus");
 		expect(timetz2).not.toBeNull();
+	});
+
+	it("should error when creating a timetz from invalid numbers", () => {
+		expect(() => TimeTZ.from(4, 5, 6, 1, 0, "invalid" as any)).toThrow(
+			"Invalid TimeTZ array, numbers and OffsetDirection"
+		);
+		expect(() => TimeTZ.from(4, 5, "number" as any, 1, 0, "minus")).toThrow(
+			"Invalid TimeTZ array, numbers and OffsetDirection"
+		);
 	});
 
 	it("should create a timetz from a DateTime", () => {
