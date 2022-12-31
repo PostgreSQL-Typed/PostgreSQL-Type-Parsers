@@ -115,23 +115,12 @@ Used to represent the following PostgreSQL data type(s):
 import { DateMultiRange, DateRange } from "postgresql-type-parsers";
 
 //* DateMultiRange can be created in the following ways:
-const dateMultiRange1 = DateMultiRange.from(
-	"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01)}"
-);
+const dateMultiRange1 = DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01)}");
 const dateMultiRange2 = DateMultiRange.from({
-	ranges: [
-		DateRange.from("[1999-01-08,2022-01-01)"),
-		DateRange.from("[2023-01-08,2024-01-01)")
-	]
+	ranges: [DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-01)")],
 });
-const dateMultiRange3 = DateMultiRange.from([
-	DateRange.from("[1999-01-08,2022-01-01)"),
-	DateRange.from("[2023-01-08,2024-01-01)")
-]);
-const dateMultiRange4 = DateMultiRange.from(
-	DateRange.from("[1999-01-08,2022-01-01)"),
-	DateRange.from("[2023-01-08,2024-01-01)")
-);
+const dateMultiRange3 = DateMultiRange.from([DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-01)")]);
+const dateMultiRange4 = DateMultiRange.from(DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-01)"));
 const dateMultiRange5 = DateMultiRange.from({
 	ranges: [
 		{
@@ -139,18 +128,18 @@ const dateMultiRange5 = DateMultiRange.from({
 			upper: UpperRange.exclude,
 			value: [
 				{ year: 1999, month: 1, day: 8 },
-				{ year: 2022, month: 1, day: 1 }
-			]
+				{ year: 2022, month: 1, day: 1 },
+			],
 		},
 		{
 			lower: "(",
 			upper: "]",
 			value: [
 				{ year: 2023, month: 1, day: 8 },
-				{ year: 2024, month: 1, day: 1 }
-			]
-		}
-	]
+				{ year: 2024, month: 1, day: 1 },
+			],
+		},
+	],
 });
 
 //* To verify if a value is a date multi range, use the `isMultiRange` method:
@@ -179,12 +168,7 @@ Used to represent the following PostgreSQL data type(s):
 - [`_daterange`][range] (`daterange[]`)
 
 ```ts
-import {
-	Date,
-	DateRange,
-	LowerRange,
-	UpperRange
-} from "postgresql-type-parsers";
+import { Date, DateRange, LowerRange, UpperRange } from "postgresql-type-parsers";
 
 //* DateRange can be created in the following ways:
 const dateRange1 = DateRange.from("[2022-09-02,2022-10-03)");
@@ -193,16 +177,16 @@ const dateRange2 = DateRange.from({
 	upper: UpperRange.exclude,
 	value: [
 		{ year: 2022, month: 9, day: 2 }, // lowerValue
-		{ year: 2022, month: 10, day: 3 } // upperValue
-	]
+		{ year: 2022, month: 10, day: 3 }, // upperValue
+	],
 });
 const dateRange3 = DateRange.from({
 	lower: LowerRange.include,
 	upper: UpperRange.exclude,
 	value: [
 		Date.from({ year: 2022, month: 9, day: 2 }), // lowerValue
-		Date.from({ year: 2022, month: 10, day: 3 }) // upperValue
-	]
+		Date.from({ year: 2022, month: 10, day: 3 }), // upperValue
+	],
 });
 const dateRange4 = DateRange.from(
 	Date.from({ year: 2022, month: 9, day: 2 }), // lowerValue
@@ -210,7 +194,7 @@ const dateRange4 = DateRange.from(
 ); // Defaults to [lowerValue, upperValue)
 const dateRange5 = DateRange.from([
 	Date.from({ year: 2022, month: 9, day: 2 }), //lowerValue
-	Date.from({ year: 2022, month: 10, day: 3 }) //upperValue
+	Date.from({ year: 2022, month: 10, day: 3 }), //upperValue
 ]); // Defaults to [lowerValue, upperValue)
 
 //* To verify if a value is a date range, use the `isRange` method:
@@ -270,7 +254,7 @@ const interval6 = Interval.from({
 	hours: 4,
 	minutes: 5,
 	seconds: 6,
-	milliseconds: 7
+	milliseconds: 7,
 });
 
 //* To verify if a value is an interval, use the `isInterval` method:
@@ -328,7 +312,7 @@ const time2 = Time.from(12, 34, 56); // hours, minutes, seconds
 const time3 = Time.from({
 	hours: 12,
 	minutes: 34,
-	seconds: 56
+	seconds: 56,
 });
 const time4 = Time.from(DateTime.fromISO("2020-01-01 12:34:56")); // Luxon DateTime
 const time5 = Time.from(new globalThis.Date("2020-01-01 12:34:56")); // JavaScript Date
@@ -382,12 +366,10 @@ const timestamp4 = Timestamp.from({
 	day: 1,
 	hours: 12,
 	minutes: 34,
-	seconds: 56.789
+	seconds: 56.789,
 });
 const timestamp5 = Timestamp.from(DateTime.fromISO("2020-01-01T12:34:56.789Z")); // Luxon DateTime
-const timestamp6 = Timestamp.from(
-	new globalThis.Date("2020-01-01T12:34:56.789Z")
-); // JavaScript Date
+const timestamp6 = Timestamp.from(new globalThis.Date("2020-01-01T12:34:56.789Z")); // JavaScript Date
 
 //* To verify if a value is a timestamp, use the `isTimestamp` method:
 if (Timestamp.isTimestamp(timestamp1)) {
@@ -435,17 +417,10 @@ Used to represent the following PostgreSQL data type(s):
 - [`_tsrange`][range] (`tsrange[]`)
 
 ```ts
-import {
-	Timestamp,
-	TimestampRange,
-	LowerRange,
-	UpperRange
-} from "postgresql-type-parsers";
+import { Timestamp, TimestampRange, LowerRange, UpperRange } from "postgresql-type-parsers";
 
 //* TimestampRange can be created in the following ways:
-const timestampRange1 = TimestampRange.from(
-	"[2004-10-19T10:23:54.678Z,2004-11-19T10:23:54.678Z)"
-);
+const timestampRange1 = TimestampRange.from("[2004-10-19T10:23:54.678Z,2004-11-19T10:23:54.678Z)");
 const timestampRange2 = TimestampRange.from({
 	lower: LowerRange.include,
 	upper: UpperRange.exclude,
@@ -456,7 +431,7 @@ const timestampRange2 = TimestampRange.from({
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		}, // lowerValue
 		{
 			year: 2004,
@@ -464,17 +439,17 @@ const timestampRange2 = TimestampRange.from({
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
-		} // upperValue
-	]
+			second: 54.678,
+		}, // upperValue
+	],
 });
 const timestampRange3 = TimestampRange.from({
 	lower: LowerRange.include,
 	upper: UpperRange.exclude,
 	value: [
 		Timestamp.from("2004-10-19T10:23:54.678Z"), // lowerValue
-		Timestamp.from("2004-11-19T10:23:54.678Z") // upperValue
-	]
+		Timestamp.from("2004-11-19T10:23:54.678Z"), // upperValue
+	],
 });
 const timestampRange4 = TimestampRange.from(
 	Timestamp.from("2004-10-19T10:23:54.678Z"), // lowerValue
@@ -482,7 +457,7 @@ const timestampRange4 = TimestampRange.from(
 ); // Defaults to [lowerValue, upperValue)
 const timestampRange5 = TimestampRange.from([
 	Timestamp.from("2004-10-19T10:23:54.678Z"), // lowerValue
-	Timestamp.from("2004-11-19T10:23:54.678Z") // upperValue
+	Timestamp.from("2004-11-19T10:23:54.678Z"), // upperValue
 ]); // Defaults to [lowerValue, upperValue)
 
 //* To verify if a value is a timestamp range, use the `isRange` method:
@@ -506,9 +481,7 @@ timestampRange1.equals(timestampRange2); // true
 
 //* It has a `empty` readonly property that returns whether the timestamp range is empty:
 timestampRange1.empty; // false
-const timestampRange6 = TimestampRange.from(
-	"[2004-10-19T10:23:54.678Z,2004-10-19T10:23:54.678Z)"
-);
+const timestampRange6 = TimestampRange.from("[2004-10-19T10:23:54.678Z,2004-10-19T10:23:54.678Z)");
 timestampRange6.empty; // true
 const timestampRange7 = TimestampRange.from("empty");
 timestampRange7.empty; // true
@@ -546,15 +519,11 @@ const timestampTZ4 = TimestampTZ.from({
 	offset: {
 		hours: 1,
 		minutes: 0,
-		direction: "plus"
-	}
+		direction: "plus",
+	},
 });
-const timestampTZ5 = TimestampTZ.from(
-	DateTime.fromISO("2020-01-01T12:34:56.789Z")
-); // Luxon DateTime
-const timestampTZ6 = TimestampTZ.from(
-	new globalThis.Date("2020-01-01T12:34:56.789Z")
-); // JavaScript Date
+const timestampTZ5 = TimestampTZ.from(DateTime.fromISO("2020-01-01T12:34:56.789Z")); // Luxon DateTime
+const timestampTZ6 = TimestampTZ.from(new globalThis.Date("2020-01-01T12:34:56.789Z")); // JavaScript Date
 
 //* To verify if a value is a timestampTZ, use the `isTimestampTZ` method:
 if (TimestampTZ.isTimestampTZ(timestampTZ1)) {
@@ -607,17 +576,10 @@ Used to represent the following PostgreSQL data type(s):
 - [`_tstzrange`][range] (`tstzrange[]`)
 
 ```ts
-import {
-	TimestampTZ,
-	TimestampTZRange,
-	LowerRange,
-	UpperRange
-} from "postgresql-type-parsers";
+import { TimestampTZ, TimestampTZRange, LowerRange, UpperRange } from "postgresql-type-parsers";
 
 //* TimestampTZRange can be created in the following ways:
-const timestamptzRange1 = TimestampTZRange.from(
-	"[2004-10-19 04:05:06.789 +01:00,2004-11-19 04:05:06.789 +01:00)"
-);
+const timestamptzRange1 = TimestampTZRange.from("[2004-10-19 04:05:06.789 +01:00,2004-11-19 04:05:06.789 +01:00)");
 const timestamptzRange2 = TimestampTZRange.from({
 	lower: LowerRange.include,
 	upper: UpperRange.exclude,
@@ -632,8 +594,8 @@ const timestamptzRange2 = TimestampTZRange.from({
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		}, // lowerValue
 		{
 			year: 2004,
@@ -645,18 +607,18 @@ const timestamptzRange2 = TimestampTZRange.from({
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
-		} // upperValue
-	]
+				direction: "plus",
+			},
+		}, // upperValue
+	],
 });
 const timestamptzRange3 = TimestampTZRange.from({
 	lower: LowerRange.include,
 	upper: UpperRange.exclude,
 	value: [
 		TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"), // lowerValue
-		TimestampTZ.from("2004-11-19 04:05:06.789 +01:00") // upperValue
-	]
+		TimestampTZ.from("2004-11-19 04:05:06.789 +01:00"), // upperValue
+	],
 });
 const timestamptzRange4 = TimestampTZRange.from(
 	TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"), // lowerValue
@@ -664,7 +626,7 @@ const timestamptzRange4 = TimestampTZRange.from(
 ); // Defaults to [lowerValue, upperValue)
 const timestamptzRange5 = TimestampTZRange.from([
 	TimestampTZ.from("2004-10-19 04:05:06.789 +01:00"), // lowerValue
-	TimestampTZ.from("2004-11-19 04:05:06.789 +01:00") // upperValue
+	TimestampTZ.from("2004-11-19 04:05:06.789 +01:00"), // upperValue
 ]); // Defaults to [lowerValue, upperValue)
 
 //* To verify if a value is a timestamp range, use the `isRange` method:
@@ -688,9 +650,7 @@ timestamptzRange1.equals(timestamptzRange2); // true
 
 //* It has a `empty` readonly property that returns whether the timestamp range is empty:
 timestamptzRange1.empty; // false
-const timestamptzRange6 = TimestampTZRange.from(
-	"[2004-10-19 04:05:06.789 +01:00,2004-10-19 04:05:06.789 +01:00)"
-);
+const timestamptzRange6 = TimestampTZRange.from("[2004-10-19 04:05:06.789 +01:00,2004-10-19 04:05:06.789 +01:00)");
 timestamptzRange6.empty; // true
 const timestamptzRange7 = TimestampTZRange.from("empty");
 timestamptzRange7.empty; // true
@@ -700,9 +660,7 @@ timestamptzRange6.value; // null
 timestamptzRange7.value; // null
 
 //* It has a `isWithinRange()` method that returns whether a timestamp is within the range:
-timestamptzRange1.isWithinRange(
-	TimestampTZ.from("2004-10-25 01:45:21.321 +01:00")
-); // true
+timestamptzRange1.isWithinRange(TimestampTZ.from("2004-10-25 01:45:21.321 +01:00")); // true
 ```
 
 ### TimeTZ
@@ -895,17 +853,17 @@ import { LineSegment, Point } from "postgresql-type-parsers";
 const lineSegment1 = LineSegment.from("[(1,2),(3,4)]");
 const lineSegment2 = LineSegment.from({
 	a: Point.from(1, 2),
-	b: Point.from(3, 4)
+	b: Point.from(3, 4),
 });
 const lineSegment3 = LineSegment.from({
 	a: {
 		x: 1,
-		y: 2
+		y: 2,
 	},
 	b: {
 		x: 3,
-		y: 4
-	}
+		y: 4,
+	},
 });
 const lineSegment4 = LineSegment.from(Point.from(1, 2), Point.from(3, 4));
 
@@ -944,14 +902,14 @@ const path2 = Path.from([Point.from(1, 2), Point.from(3, 4)]); //Defaults connec
 const path3 = Path.from({
 	points: [
 		{ x: 1, y: 2 },
-		{ x: 3, y: 4 }
+		{ x: 3, y: 4 },
 	],
-	connection: "closed"
+	connection: "closed",
 });
 const path4 = Path.from(Point.from(1, 2), Point.from(3, 4)); //Defaults connection to `open`
 const path5 = Path.from({
 	points: [Point.from(1, 2), Point.from(3, 4)],
-	connection: "closed"
+	connection: "closed",
 });
 
 //* To verify if a value is a path, use the `isPath` method:
@@ -1023,12 +981,12 @@ const polygon2 = Polygon.from([Point.from(1, 2), Point.from(3, 4)]);
 const polygon3 = Polygon.from({
 	points: [
 		{ x: 1, y: 2 },
-		{ x: 3, y: 4 }
-	]
+		{ x: 3, y: 4 },
+	],
 });
 const polygon4 = Polygon.from(Point.from(1, 2), Point.from(3, 4));
 const polygon5 = Polygon.from({
-	points: [Point.from(1, 2), Point.from(3, 4)]
+	points: [Point.from(1, 2), Point.from(3, 4)],
 });
 
 //* To verify if a value is a polygon, use the `isPolygon` method:
@@ -1074,16 +1032,16 @@ const ipAddress2 = IPAddress.from("192.168.100.128");
 const ipAddress3 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
 const ipAddress4 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348");
 const ipAddress5 = IPAddress.from({
-	IPAddress: "192.168.100.128/25"
+	IPAddress: "192.168.100.128/25",
 });
 const ipAddress6 = IPAddress.from({
-	IPAddress: "192.168.100.128"
+	IPAddress: "192.168.100.128",
 });
 const ipAddress7 = IPAddress.from({
-	IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64"
+	IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64",
 });
 const ipAddress8 = IPAddress.from({
-	IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348"
+	IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348",
 });
 
 //* To verify if a value is an IP address, use the `isIPAddress` method:
@@ -1136,7 +1094,7 @@ import { MACAddress } from "postgresql-type-parsers";
 //* MAC addresses can be created in the following ways:
 const macAddress1 = MACAddress.from("08:00:2b:01:02:03");
 const macAddress2 = MACAddress.from({
-	MACAddress: "08:00:2b:01:02:03"
+	MACAddress: "08:00:2b:01:02:03",
 });
 const macAddress3 = MACAddress.from(8796814508547);
 
@@ -1174,7 +1132,7 @@ import { MACAddress8 } from "postgresql-type-parsers";
 //* MAC addresses can be created in the following ways:
 const macAddress1 = MACAddress8.from("08:00:2b:01:02:03:04:05");
 const macAddress2 = MACAddress8.from({
-	MACAddress8: "08:00:2b:01:02:03:04:05"
+	MACAddress8: "08:00:2b:01:02:03:04:05",
 });
 const macAddress3 = MACAddress8.from(BigInt("576508035632137221"));
 
@@ -1216,7 +1174,7 @@ import { UUID } from "postgresql-type-parsers";
 //* UUIDs can be created in the following ways:
 const uuid1 = UUID.from("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
 const uuid2 = UUID.from({
-	uuid: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+	uuid: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
 });
 const uuid3 = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"); //Will be converted to lowercase
 const uuid4 = UUID.generate(); //Generates a random UUID using `node:crypto`

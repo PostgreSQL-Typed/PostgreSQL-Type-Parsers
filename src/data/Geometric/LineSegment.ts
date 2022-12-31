@@ -18,13 +18,7 @@ interface RawLineSegmentObject {
 interface LineSegment {
 	toString(): string;
 	toJSON(): RawLineSegmentObject;
-	equals(
-		otherSegment:
-			| string
-			| LineSegment
-			| LineSegmentObject
-			| RawLineSegmentObject
-	): boolean;
+	equals(otherSegment: string | LineSegment | LineSegmentObject | RawLineSegmentObject): boolean;
 
 	a: Point;
 	b: Point;
@@ -32,9 +26,7 @@ interface LineSegment {
 
 interface LineSegmentConstructor {
 	from(a: Point, b: Point): LineSegment;
-	from(
-		data: LineSegment | LineSegmentObject | RawLineSegmentObject
-	): LineSegment;
+	from(data: LineSegment | LineSegmentObject | RawLineSegmentObject): LineSegment;
 	from(str: string): LineSegment;
 	/**
 	 * Returns `true` if `obj` is a `LineSegment`, `false` otherwise.
@@ -43,21 +35,9 @@ interface LineSegmentConstructor {
 }
 
 const LineSegment: LineSegmentConstructor = {
-	from(
-		arg:
-			| string
-			| LineSegment
-			| LineSegmentObject
-			| RawLineSegmentObject
-			| Point,
-		b?: Point
-	): LineSegment {
+	from(arg: string | LineSegment | LineSegmentObject | RawLineSegmentObject | Point, b?: Point): LineSegment {
 		if (typeof arg === "string") {
-			if (
-				arg.match(
-					/^\[\(\d+(\.\d+)?,\d+(\.\d+)?\),\(\d+(\.\d+)?,\d+(\.\d+)?\)\]$/
-				)
-			) {
+			if (arg.match(/^\[\(\d+(\.\d+)?,\d+(\.\d+)?\),\(\d+(\.\d+)?,\d+(\.\d+)?\)\]$/)) {
 				const [a, b] = arg
 					.slice(1, -1)
 					.split("),(")
@@ -66,18 +46,14 @@ const LineSegment: LineSegmentConstructor = {
 					.map(p => Point.from(p));
 				return new LineSegmentClass({
 					a,
-					b
+					b,
 				});
 			}
 			throw new Error("Invalid LineSegment string");
-		} else if (LineSegment.isLineSegment(arg)) {
-			return new LineSegmentClass(arg.toJSON());
-		} else if (Point.isPoint(arg)) {
-			if (Point.isPoint(b)) {
-				return new LineSegmentClass({ a: arg, b });
-			} else {
-				throw new Error("Invalid LineSegment array, invalid points");
-			}
+		} else if (LineSegment.isLineSegment(arg)) return new LineSegmentClass(arg.toJSON());
+		else if (Point.isPoint(arg)) {
+			if (Point.isPoint(b)) return new LineSegmentClass({ a: arg, b });
+			else throw new Error("Invalid LineSegment array, invalid points");
 		} else if ("a" in arg && "b" in arg) {
 			try {
 				arg.a = Point.from(arg.a);
@@ -86,13 +62,11 @@ const LineSegment: LineSegmentConstructor = {
 				throw new Error("Invalid LineSegment object");
 			}
 			return new LineSegmentClass(arg);
-		} else {
-			throw new Error("Invalid LineSegment object");
-		}
+		} else throw new Error("Invalid LineSegment object");
 	},
 	isLineSegment(obj: any): obj is LineSegment {
 		return obj instanceof LineSegmentClass;
-	}
+	},
 };
 
 class LineSegmentClass implements LineSegment {
@@ -116,29 +90,15 @@ class LineSegmentClass implements LineSegment {
 	toJSON(): RawLineSegmentObject {
 		return {
 			a: this._a.toJSON(),
-			b: this._b.toJSON()
+			b: this._b.toJSON(),
 		};
 	}
 
-	equals(
-		otherSegment:
-			| string
-			| LineSegment
-			| LineSegmentObject
-			| RawLineSegmentObject
-	): boolean {
-		if (typeof otherSegment === "string") {
-			return otherSegment === this.toString();
-		} else if (LineSegment.isLineSegment(otherSegment)) {
-			return otherSegment.toString() === this.toString();
-		} else if ("equals" in otherSegment.a && "equals" in otherSegment.b) {
-			return otherSegment.a.equals(this.a) && otherSegment.b.equals(this.b);
-		} else {
-			return (
-				Point.from(otherSegment.a).equals(this.a) &&
-				Point.from(otherSegment.b).equals(this.b)
-			);
-		}
+	equals(otherSegment: string | LineSegment | LineSegmentObject | RawLineSegmentObject): boolean {
+		if (typeof otherSegment === "string") return otherSegment === this.toString();
+		else if (LineSegment.isLineSegment(otherSegment)) return otherSegment.toString() === this.toString();
+		else if ("equals" in otherSegment.a && "equals" in otherSegment.b) return otherSegment.a.equals(this.a) && otherSegment.b.equals(this.b);
+		else return Point.from(otherSegment.a).equals(this.a) && Point.from(otherSegment.b).equals(this.b);
 	}
 
 	get a(): Point {

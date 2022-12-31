@@ -17,7 +17,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		expect(time).not.toBeNull();
 	});
@@ -28,7 +28,7 @@ describe("Time Class", () => {
 			Time.from({
 				hour: 4,
 				minute: 5,
-				second: "invalid"
+				second: "invalid",
 			} as any)
 		).toThrow("Invalid Time object");
 	});
@@ -39,9 +39,7 @@ describe("Time Class", () => {
 	});
 
 	it("should error when creating a time from invalid numbers", () => {
-		expect(() => Time.from(4, 5, "number" as any)).toThrow(
-			"Invalid Time array, numbers only"
-		);
+		expect(() => Time.from(4, 5, "number" as any)).toThrow("Invalid Time array, numbers only");
 	});
 
 	it("should create a time from a DateTime", () => {
@@ -50,7 +48,7 @@ describe("Time Class", () => {
 				hour: 4,
 				minute: 5,
 				second: 6,
-				millisecond: 789
+				millisecond: 789,
 			})
 		);
 		expect(time).not.toBeNull();
@@ -65,14 +63,14 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		expect(Time.isTime(time)).toBe(true);
 		expect(
 			Time.isTime({
 				hour: 4,
 				minute: 5,
-				second: 6
+				second: 6,
 			})
 		).toBe(false);
 	});
@@ -81,7 +79,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6.789
+			second: 6.789,
 		});
 		expect(time.toString()).toBe("04:05:06");
 	});
@@ -90,12 +88,12 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6.789
+			second: 6.789,
 		});
 		expect(time.toJSON()).toEqual({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 	});
 
@@ -103,7 +101,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6.789
+			second: 6.789,
 		});
 
 		expect(
@@ -111,7 +109,7 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 5,
-					second: 6
+					second: 6,
 				})
 			)
 		).toBe(true);
@@ -120,7 +118,7 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 6,
-					second: 6
+					second: 6,
 				})
 			)
 		).toBe(false);
@@ -129,7 +127,7 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 5,
-					second: 6
+					second: 6,
 				}).toJSON()
 			)
 		).toBe(true);
@@ -138,7 +136,7 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 6,
-					second: 6
+					second: 6,
 				}).toJSON()
 			)
 		).toBe(false);
@@ -147,7 +145,7 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 5,
-					second: 6
+					second: 6,
 				}).toString()
 			)
 		).toBe(true);
@@ -156,7 +154,7 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 6,
-					second: 6
+					second: 6,
 				}).toString()
 			)
 		).toBe(false);
@@ -166,7 +164,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		expect(time.hour).toBe(4);
 	});
@@ -175,7 +173,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		time.hour = 12;
 		expect(time.hour).toBe(12);
@@ -185,7 +183,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		expect(time.minute).toBe(5);
 	});
@@ -194,7 +192,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		time.minute = 10;
 		expect(time.minute).toBe(10);
@@ -204,7 +202,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6.789
+			second: 6.789,
 		});
 		expect(time.second).toBe(6);
 	});
@@ -213,7 +211,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		time.second = 3;
 		expect(time.second).toBe(3);
@@ -223,14 +221,14 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		expect(time.toDateTime()).toStrictEqual(
 			DateTime.fromObject(
 				{
 					hour: 4,
 					minute: 5,
-					second: 6
+					second: 6,
 				},
 				{ zone: "local" }
 			)
@@ -241,7 +239,7 @@ describe("Time Class", () => {
 		const time = Time.from({
 			hour: 4,
 			minute: 5,
-			second: 6
+			second: 6,
 		});
 		expect(time.toJSDate()).toBeInstanceOf(globalThis.Date);
 	});
@@ -253,7 +251,7 @@ describe("Time Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "time.test.ts"
+			application_name: "time.test.ts",
 		});
 
 		await client.connect();
@@ -283,20 +281,20 @@ describe("Time Class", () => {
 				Time.from({
 					hour: 4,
 					minute: 5,
-					second: 6
+					second: 6,
 				})
 			);
 			expect(result.rows[0]._time).toStrictEqual([
 				Time.from({
 					hour: 1,
 					minute: 2,
-					second: 3
+					second: 3,
 				}),
 				Time.from({
 					hour: 4,
 					minute: 5,
-					second: 6
-				})
+					second: 6,
+				}),
 			]);
 		} catch (err) {
 			error = err;

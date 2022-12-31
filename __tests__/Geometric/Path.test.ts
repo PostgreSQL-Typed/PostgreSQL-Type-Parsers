@@ -15,7 +15,7 @@ describe("Path Class", () => {
 	it("should create a path from a object", () => {
 		const path = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		expect(path).not.toBeNull();
 	});
@@ -24,7 +24,7 @@ describe("Path Class", () => {
 		expect(() =>
 			Path.from({
 				points: [],
-				connection: "open"
+				connection: "open",
 			})
 		).toThrow("Invalid Path object, too few points");
 	});
@@ -33,9 +33,9 @@ describe("Path Class", () => {
 		const path = Path.from({
 			points: [
 				{ x: 1, y: 2 },
-				{ x: 3, y: 4 }
+				{ x: 3, y: 4 },
 			],
-			connection: "open"
+			connection: "open",
 		});
 		expect(path).not.toBeNull();
 	});
@@ -45,16 +45,16 @@ describe("Path Class", () => {
 		expect(() =>
 			Path.from({
 				points: [],
-				connection: "open"
+				connection: "open",
 			})
 		).toThrow("Invalid Path object, too few points");
 		expect(() =>
 			Path.from({
 				points: [
 					{ x: 1, y: 2 },
-					{ x: 3, y: 4 }
+					{ x: 3, y: 4 },
 				],
-				connection: "anything" as any
+				connection: "anything" as any,
 			})
 		).toThrow("Invalid Path object, invalid connection");
 	});
@@ -74,21 +74,19 @@ describe("Path Class", () => {
 	});
 
 	it('should error when creating a path from an invalid "points" array', () => {
-		expect(() => Path.from(Point.from(1, 2), "a" as any)).toThrow(
-			"Invalid Path array, invalid points"
-		);
+		expect(() => Path.from(Point.from(1, 2), "a" as any)).toThrow("Invalid Path array, invalid points");
 	});
 
 	it("isPath()", () => {
 		const path = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		expect(Path.isPath(path)).toBe(true);
 		expect(
 			Path.isPath({
 				points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-				connection: "open"
+				connection: "open",
 			})
 		).toBe(false);
 	});
@@ -96,12 +94,12 @@ describe("Path Class", () => {
 	it("toString()", () => {
 		const path1 = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		expect(path1.toString()).toBe("((1,2),(3,4))");
 		const path2 = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "closed"
+			connection: "closed",
 		});
 		expect(path2.toString()).toBe("[(1,2),(3,4)]");
 	});
@@ -109,39 +107,39 @@ describe("Path Class", () => {
 	it("toJSON()", () => {
 		const path1 = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		expect(path1.toJSON()).toEqual({
 			points: [
 				{ x: 1, y: 2 },
-				{ x: 3, y: 4 }
+				{ x: 3, y: 4 },
 			],
-			connection: "open"
+			connection: "open",
 		});
 		const path2 = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "closed"
+			connection: "closed",
 		});
 		expect(path2.toJSON()).toEqual({
 			points: [
 				{ x: 1, y: 2 },
-				{ x: 3, y: 4 }
+				{ x: 3, y: 4 },
 			],
-			connection: "closed"
+			connection: "closed",
 		});
 	});
 
 	it("equals()", () => {
 		const path = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 
 		expect(
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-					connection: "open"
+					connection: "open",
 				})
 			)
 		).toBe(true);
@@ -149,7 +147,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })],
-					connection: "open"
+					connection: "open",
 				})
 			)
 		).toBe(false);
@@ -157,7 +155,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-					connection: "closed"
+					connection: "closed",
 				})
 			)
 		).toBe(false);
@@ -165,7 +163,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-					connection: "open"
+					connection: "open",
 				}).toJSON()
 			)
 		).toBe(true);
@@ -173,7 +171,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })],
-					connection: "open"
+					connection: "open",
 				}).toJSON()
 			)
 		).toBe(false);
@@ -181,7 +179,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-					connection: "closed"
+					connection: "closed",
 				}).toJSON()
 			)
 		).toBe(false);
@@ -189,7 +187,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-					connection: "open"
+					connection: "open",
 				}).toString()
 			)
 		).toBe(true);
@@ -197,7 +195,7 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })],
-					connection: "open"
+					connection: "open",
 				}).toString()
 			)
 		).toBe(false);
@@ -205,45 +203,35 @@ describe("Path Class", () => {
 			path.equals(
 				Path.from({
 					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-					connection: "closed"
+					connection: "closed",
 				}).toString()
 			)
 		).toBe(false);
-		expect(
-			path.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })])
-		).toBe(true);
-		expect(
-			path.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })])
-		).toBe(false);
+		expect(path.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })])).toBe(true);
+		expect(path.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })])).toBe(false);
 	});
 
 	it("get points", () => {
 		const polygon = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
-		expect(polygon.points).toStrictEqual([
-			Point.from({ x: 1, y: 2 }),
-			Point.from({ x: 3, y: 4 })
-		]);
+		expect(polygon.points).toStrictEqual([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]);
 	});
 
 	it("set points", () => {
 		const polygon = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		polygon.points = [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })];
-		expect(polygon.points).toStrictEqual([
-			Point.from({ x: 1, y: 2 }),
-			Point.from({ x: 3, y: 5 })
-		]);
+		expect(polygon.points).toStrictEqual([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })]);
 	});
 
 	it("get connection", () => {
 		const polygon = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		expect(polygon.connection).toBe("open");
 	});
@@ -251,7 +239,7 @@ describe("Path Class", () => {
 	it("set connection", () => {
 		const polygon = Path.from({
 			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
-			connection: "open"
+			connection: "open",
 		});
 		polygon.connection = "closed";
 		expect(polygon.connection).toBe("closed");
@@ -264,7 +252,7 @@ describe("Path Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "path.test.ts"
+			application_name: "path.test.ts",
 		});
 
 		await client.connect();
@@ -292,28 +280,19 @@ describe("Path Class", () => {
 
 			expect(result.rows[0].path).toStrictEqual(
 				Path.from({
-					points: [
-						Point.from({ x: 1.1, y: 2.2 }),
-						Point.from({ x: 3.3, y: 4.4 })
-					],
-					connection: "open"
+					points: [Point.from({ x: 1.1, y: 2.2 }), Point.from({ x: 3.3, y: 4.4 })],
+					connection: "open",
 				})
 			);
 			expect(result.rows[0]._path).toStrictEqual([
 				Path.from({
-					points: [
-						Point.from({ x: 1.1, y: 2.2 }),
-						Point.from({ x: 3.3, y: 4.4 })
-					],
-					connection: "open"
+					points: [Point.from({ x: 1.1, y: 2.2 }), Point.from({ x: 3.3, y: 4.4 })],
+					connection: "open",
 				}),
 				Path.from({
-					points: [
-						Point.from({ x: 5.5, y: 6.6 }),
-						Point.from({ x: 7.7, y: 8.8 })
-					],
-					connection: "closed"
-				})
+					points: [Point.from({ x: 5.5, y: 6.6 }), Point.from({ x: 7.7, y: 8.8 })],
+					connection: "closed",
+				}),
 			]);
 		} catch (err) {
 			error = err;

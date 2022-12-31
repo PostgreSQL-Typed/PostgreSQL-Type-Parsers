@@ -11,18 +11,16 @@ describe("IPAddress Class", () => {
 	});
 
 	it("should error when creating a IP address from an invalid string", () => {
-		expect(() => IPAddress.from("The Netherlands")).toThrowError(
-			"Invalid IP Address string"
-		);
+		expect(() => IPAddress.from("The Netherlands")).toThrowError("Invalid IP Address string");
 	});
 
 	it("should create a IP address from a object", () => {
 		const ip1 = IPAddress.from({
-			IPAddress: "192.168.100.128/25"
+			IPAddress: "192.168.100.128/25",
 		});
 		expect(ip1).not.toBeNull();
 		const ip2 = IPAddress.from({
-			IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64"
+			IPAddress: "2001:db8:85a3:8d3:1319:8a2e:370:7348/64",
 		});
 		expect(ip2).not.toBeNull();
 	});
@@ -30,7 +28,7 @@ describe("IPAddress Class", () => {
 	it("should error when creating a IP address from an invalid object", () => {
 		expect(() =>
 			IPAddress.from({
-				IPAddress: "The Netherlands"
+				IPAddress: "The Netherlands",
 			})
 		).toThrowError("Invalid IP Address string");
 	});
@@ -40,7 +38,7 @@ describe("IPAddress Class", () => {
 		expect(IPAddress.isIPAddresss(ip)).toBe(true);
 		expect(
 			IPAddress.isIPAddresss({
-				IPAddress: "192.168.100.128/25"
+				IPAddress: "192.168.100.128/25",
 			})
 		).toBe(false);
 	});
@@ -53,7 +51,7 @@ describe("IPAddress Class", () => {
 	it("toJSON()", () => {
 		const ip = IPAddress.from("192.168.100.128/25");
 		expect(ip.toJSON()).toEqual({
-			IPAddress: "192.168.100.128/25"
+			IPAddress: "192.168.100.128/25",
 		});
 	});
 
@@ -61,48 +59,20 @@ describe("IPAddress Class", () => {
 		const ip1 = IPAddress.from("192.168.100.128/25");
 
 		expect(ip1.equals(IPAddress.from("192.168.100.128/25"))).toBe(true);
-		expect(
-			ip1.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64"))
-		).toBe(false);
-		expect(ip1.equals(IPAddress.from("192.168.100.128/25").toJSON())).toBe(
-			true
-		);
-		expect(
-			ip1.equals(
-				IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toJSON()
-			)
-		).toBe(false);
-		expect(ip1.equals(IPAddress.from("192.168.100.128/25").toString())).toBe(
-			true
-		);
-		expect(
-			ip1.equals(
-				IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toString()
-			)
-		).toBe(false);
+		expect(ip1.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64"))).toBe(false);
+		expect(ip1.equals(IPAddress.from("192.168.100.128/25").toJSON())).toBe(true);
+		expect(ip1.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toJSON())).toBe(false);
+		expect(ip1.equals(IPAddress.from("192.168.100.128/25").toString())).toBe(true);
+		expect(ip1.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toString())).toBe(false);
 
 		const ip2 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
 
-		expect(
-			ip2.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64"))
-		).toBe(true);
+		expect(ip2.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64"))).toBe(true);
 		expect(ip2.equals(IPAddress.from("192.168.100.128/25"))).toBe(false);
-		expect(
-			ip2.equals(
-				IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toJSON()
-			)
-		).toBe(true);
-		expect(ip2.equals(IPAddress.from("192.168.100.128/25").toJSON())).toBe(
-			false
-		);
-		expect(
-			ip2.equals(
-				IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toString()
-			)
-		).toBe(true);
-		expect(ip2.equals(IPAddress.from("192.168.100.128/25").toString())).toBe(
-			false
-		);
+		expect(ip2.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toJSON())).toBe(true);
+		expect(ip2.equals(IPAddress.from("192.168.100.128/25").toJSON())).toBe(false);
+		expect(ip2.equals(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64").toString())).toBe(true);
+		expect(ip2.equals(IPAddress.from("192.168.100.128/25").toString())).toBe(false);
 	});
 
 	it("get IPAddress", () => {
@@ -120,9 +90,7 @@ describe("IPAddress Class", () => {
 		const ip1 = IPAddress.from("192.168.100.128/25");
 		expect(ip1.IPAddressMinusSuffix).toBe("192.168.100.128");
 		const ip2 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
-		expect(ip2.IPAddressMinusSuffix).toBe(
-			"2001:db8:85a3:8d3:1319:8a2e:370:7348"
-		);
+		expect(ip2.IPAddressMinusSuffix).toBe("2001:db8:85a3:8d3:1319:8a2e:370:7348");
 	});
 
 	it("get version", () => {
@@ -148,24 +116,16 @@ describe("IPAddress Class", () => {
 
 	it("get startAddress", () => {
 		const ip1 = IPAddress.from("192.168.100.128/25");
-		expect(ip1.startAddress.IPAddress).toBe(
-			IPAddress.from("192.168.100.128").IPAddress
-		);
+		expect(ip1.startAddress.IPAddress).toBe(IPAddress.from("192.168.100.128").IPAddress);
 		const ip2 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
-		expect(ip2.startAddress.IPAddress).toBe(
-			IPAddress.from("2001:0db8:85a3:08d3:0000:0000:0000:0000").IPAddress
-		);
+		expect(ip2.startAddress.IPAddress).toBe(IPAddress.from("2001:0db8:85a3:08d3:0000:0000:0000:0000").IPAddress);
 	});
 
 	it("get endAddress", () => {
 		const ip1 = IPAddress.from("192.168.100.128/25");
-		expect(ip1.endAddress.IPAddress).toBe(
-			IPAddress.from("192.168.100.255").IPAddress
-		);
+		expect(ip1.endAddress.IPAddress).toBe(IPAddress.from("192.168.100.255").IPAddress);
 		const ip2 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
-		expect(ip2.endAddress.IPAddress).toBe(
-			IPAddress.from("2001:0db8:85a3:08d3:ffff:ffff:ffff:ffff").IPAddress
-		);
+		expect(ip2.endAddress.IPAddress).toBe(IPAddress.from("2001:0db8:85a3:08d3:ffff:ffff:ffff:ffff").IPAddress);
 	});
 
 	it("contains()", () => {
@@ -173,12 +133,8 @@ describe("IPAddress Class", () => {
 		expect(ip1.contains(IPAddress.from("192.168.1.128"))).toBe(true);
 		expect(ip1.contains(IPAddress.from("192.168.0.128"))).toBe(false);
 		const ip2 = IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:7348/64");
-		expect(
-			ip2.contains(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:8a2e"))
-		).toBe(true);
-		expect(
-			ip2.contains(IPAddress.from("2001:db8:7348:8d3:1319:7348:370:7348"))
-		).toBe(false);
+		expect(ip2.contains(IPAddress.from("2001:db8:85a3:8d3:1319:8a2e:370:8a2e"))).toBe(true);
+		expect(ip2.contains(IPAddress.from("2001:db8:7348:8d3:1319:7348:370:7348"))).toBe(false);
 	});
 
 	it("toIPAddress4()", () => {
@@ -202,7 +158,7 @@ describe("IPAddress Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "ipaddress.test.ts"
+			application_name: "ipaddress.test.ts",
 		});
 
 		await client.connect();
@@ -232,23 +188,15 @@ describe("IPAddress Class", () => {
 				SELECT * FROM public.jestipaddress
 			`);
 
-			expect(result.rows[0].inet?.IPAddress).toStrictEqual(
-				IPAddress.from("192.168.0.0/24").IPAddress
-			);
-			expect(
-				result.rows[0]._inet.map((i: IPAddress) => i.IPAddress)
-			).toStrictEqual([
+			expect(result.rows[0].inet?.IPAddress).toStrictEqual(IPAddress.from("192.168.0.0/24").IPAddress);
+			expect(result.rows[0]._inet.map((i: IPAddress) => i.IPAddress)).toStrictEqual([
 				IPAddress.from("192.168.0.0/24").IPAddress,
-				IPAddress.from("2001:4f8:3:ba::/64").IPAddress
+				IPAddress.from("2001:4f8:3:ba::/64").IPAddress,
 			]);
-			expect(result.rows[0].cidr?.IPAddress).toStrictEqual(
-				IPAddress.from("192.168.0.0/24").IPAddress
-			);
-			expect(
-				result.rows[0]._cidr.map((c: IPAddress) => c.IPAddress)
-			).toStrictEqual([
+			expect(result.rows[0].cidr?.IPAddress).toStrictEqual(IPAddress.from("192.168.0.0/24").IPAddress);
+			expect(result.rows[0]._cidr.map((c: IPAddress) => c.IPAddress)).toStrictEqual([
 				IPAddress.from("192.168.0.0/24").IPAddress,
-				IPAddress.from("2001:4f8:3:ba::/64").IPAddress
+				IPAddress.from("2001:4f8:3:ba::/64").IPAddress,
 			]);
 		} catch (err) {
 			error = err;

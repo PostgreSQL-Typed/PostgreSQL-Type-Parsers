@@ -21,7 +21,7 @@ describe("Circle Class", () => {
 		expect(() =>
 			Circle.from({
 				x: 1,
-				y: 2
+				y: 2,
 			} as any)
 		).toThrow("Invalid Circle object");
 	});
@@ -32,9 +32,7 @@ describe("Circle Class", () => {
 	});
 
 	it("should error when creating a circle from invalid numbers", () => {
-		expect(() => Circle.from(1, 2, "3" as any)).toThrow(
-			"Invalid Circle array, invalid numbers"
-		);
+		expect(() => Circle.from(1, 2, "3" as any)).toThrow("Invalid Circle array, invalid numbers");
 	});
 
 	it("isCircle()", () => {
@@ -53,7 +51,7 @@ describe("Circle Class", () => {
 		expect(circle.toJSON()).toEqual({
 			x: 1,
 			y: 2,
-			radius: 3
+			radius: 3,
 		});
 	});
 
@@ -62,18 +60,10 @@ describe("Circle Class", () => {
 
 		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 3 }))).toBe(true);
 		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 4 }))).toBe(false);
-		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 3 }).toJSON())).toBe(
-			true
-		);
-		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 4 }).toJSON())).toBe(
-			false
-		);
-		expect(
-			circle.equals(Circle.from({ x: 1, y: 2, radius: 3 }).toString())
-		).toBe(true);
-		expect(
-			circle.equals(Circle.from({ x: 1, y: 2, radius: 4 }).toString())
-		).toBe(false);
+		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 3 }).toJSON())).toBe(true);
+		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 4 }).toJSON())).toBe(false);
+		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 3 }).toString())).toBe(true);
+		expect(circle.equals(Circle.from({ x: 1, y: 2, radius: 4 }).toString())).toBe(false);
 	});
 
 	it("get x", () => {
@@ -116,7 +106,7 @@ describe("Circle Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "circle.test.ts"
+			application_name: "circle.test.ts",
 		});
 
 		await client.connect();
@@ -142,13 +132,8 @@ describe("Circle Class", () => {
 				SELECT * FROM public.jestcircle
 			`);
 
-			expect(result.rows[0].circle).toStrictEqual(
-				Circle.from({ x: 1, y: 2, radius: 3 })
-			);
-			expect(result.rows[0]._circle).toStrictEqual([
-				Circle.from({ x: 1.1, y: 2.2, radius: 3.3 }),
-				Circle.from({ x: 4, y: 5, radius: 6 })
-			]);
+			expect(result.rows[0].circle).toStrictEqual(Circle.from({ x: 1, y: 2, radius: 3 }));
+			expect(result.rows[0]._circle).toStrictEqual([Circle.from({ x: 1.1, y: 2.2, radius: 3.3 }), Circle.from({ x: 4, y: 5, radius: 6 })]);
 		} catch (err) {
 			error = err;
 		}

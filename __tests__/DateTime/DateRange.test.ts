@@ -18,10 +18,7 @@ describe("DateRange Class", () => {
 		const dateRange = DateRange.from({
 			lower: LowerRange.include,
 			upper: UpperRange.exclude,
-			value: [
-				Date.from({ year: 2022, month: 9, day: 2 }),
-				Date.from({ year: 2022, month: 10, day: 3 })
-			]
+			value: [Date.from({ year: 2022, month: 9, day: 2 }), Date.from({ year: 2022, month: 10, day: 3 })],
 		});
 		expect(dateRange).not.toBeNull();
 	});
@@ -31,7 +28,7 @@ describe("DateRange Class", () => {
 			DateRange.from({
 				lower: LowerRange.include,
 				upper: UpperRange.exclude,
-				value: [] as any
+				value: [] as any,
 			});
 		}).toThrow("Invalid DateRange object, too few values");
 
@@ -39,11 +36,7 @@ describe("DateRange Class", () => {
 			DateRange.from({
 				lower: LowerRange.include,
 				upper: UpperRange.exclude,
-				value: [
-					Date.from("2022-10-03"),
-					Date.from("2022-11-03"),
-					Date.from("2022-12-03")
-				] as any
+				value: [Date.from("2022-10-03"), Date.from("2022-11-03"), Date.from("2022-12-03")] as any,
 			});
 		}).toThrow("Invalid DateRange object, too many values");
 
@@ -51,7 +44,7 @@ describe("DateRange Class", () => {
 			DateRange.from({
 				lower: "heya",
 				upper: UpperRange.exclude,
-				value: [Date.from("2022-10-03"), Date.from("2022-11-03")]
+				value: [Date.from("2022-10-03"), Date.from("2022-11-03")],
 			} as any);
 		}).toThrow("Invalid DateRange object");
 	});
@@ -62,8 +55,8 @@ describe("DateRange Class", () => {
 			upper: UpperRange.exclude,
 			value: [
 				{ year: 2022, month: 9, day: 2 },
-				{ year: 2022, month: 10, day: 3 }
-			]
+				{ year: 2022, month: 10, day: 3 },
+			],
 		});
 		expect(dateRange).not.toBeNull();
 	});
@@ -75,10 +68,7 @@ describe("DateRange Class", () => {
 	});
 
 	it("should create a date range from arguments", () => {
-		const dateRange = DateRange.from(
-			Date.from({ year: 2022, month: 9, day: 2 }),
-			Date.from({ year: 2022, month: 10, day: 3 })
-		);
+		const dateRange = DateRange.from(Date.from({ year: 2022, month: 9, day: 2 }), Date.from({ year: 2022, month: 10, day: 3 }));
 		expect(dateRange).not.toBeNull();
 	});
 
@@ -88,7 +78,7 @@ describe("DateRange Class", () => {
 				Date.from({
 					year: 2004,
 					month: 10,
-					day: 20
+					day: 20,
 				}),
 				"date" as any
 			);
@@ -96,10 +86,7 @@ describe("DateRange Class", () => {
 	});
 
 	it("should create a date range from array", () => {
-		const dateRange = DateRange.from([
-			Date.from({ year: 2022, month: 9, day: 2 }),
-			Date.from({ year: 2022, month: 10, day: 3 })
-		]);
+		const dateRange = DateRange.from([Date.from({ year: 2022, month: 9, day: 2 }), Date.from({ year: 2022, month: 10, day: 3 })]);
 		expect(dateRange).not.toBeNull();
 	});
 
@@ -109,11 +96,7 @@ describe("DateRange Class", () => {
 		}).toThrow("Invalid DateRange array, too few values");
 
 		expect(() => {
-			DateRange.from([
-				Date.from("2004-10-19"),
-				Date.from("2004-10-19"),
-				Date.from("2004-10-19")
-			] as any);
+			DateRange.from([Date.from("2004-10-19"), Date.from("2004-10-19"), Date.from("2004-10-19")] as any);
 		}).toThrow("Invalid DateRange array, too many values");
 
 		expect(() => {
@@ -133,10 +116,7 @@ describe("DateRange Class", () => {
 			DateRange.isRange({
 				lower: LowerRange.include,
 				upper: UpperRange.exclude,
-				value: [
-					Date.from({ year: 2022, month: 9, day: 2 }),
-					Date.from({ year: 2022, month: 10, day: 3 })
-				]
+				value: [Date.from({ year: 2022, month: 9, day: 2 }), Date.from({ year: 2022, month: 10, day: 3 })],
 			})
 		).toBe(false);
 	});
@@ -162,8 +142,8 @@ describe("DateRange Class", () => {
 			upper: UpperRange.exclude,
 			value: [
 				{ year: 2022, month: 9, day: 2 },
-				{ year: 2022, month: 10, day: 3 }
-			]
+				{ year: 2022, month: 10, day: 3 },
+			],
 		});
 
 		const dateRange2 = DateRange.from("[2022-09-02,2022-10-03]");
@@ -172,8 +152,8 @@ describe("DateRange Class", () => {
 			upper: UpperRange.include,
 			value: [
 				{ year: 2022, month: 9, day: 2 },
-				{ year: 2022, month: 10, day: 3 }
-			]
+				{ year: 2022, month: 10, day: 3 },
+			],
 		});
 
 		const dateRange3 = DateRange.from("(2022-09-02,2022-10-03)");
@@ -182,8 +162,8 @@ describe("DateRange Class", () => {
 			upper: UpperRange.exclude,
 			value: [
 				{ year: 2022, month: 9, day: 2 },
-				{ year: 2022, month: 10, day: 3 }
-			]
+				{ year: 2022, month: 10, day: 3 },
+			],
 		});
 
 		const dateRange4 = DateRange.from("(2022-09-02,2022-10-03]");
@@ -192,31 +172,19 @@ describe("DateRange Class", () => {
 			upper: UpperRange.include,
 			value: [
 				{ year: 2022, month: 9, day: 2 },
-				{ year: 2022, month: 10, day: 3 }
-			]
+				{ year: 2022, month: 10, day: 3 },
+			],
 		});
 	});
 
 	it("equals()", () => {
 		const dateRange = DateRange.from("[2022-09-02,2022-10-03)");
-		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03)"))).toBe(
-			true
-		);
-		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03]"))).toBe(
-			false
-		);
-		expect(
-			dateRange.equals(DateRange.from("[2022-09-02,2022-10-03)").toString())
-		).toBe(true);
-		expect(
-			dateRange.equals(DateRange.from("[2022-09-02,2022-10-03]").toString())
-		).toBe(false);
-		expect(
-			dateRange.equals(DateRange.from("[2022-09-02,2022-10-03)").toJSON())
-		).toBe(true);
-		expect(
-			dateRange.equals(DateRange.from("[2022-09-02,2022-10-03]").toJSON())
-		).toBe(false);
+		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03)"))).toBe(true);
+		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03]"))).toBe(false);
+		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03)").toString())).toBe(true);
+		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03]").toString())).toBe(false);
+		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03)").toJSON())).toBe(true);
+		expect(dateRange.equals(DateRange.from("[2022-09-02,2022-10-03]").toJSON())).toBe(false);
 	});
 
 	it("get lower()", () => {
@@ -243,22 +211,13 @@ describe("DateRange Class", () => {
 
 	it("get value()", () => {
 		const dateRange = DateRange.from("[2022-09-02,2022-10-03)");
-		expect(dateRange.value).toStrictEqual([
-			Date.from({ year: 2022, month: 9, day: 2 }),
-			Date.from({ year: 2022, month: 10, day: 3 })
-		]);
+		expect(dateRange.value).toStrictEqual([Date.from({ year: 2022, month: 9, day: 2 }), Date.from({ year: 2022, month: 10, day: 3 })]);
 	});
 
 	it("set value()", () => {
 		const dateRange = DateRange.from("[2022-09-02,2022-10-03)");
-		dateRange.value = [
-			Date.from({ year: 2022, month: 9, day: 1 }),
-			Date.from({ year: 2022, month: 10, day: 4 })
-		];
-		expect(dateRange.value).toStrictEqual([
-			Date.from({ year: 2022, month: 9, day: 1 }),
-			Date.from({ year: 2022, month: 10, day: 4 })
-		]);
+		dateRange.value = [Date.from({ year: 2022, month: 9, day: 1 }), Date.from({ year: 2022, month: 10, day: 4 })];
+		expect(dateRange.value).toStrictEqual([Date.from({ year: 2022, month: 9, day: 1 }), Date.from({ year: 2022, month: 10, day: 4 })]);
 	});
 
 	it("get empty()", () => {
@@ -311,7 +270,7 @@ describe("DateRange Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "daterange.test.ts"
+			application_name: "daterange.test.ts",
 		});
 
 		await client.connect();
@@ -337,13 +296,8 @@ describe("DateRange Class", () => {
 				SELECT * FROM public.jestdaterange
 			`);
 
-			expect(result.rows[0].daterange).toStrictEqual(
-				DateRange.from("[2022-09-02,2022-10-03)")
-			);
-			expect(result.rows[0]._daterange).toStrictEqual([
-				DateRange.from("[2022-09-02,2022-10-03)"),
-				DateRange.from("[2022-11-03,2022-12-04)")
-			]);
+			expect(result.rows[0].daterange).toStrictEqual(DateRange.from("[2022-09-02,2022-10-03)"));
+			expect(result.rows[0]._daterange).toStrictEqual([DateRange.from("[2022-09-02,2022-10-03)"), DateRange.from("[2022-11-03,2022-12-04)")]);
 		} catch (err) {
 			error = err;
 		}

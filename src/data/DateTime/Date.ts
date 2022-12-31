@@ -42,43 +42,29 @@ interface DateConstructor {
 }
 
 const Date: DateConstructor = {
-	from(
-		arg: string | Date | DateObject | globalThis.Date | DateTime | number,
-		month?: number,
-		day?: number
-	): Date {
+	from(arg: string | Date | DateObject | globalThis.Date | DateTime | number, month?: number, day?: number): Date {
 		if (typeof arg === "string") {
 			if (arg.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) {
 				const [year, month, day] = arg.split("-").map(c => parseInt(c));
 				return new DateClass({
 					year,
 					month,
-					day
+					day,
 				});
 			}
 			throw new Error("Invalid Date string");
 		} else if (Date.isDate(arg)) {
 			const newlyMadeDate = new DateClass(arg.toJSON());
-			if (
-				newlyMadeDate
-					.toString()
-					.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
-			)
-				return newlyMadeDate;
+			if (newlyMadeDate.toString().match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) return newlyMadeDate;
 			throw new Error("Invalid Date class");
 		} else if (typeof arg === "number") {
 			if (typeof month === "number" && typeof day === "number") {
 				const newlyMadeDate = new DateClass({
 					year: arg,
-					month: month,
-					day: day
+					month,
+					day,
 				});
-				if (
-					newlyMadeDate
-						.toString()
-						.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
-				)
-					return newlyMadeDate;
+				if (newlyMadeDate.toString().match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) return newlyMadeDate;
 				throw new Error("Invalid Date array, numbers only");
 			}
 			throw new Error("Invalid Date array, numbers only");
@@ -86,13 +72,13 @@ const Date: DateConstructor = {
 			return new DateClass({
 				year: arg.year,
 				month: arg.month,
-				day: arg.day
+				day: arg.day,
 			});
 		} else if (arg instanceof globalThis.Date) {
 			return new DateClass({
 				year: arg.getFullYear(),
 				month: arg.getMonth() + 1,
-				day: arg.getDate()
+				day: arg.getDate(),
 			});
 		} else {
 			if (
@@ -109,19 +95,15 @@ const Date: DateConstructor = {
 				throw new Error("Invalid Date object");
 
 			const newlyMadeDate = new DateClass(arg);
-			if (
-				newlyMadeDate
-					.toString()
-					.match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)
-			)
-				return newlyMadeDate;
+			if (newlyMadeDate.toString().match(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)) return newlyMadeDate;
 
 			throw new Error("Invalid Date object");
 		}
 	},
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	isDate(obj: any): obj is Date {
 		return obj instanceof DateClass;
-	}
+	},
 };
 
 class DateClass implements Date {
@@ -140,31 +122,21 @@ class DateClass implements Date {
 	}
 
 	toString(): string {
-		return `${this._year}-${this._prefix(this._month)}-${this._prefix(
-			this._day
-		)}`;
+		return `${this._year}-${this._prefix(this._month)}-${this._prefix(this._day)}`;
 	}
 
 	toJSON(): DateObject {
 		return {
 			year: this._year,
 			month: this._month,
-			day: this._day
+			day: this._day,
 		};
 	}
 
 	equals(otherDate: string | Date | DateObject): boolean {
-		if (typeof otherDate === "string") {
-			return otherDate === this.toString();
-		} else if (Date.isDate(otherDate)) {
-			return otherDate.toString() === this.toString();
-		} else {
-			return (
-				otherDate.year === this._year &&
-				otherDate.month === this._month &&
-				otherDate.day === this._day
-			);
-		}
+		if (typeof otherDate === "string") return otherDate === this.toString();
+		else if (Date.isDate(otherDate)) return otherDate.toString() === this.toString();
+		else return otherDate.year === this._year && otherDate.month === this._month && otherDate.day === this._day;
 	}
 
 	get year(): number {
@@ -202,7 +174,7 @@ class DateClass implements Date {
 			{
 				year: this._year,
 				month: this._month,
-				day: this._day
+				day: this._day,
 			},
 			{ zone }
 		);

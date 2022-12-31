@@ -14,9 +14,7 @@ describe("Timestamp Class", () => {
 	});
 
 	it("should error when creating a timestamp from an invalid string", () => {
-		expect(() => Timestamp.from("2004-10-19ABC04:05:06.789")).toThrow(
-			"Invalid Timestamp string"
-		);
+		expect(() => Timestamp.from("2004-10-19ABC04:05:06.789")).toThrow("Invalid Timestamp string");
 	});
 
 	it("should create a timestamp from a object", () => {
@@ -26,7 +24,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp).not.toBeNull();
 	});
@@ -40,7 +38,7 @@ describe("Timestamp Class", () => {
 				day: 19,
 				hour: 4,
 				minute: 5,
-				second: "6"
+				second: "6",
 			} as any)
 		).toThrow("Invalid Timestamp object");
 	});
@@ -51,9 +49,7 @@ describe("Timestamp Class", () => {
 	});
 
 	it("should error when creating a timestamptz from invalid numbers", () => {
-		expect(() => Timestamp.from(2004, 10, 19, 4, 5, "invalid" as any)).toThrow(
-			"Invalid Timestamp array, numbers only"
-		);
+		expect(() => Timestamp.from(2004, 10, 19, 4, 5, "invalid" as any)).toThrow("Invalid Timestamp array, numbers only");
 	});
 
 	it("should create a timestamp from a DateTime", () => {
@@ -65,16 +61,14 @@ describe("Timestamp Class", () => {
 				hour: 10,
 				minute: 23,
 				second: 54,
-				millisecond: 678
+				millisecond: 678,
 			})
 		);
 		expect(timestamp).not.toBeNull();
 	});
 
 	it("should create a timestamp from a JavaScript Date", () => {
-		const timestamp = Timestamp.from(
-			new globalThis.Date(2004, 10, 19, 10, 23, 54.678)
-		);
+		const timestamp = Timestamp.from(new globalThis.Date(2004, 10, 19, 10, 23, 54.678));
 		expect(timestamp).not.toBeNull();
 	});
 
@@ -85,7 +79,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(Timestamp.isTimestamp(timestamp)).toBe(true);
 		expect(
@@ -95,7 +89,7 @@ describe("Timestamp Class", () => {
 				day: 19,
 				hour: 10,
 				minute: 23,
-				second: 54.678
+				second: 54.678,
 			})
 		).toBe(false);
 	});
@@ -107,7 +101,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toString()).toBe("2004-10-19 10:23:54.678");
 	});
@@ -119,7 +113,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toISO()).toBe("2004-10-19T10:23:54.678Z");
 	});
@@ -131,7 +125,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toJSON()).toEqual({
 			year: 2004,
@@ -139,7 +133,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 	});
 
@@ -150,7 +144,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 
 		expect(
@@ -161,7 +155,7 @@ describe("Timestamp Class", () => {
 					day: 19,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				})
 			)
 		).toBe(true);
@@ -173,7 +167,7 @@ describe("Timestamp Class", () => {
 					day: 20,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				})
 			)
 		).toBe(false);
@@ -185,7 +179,7 @@ describe("Timestamp Class", () => {
 					day: 19,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				}).toJSON()
 			)
 		).toBe(true);
@@ -197,7 +191,7 @@ describe("Timestamp Class", () => {
 					day: 20,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				}).toJSON()
 			)
 		).toBe(false);
@@ -209,7 +203,7 @@ describe("Timestamp Class", () => {
 					day: 19,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				}).toString()
 			)
 		).toBe(true);
@@ -221,7 +215,7 @@ describe("Timestamp Class", () => {
 					day: 20,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				}).toString()
 			)
 		).toBe(false);
@@ -234,7 +228,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.year).toBe(2004);
 	});
@@ -246,7 +240,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		timestamp.year = 2005;
 		expect(timestamp.year).toBe(2005);
@@ -259,7 +253,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.month).toBe(10);
 	});
@@ -271,7 +265,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		timestamp.month = 11;
 		expect(timestamp.month).toBe(11);
@@ -284,7 +278,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.day).toBe(19);
 	});
@@ -296,7 +290,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		timestamp.day = 20;
 		expect(timestamp.day).toBe(20);
@@ -309,7 +303,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.hour).toBe(10);
 	});
@@ -321,7 +315,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		timestamp.hour = 12;
 		expect(timestamp.hour).toBe(12);
@@ -334,7 +328,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.minute).toBe(23);
 	});
@@ -346,7 +340,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		timestamp.minute = 10;
 		expect(timestamp.minute).toBe(10);
@@ -359,7 +353,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.second).toBe(54.678);
 	});
@@ -371,7 +365,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		timestamp.second = 3;
 		expect(timestamp.second).toBe(3);
@@ -384,13 +378,13 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toDate()).toEqual(
 			Date.from({
 				year: 2004,
 				month: 10,
-				day: 19
+				day: 19,
 			})
 		);
 	});
@@ -402,13 +396,13 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toTime()).toEqual(
 			Time.from({
 				hour: 10,
 				minute: 23,
-				second: 54.678
+				second: 54.678,
 			})
 		);
 	});
@@ -420,7 +414,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toDateTime()).toStrictEqual(
 			DateTime.fromObject(
@@ -431,7 +425,7 @@ describe("Timestamp Class", () => {
 					hour: 10,
 					minute: 23,
 					second: 54,
-					millisecond: 678
+					millisecond: 678,
 				},
 				{ zone: "local" }
 			)
@@ -445,7 +439,7 @@ describe("Timestamp Class", () => {
 			day: 19,
 			hour: 10,
 			minute: 23,
-			second: 54.678
+			second: 54.678,
 		});
 		expect(timestamp.toJSDate()).toBeInstanceOf(globalThis.Date);
 	});
@@ -457,7 +451,7 @@ describe("Timestamp Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "timestamp.test.ts"
+			application_name: "timestamp.test.ts",
 		});
 
 		await client.connect();
@@ -490,7 +484,7 @@ describe("Timestamp Class", () => {
 					day: 19,
 					hour: 10,
 					minute: 23,
-					second: 54.678
+					second: 54.678,
 				})
 			);
 			expect(result.rows[0]._timestamp).toStrictEqual([
@@ -500,7 +494,7 @@ describe("Timestamp Class", () => {
 					day: 2,
 					hour: 3,
 					minute: 4,
-					second: 5.678
+					second: 5.678,
 				}),
 				Timestamp.from({
 					year: 2022,
@@ -508,8 +502,8 @@ describe("Timestamp Class", () => {
 					day: 8,
 					hour: 7,
 					minute: 6,
-					second: 5
-				})
+					second: 5,
+				}),
 			]);
 		} catch (err) {
 			error = err;

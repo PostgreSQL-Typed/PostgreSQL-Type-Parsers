@@ -38,32 +38,20 @@ const Point: PointConstructor = {
 					.map(c => parseFloat(c));
 				return new PointClass({
 					x,
-					y
+					y,
 				});
 			}
 			throw new Error("Invalid Point string");
-		} else if (Point.isPoint(arg)) {
-			return new PointClass(arg.toJSON());
-		} else if (typeof arg === "number") {
-			if (typeof y === "number") {
-				return new PointClass({ x: arg, y });
-			} else {
-				throw new Error("Invalid Point arguments");
-			}
-		} else {
-			if (
-				"x" in arg &&
-				"y" in arg &&
-				typeof arg.x === "number" &&
-				typeof arg.y === "number"
-			)
-				return new PointClass(arg);
-			else throw new Error("Invalid Point object");
-		}
+		} else if (Point.isPoint(arg)) return new PointClass(arg.toJSON());
+		else if (typeof arg === "number") {
+			if (typeof y === "number") return new PointClass({ x: arg, y });
+			else throw new Error("Invalid Point arguments");
+		} else if ("x" in arg && "y" in arg && typeof arg.x === "number" && typeof arg.y === "number") return new PointClass(arg);
+		else throw new Error("Invalid Point object");
 	},
 	isPoint(obj: any): obj is Point {
 		return obj instanceof PointClass;
-	}
+	},
 };
 
 class PointClass implements Point {
@@ -82,18 +70,14 @@ class PointClass implements Point {
 	toJSON(): PointObject {
 		return {
 			x: this._x,
-			y: this._y
+			y: this._y,
 		};
 	}
 
 	equals(otherPoint: string | Point | PointObject): boolean {
-		if (typeof otherPoint === "string") {
-			return otherPoint === this.toString();
-		} else if (Point.isPoint(otherPoint)) {
-			return otherPoint.toString() === this.toString();
-		} else {
-			return otherPoint.x === this._x && otherPoint.y === this._y;
-		}
+		if (typeof otherPoint === "string") return otherPoint === this.toString();
+		else if (Point.isPoint(otherPoint)) return otherPoint.toString() === this.toString();
+		else return otherPoint.x === this._x && otherPoint.y === this._y;
 	}
 
 	get x(): number {

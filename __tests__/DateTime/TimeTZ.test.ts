@@ -19,12 +19,8 @@ describe("TimeTZ Class", () => {
 
 	it("should error when creating a timetz from an invalid string", () => {
 		expect(() => TimeTZ.from("04:05:06.789")).toThrow("Invalid TimeTZ string");
-		expect(() => TimeTZ.from("04:05:06.789+01:")).toThrow(
-			"Invalid TimeTZ string"
-		);
-		expect(() => TimeTZ.from("04:05:06.789+01:0")).toThrow(
-			"Invalid TimeTZ string"
-		);
+		expect(() => TimeTZ.from("04:05:06.789+01:")).toThrow("Invalid TimeTZ string");
+		expect(() => TimeTZ.from("04:05:06.789+01:0")).toThrow("Invalid TimeTZ string");
 	});
 
 	it("should create a timetz from a object", () => {
@@ -35,8 +31,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timetz1).not.toBeNull();
 		const timetz2 = TimeTZ.from({
@@ -46,8 +42,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz2).not.toBeNull();
 	});
@@ -62,8 +58,8 @@ describe("TimeTZ Class", () => {
 				offset: {
 					hour: 1,
 					minute: 0,
-					direction: "invalid"
-				}
+					direction: "invalid",
+				},
 			} as any)
 		).toThrow("Invalid TimeTZ object");
 	});
@@ -76,12 +72,8 @@ describe("TimeTZ Class", () => {
 	});
 
 	it("should error when creating a timetz from invalid numbers", () => {
-		expect(() => TimeTZ.from(4, 5, 6, 1, 0, "invalid" as any)).toThrow(
-			"Invalid TimeTZ array, numbers and OffsetDirection"
-		);
-		expect(() => TimeTZ.from(4, 5, "number" as any, 1, 0, "minus")).toThrow(
-			"Invalid TimeTZ array, numbers and OffsetDirection"
-		);
+		expect(() => TimeTZ.from(4, 5, 6, 1, 0, "invalid" as any)).toThrow("Invalid TimeTZ array, numbers and OffsetDirection");
+		expect(() => TimeTZ.from(4, 5, "number" as any, 1, 0, "minus")).toThrow("Invalid TimeTZ array, numbers and OffsetDirection");
 	});
 
 	it("should create a timetz from a DateTime", () => {
@@ -90,7 +82,7 @@ describe("TimeTZ Class", () => {
 				hour: 4,
 				minute: 5,
 				second: 6,
-				millisecond: 789
+				millisecond: 789,
 			}).setZone("America/New_York")
 		);
 		expect(timetz).not.toBeNull();
@@ -112,8 +104,8 @@ describe("TimeTZ Class", () => {
 				offset: {
 					hour: 1,
 					minute: 0,
-					direction: "minus"
-				}
+					direction: "minus",
+				},
 			})
 		).toBe(false);
 	});
@@ -126,8 +118,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.toString()).toBe("04:05:06-01:00");
 	});
@@ -140,8 +132,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.toJSON()).toEqual({
 			hour: 4,
@@ -150,8 +142,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 	});
 
@@ -163,8 +155,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 
 		expect(
@@ -176,8 +168,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				})
 			)
 		).toBe(true);
@@ -190,8 +182,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				})
 			)
 		).toBe(false);
@@ -204,8 +196,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				}).toJSON()
 			)
 		).toBe(true);
@@ -218,8 +210,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				}).toJSON()
 			)
 		).toBe(false);
@@ -232,8 +224,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				}).toString()
 			)
 		).toBe(true);
@@ -246,8 +238,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				}).toString()
 			)
 		).toBe(false);
@@ -260,8 +252,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				})
 			)
 		).toBe(true);
@@ -274,8 +266,8 @@ describe("TimeTZ Class", () => {
 					offset: {
 						hour: 2,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				})
 			)
 		).toBe(false);
@@ -289,8 +281,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.hour).toBe(4);
 	});
@@ -303,8 +295,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		timetz.hour = 12;
 		expect(timetz.hour).toBe(12);
@@ -318,8 +310,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.minute).toBe(5);
 	});
@@ -332,8 +324,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		timetz.minute = 10;
 		expect(timetz.minute).toBe(10);
@@ -347,8 +339,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.second).toBe(6.123);
 	});
@@ -361,8 +353,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		timetz.second = 3;
 		expect(timetz.second).toBe(3);
@@ -376,13 +368,13 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.offset).toEqual({
 			hour: 1,
 			minute: 0,
-			direction: "minus"
+			direction: "minus",
 		});
 	});
 
@@ -394,18 +386,18 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		timetz.offset = {
 			hour: 2,
 			minute: 0,
-			direction: "plus"
+			direction: "plus",
 		};
 		expect(timetz.offset).toEqual({
 			hour: 2,
 			minute: 0,
-			direction: "plus"
+			direction: "plus",
 		});
 	});
 
@@ -417,12 +409,10 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
-		expect(timetz.toDateTime()).toStrictEqual(
-			DateTime.fromISO(`${DateTime.now().toISODate()}T04:05:06-01:00`)
-		);
+		expect(timetz.toDateTime()).toStrictEqual(DateTime.fromISO(`${DateTime.now().toISODate()}T04:05:06-01:00`));
 	});
 
 	it("toJSDate()", () => {
@@ -433,8 +423,8 @@ describe("TimeTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timetz.toJSDate()).toBeInstanceOf(globalThis.Date);
 	});
@@ -446,7 +436,7 @@ describe("TimeTZ Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "timetz.test.ts"
+			application_name: "timetz.test.ts",
 		});
 
 		await client.connect();
@@ -472,13 +462,8 @@ describe("TimeTZ Class", () => {
 				SELECT * FROM public.jesttimetz
 			`);
 
-			expect(result.rows[0].timetz).toStrictEqual(
-				TimeTZ.from("04:05:06.789-01:00")
-			);
-			expect(result.rows[0]._timetz).toStrictEqual([
-				TimeTZ.from("01:02:03.456+08:00"),
-				TimeTZ.from("04:05:06.789 EST")
-			]);
+			expect(result.rows[0].timetz).toStrictEqual(TimeTZ.from("04:05:06.789-01:00"));
+			expect(result.rows[0]._timetz).toStrictEqual([TimeTZ.from("01:02:03.456+08:00"), TimeTZ.from("04:05:06.789 EST")]);
 		} catch (err) {
 			error = err;
 		}

@@ -46,17 +46,14 @@ const IPAddress: IPAddressConstructor = {
 	from(arg: string | IPAddress | IPAddressObject): IPAddress {
 		if (typeof arg === "string") {
 			return new IPAddressClass({
-				IPAddress: arg
+				IPAddress: arg,
 			});
-		} else if (IPAddress.isIPAddresss(arg)) {
-			return new IPAddressClass(arg.toJSON());
-		} else {
-			return new IPAddressClass(arg);
-		}
+		} else if (IPAddress.isIPAddresss(arg)) return new IPAddressClass(arg.toJSON());
+		else return new IPAddressClass(arg);
 	},
 	isIPAddresss(obj: any): obj is IPAddress {
 		return obj instanceof IPAddressClass;
-	}
+	},
 };
 
 class IPAddressClass implements IPAddress {
@@ -80,21 +77,13 @@ class IPAddressClass implements IPAddress {
 
 	toJSON(): IPAddressObject {
 		return {
-			IPAddress: this._IPAddress.address
+			IPAddress: this._IPAddress.address,
 		};
 	}
 
 	equals(otherIPAddress: string | IPAddress | IPAddressObject): boolean {
-		if (typeof otherIPAddress === "string") {
-			return (
-				otherIPAddress.toLowerCase() === this._IPAddress.address.toLowerCase()
-			);
-		} else {
-			return (
-				otherIPAddress.IPAddress.toLowerCase() ===
-				this._IPAddress.address.toLowerCase()
-			);
-		}
+		if (typeof otherIPAddress === "string") return otherIPAddress.toLowerCase() === this._IPAddress.address.toLowerCase();
+		else return otherIPAddress.IPAddress.toLowerCase() === this._IPAddress.address.toLowerCase();
 	}
 
 	get IPAddress(): string {

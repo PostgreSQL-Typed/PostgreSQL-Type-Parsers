@@ -45,7 +45,7 @@ describe("Point Class", () => {
 		const point = Point.from({ x: 1, y: 2 });
 		expect(point.toJSON()).toEqual({
 			x: 1,
-			y: 2
+			y: 2,
 		});
 	});
 
@@ -89,7 +89,7 @@ describe("Point Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "point.test.ts"
+			application_name: "point.test.ts",
 		});
 
 		await client.connect();
@@ -116,10 +116,7 @@ describe("Point Class", () => {
 			`);
 
 			expect(result.rows[0].point).toStrictEqual(Point.from({ x: 1, y: 2 }));
-			expect(result.rows[0]._point).toStrictEqual([
-				Point.from({ x: 1.1, y: 2.2 }),
-				Point.from({ x: 3.3, y: 4.4 })
-			]);
+			expect(result.rows[0]._point).toStrictEqual([Point.from({ x: 1.1, y: 2.2 }), Point.from({ x: 3.3, y: 4.4 })]);
 		} catch (err) {
 			error = err;
 		}

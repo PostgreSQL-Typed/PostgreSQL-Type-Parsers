@@ -14,7 +14,7 @@ describe("Polygon Class", () => {
 
 	it("should create a polygon from a object", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
 		expect(polygon).not.toBeNull();
 	});
@@ -22,7 +22,7 @@ describe("Polygon Class", () => {
 	it("should error when creating a polygon from an invalid object", () => {
 		expect(() =>
 			Polygon.from({
-				points: []
+				points: [],
 			})
 		).toThrow("Invalid Polygon object, too few points");
 	});
@@ -31,8 +31,8 @@ describe("Polygon Class", () => {
 		const polygon = Polygon.from({
 			points: [
 				{ x: 1, y: 2 },
-				{ x: 3, y: 4 }
-			]
+				{ x: 3, y: 4 },
+			],
 		});
 		expect(polygon).not.toBeNull();
 	});
@@ -40,7 +40,7 @@ describe("Polygon Class", () => {
 	it("should error when creating a polygon from an invalid raw object", () => {
 		expect(() =>
 			Polygon.from({
-				points: []
+				points: [],
 			})
 		).toThrow("Invalid Polygon object, too few points");
 	});
@@ -51,12 +51,8 @@ describe("Polygon Class", () => {
 	});
 
 	it('should error when creating a polygon from an invalid "points" array', () => {
-		expect(() => Polygon.from([])).toThrow(
-			"Invalid Polygon array, too few points"
-		);
-		expect(() => Polygon.from([Point.from(1, 2), "a" as any])).toThrow(
-			"Invalid Polygon array, invalid points"
-		);
+		expect(() => Polygon.from([])).toThrow("Invalid Polygon array, too few points");
+		expect(() => Polygon.from([Point.from(1, 2), "a" as any])).toThrow("Invalid Polygon array, invalid points");
 	});
 
 	it("should create a polygon from points", () => {
@@ -65,116 +61,104 @@ describe("Polygon Class", () => {
 	});
 
 	it('should error when creating a polygon from an invalid "points" array', () => {
-		expect(() => Polygon.from(Point.from(1, 2), "a" as any)).toThrow(
-			"Invalid Polygon array, invalid points"
-		);
+		expect(() => Polygon.from(Point.from(1, 2), "a" as any)).toThrow("Invalid Polygon array, invalid points");
 	});
 
 	it("isPolygon()", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
 		expect(Polygon.isPolygon(polygon)).toBe(true);
 		expect(
 			Polygon.isPolygon({
-				points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+				points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 			})
 		).toBe(false);
 	});
 
 	it("toString()", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
 		expect(polygon.toString()).toBe("((1,2),(3,4))");
 	});
 
 	it("toJSON()", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
 		expect(polygon.toJSON()).toEqual({
 			points: [
 				{ x: 1, y: 2 },
-				{ x: 3, y: 4 }
-			]
+				{ x: 3, y: 4 },
+			],
 		});
 	});
 
 	it("equals()", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
 
 		expect(
 			polygon.equals(
 				Polygon.from({
-					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 				})
 			)
 		).toBe(true);
 		expect(
 			polygon.equals(
 				Polygon.from({
-					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })]
+					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })],
 				})
 			)
 		).toBe(false);
 		expect(
 			polygon.equals(
 				Polygon.from({
-					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 				}).toJSON()
 			)
 		).toBe(true);
 		expect(
 			polygon.equals(
 				Polygon.from({
-					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })]
+					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })],
 				}).toJSON()
 			)
 		).toBe(false);
 		expect(
 			polygon.equals(
 				Polygon.from({
-					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 				}).toString()
 			)
 		).toBe(true);
 		expect(
 			polygon.equals(
 				Polygon.from({
-					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })]
+					points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })],
 				}).toString()
 			)
 		).toBe(false);
-		expect(
-			polygon.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })])
-		).toBe(true);
-		expect(
-			polygon.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })])
-		).toBe(false);
+		expect(polygon.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })])).toBe(true);
+		expect(polygon.equals([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })])).toBe(false);
 	});
 
 	it("get points", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
-		expect(polygon.points).toStrictEqual([
-			Point.from({ x: 1, y: 2 }),
-			Point.from({ x: 3, y: 4 })
-		]);
+		expect(polygon.points).toStrictEqual([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]);
 	});
 
 	it("set points", () => {
 		const polygon = Polygon.from({
-			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })]
+			points: [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 4 })],
 		});
 		polygon.points = [Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })];
-		expect(polygon.points).toStrictEqual([
-			Point.from({ x: 1, y: 2 }),
-			Point.from({ x: 3, y: 5 })
-		]);
+		expect(polygon.points).toStrictEqual([Point.from({ x: 1, y: 2 }), Point.from({ x: 3, y: 5 })]);
 	});
 
 	it("should be returned from PostgreSQL", async () => {
@@ -184,7 +168,7 @@ describe("Polygon Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "polygon.test.ts"
+			application_name: "polygon.test.ts",
 		});
 
 		await client.connect();
@@ -212,25 +196,16 @@ describe("Polygon Class", () => {
 
 			expect(result.rows[0].polygon).toStrictEqual(
 				Polygon.from({
-					points: [
-						Point.from({ x: 1.1, y: 2.2 }),
-						Point.from({ x: 3.3, y: 4.4 })
-					]
+					points: [Point.from({ x: 1.1, y: 2.2 }), Point.from({ x: 3.3, y: 4.4 })],
 				})
 			);
 			expect(result.rows[0]._polygon).toStrictEqual([
 				Polygon.from({
-					points: [
-						Point.from({ x: 1.1, y: 2.2 }),
-						Point.from({ x: 3.3, y: 4.4 })
-					]
+					points: [Point.from({ x: 1.1, y: 2.2 }), Point.from({ x: 3.3, y: 4.4 })],
 				}),
 				Polygon.from({
-					points: [
-						Point.from({ x: 5.5, y: 6.6 }),
-						Point.from({ x: 7.7, y: 8.8 })
-					]
-				})
+					points: [Point.from({ x: 5.5, y: 6.6 }), Point.from({ x: 7.7, y: 8.8 })],
+				}),
 			]);
 		} catch (err) {
 			error = err;

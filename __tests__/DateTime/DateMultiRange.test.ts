@@ -4,27 +4,19 @@ import { DateMultiRange, DateRange, LowerRange, UpperRange } from "../../src";
 
 describe("DateMultiRange Class", () => {
 	it("should create a date multi range from a string", () => {
-		const dateMultiRange = DateMultiRange.from(
-			"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"
-		);
+		const dateMultiRange = DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}");
 		expect(dateMultiRange).not.toBeNull();
 	});
 
 	it("should error when creating a date multi range from an invalid string", () => {
 		expect(() => {
-			DateMultiRange.from(
-				"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)"
-			);
+			DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)");
 		}).toThrow("Invalid DateMultiRange string");
 	});
 
 	it("should create a date multi range from a object", () => {
 		const dateMultiRange = DateMultiRange.from({
-			ranges: [
-				DateRange.from("[1999-01-08,2022-01-01)"),
-				DateRange.from("[2023-01-08,2024-01-01)"),
-				DateRange.from("[2025-01-08,2026-01-01)")
-			]
+			ranges: [DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-01)"), DateRange.from("[2025-01-08,2026-01-01)")],
 		});
 		expect(dateMultiRange).not.toBeNull();
 	});
@@ -43,26 +35,26 @@ describe("DateMultiRange Class", () => {
 					upper: UpperRange.exclude,
 					value: [
 						{ year: 1999, month: 1, day: 8 },
-						{ year: 2022, month: 1, day: 1 }
-					]
+						{ year: 2022, month: 1, day: 1 },
+					],
 				},
 				{
 					lower: "(",
 					upper: "]",
 					value: [
 						{ year: 2023, month: 1, day: 8 },
-						{ year: 2024, month: 1, day: 1 }
-					]
+						{ year: 2024, month: 1, day: 1 },
+					],
 				},
 				{
 					lower: LowerRange.include,
 					upper: "]",
 					value: [
 						{ year: 2025, month: 1, day: 8 },
-						{ year: 2026, month: 1, day: 1 }
-					]
-				}
-			]
+						{ year: 2026, month: 1, day: 1 },
+					],
+				},
+			],
 		});
 		expect(dateMultiRange).not.toBeNull();
 	});
@@ -70,7 +62,7 @@ describe("DateMultiRange Class", () => {
 	it("should error when creating a date multi range from an invalid raw object", () => {
 		expect(() => {
 			DateMultiRange.from({
-				ranges: ["range1", "range2"]
+				ranges: ["range1", "range2"],
 			} as any);
 		}).toThrow("Invalid DateMultiRange object");
 	});
@@ -79,7 +71,7 @@ describe("DateMultiRange Class", () => {
 		const dateMultiRange = DateMultiRange.from([
 			DateRange.from("[1999-01-08,2022-01-01)"),
 			DateRange.from("[2023-01-08,2024-01-01)"),
-			DateRange.from("[2025-01-08,2026-01-01)")
+			DateRange.from("[2025-01-08,2026-01-01)"),
 		]);
 		expect(dateMultiRange).not.toBeNull();
 	});
@@ -101,10 +93,7 @@ describe("DateMultiRange Class", () => {
 
 	it("should error when creating a date multi range from invalid date ranges", () => {
 		expect(() => {
-			DateMultiRange.from(
-				DateRange.from("[1999-01-08,2022-01-01)"),
-				"range2" as any
-			);
+			DateMultiRange.from(DateRange.from("[1999-01-08,2022-01-01)"), "range2" as any);
 		}).toThrow("Invalid DateMultiRange array, invalid DateRanges");
 	});
 
@@ -117,11 +106,7 @@ describe("DateMultiRange Class", () => {
 		expect(DateMultiRange.isMultiRange(dateMultiRange)).toBe(true);
 		expect(
 			DateMultiRange.isMultiRange({
-				ranges: [
-					DateRange.from("[1999-01-08,2022-01-01)"),
-					DateRange.from("[2023-01-08,2024-01-01)"),
-					DateRange.from("[2025-01-08,2026-01-01)")
-				]
+				ranges: [DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-01)"), DateRange.from("[2025-01-08,2026-01-01)")],
 			})
 		).toBe(false);
 	});
@@ -132,9 +117,7 @@ describe("DateMultiRange Class", () => {
 			DateRange.from("[2023-01-08,2024-01-01)"),
 			DateRange.from("[2025-01-08,2026-01-01)")
 		);
-		expect(dateMultiRange.toString()).toBe(
-			"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"
-		);
+		expect(dateMultiRange.toString()).toBe("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}");
 	});
 
 	it("toJSON()", () => {
@@ -150,26 +133,26 @@ describe("DateMultiRange Class", () => {
 					upper: ")",
 					value: [
 						{ year: 1999, month: 1, day: 8 },
-						{ year: 2022, month: 1, day: 1 }
-					]
+						{ year: 2022, month: 1, day: 1 },
+					],
 				},
 				{
 					lower: "[",
 					upper: ")",
 					value: [
 						{ year: 2023, month: 1, day: 8 },
-						{ year: 2024, month: 1, day: 1 }
-					]
+						{ year: 2024, month: 1, day: 1 },
+					],
 				},
 				{
 					lower: "[",
 					upper: ")",
 					value: [
 						{ year: 2025, month: 1, day: 8 },
-						{ year: 2026, month: 1, day: 1 }
-					]
-				}
-			]
+						{ year: 2026, month: 1, day: 1 },
+					],
+				},
+			],
 		});
 	});
 
@@ -180,61 +163,17 @@ describe("DateMultiRange Class", () => {
 			DateRange.from("[2025-01-08,2026-01-01)")
 		);
 
+		expect(dateMultiRange.equals(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"))).toBe(true);
+		expect(dateMultiRange.equals(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-02),[2025-01-08,2026-01-01)}"))).toBe(false);
+		expect(dateMultiRange.equals(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}").toJSON())).toBe(true);
+		expect(dateMultiRange.equals(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-02),[2025-01-08,2026-01-01)}").toJSON())).toBe(false);
+		expect(dateMultiRange.equals(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}").toString())).toBe(true);
+		expect(dateMultiRange.equals(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-02),[2025-01-08,2026-01-01)}").toString())).toBe(false);
 		expect(
-			dateMultiRange.equals(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"
-				)
-			)
+			dateMultiRange.equals([DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-01)"), DateRange.from("[2025-01-08,2026-01-01)")])
 		).toBe(true);
 		expect(
-			dateMultiRange.equals(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-02),[2025-01-08,2026-01-01)}"
-				)
-			)
-		).toBe(false);
-		expect(
-			dateMultiRange.equals(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"
-				).toJSON()
-			)
-		).toBe(true);
-		expect(
-			dateMultiRange.equals(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-02),[2025-01-08,2026-01-01)}"
-				).toJSON()
-			)
-		).toBe(false);
-		expect(
-			dateMultiRange.equals(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"
-				).toString()
-			)
-		).toBe(true);
-		expect(
-			dateMultiRange.equals(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-02),[2025-01-08,2026-01-01)}"
-				).toString()
-			)
-		).toBe(false);
-		expect(
-			dateMultiRange.equals([
-				DateRange.from("[1999-01-08,2022-01-01)"),
-				DateRange.from("[2023-01-08,2024-01-01)"),
-				DateRange.from("[2025-01-08,2026-01-01)")
-			])
-		).toBe(true);
-		expect(
-			dateMultiRange.equals([
-				DateRange.from("[1999-01-08,2022-01-01)"),
-				DateRange.from("[2023-01-08,2024-01-02)"),
-				DateRange.from("[2025-01-08,2026-01-01)")
-			])
+			dateMultiRange.equals([DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-02)"), DateRange.from("[2025-01-08,2026-01-01)")])
 		).toBe(false);
 	});
 
@@ -247,7 +186,7 @@ describe("DateMultiRange Class", () => {
 		expect(dateMultiRange.ranges).toEqual([
 			DateRange.from("[1999-01-08,2022-01-01)"),
 			DateRange.from("[2023-01-08,2024-01-01)"),
-			DateRange.from("[2025-01-08,2026-01-01)")
+			DateRange.from("[2025-01-08,2026-01-01)"),
 		]);
 	});
 
@@ -257,15 +196,11 @@ describe("DateMultiRange Class", () => {
 			DateRange.from("[2023-01-08,2024-01-01)"),
 			DateRange.from("[2025-01-08,2026-01-01)")
 		);
-		dateMultiRange.ranges = [
-			DateRange.from("[1999-01-08,2022-01-01)"),
-			DateRange.from("[2023-01-08,2024-01-02)"),
-			DateRange.from("[2025-01-08,2026-01-01)")
-		];
+		dateMultiRange.ranges = [DateRange.from("[1999-01-08,2022-01-01)"), DateRange.from("[2023-01-08,2024-01-02)"), DateRange.from("[2025-01-08,2026-01-01)")];
 		expect(dateMultiRange.ranges).toEqual([
 			DateRange.from("[1999-01-08,2022-01-01)"),
 			DateRange.from("[2023-01-08,2024-01-02)"),
-			DateRange.from("[2025-01-08,2026-01-01)")
+			DateRange.from("[2025-01-08,2026-01-01)"),
 		]);
 	});
 
@@ -276,7 +211,7 @@ describe("DateMultiRange Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "datemultirange.test.ts"
+			application_name: "datemultirange.test.ts",
 		});
 
 		await client.connect();
@@ -302,16 +237,10 @@ describe("DateMultiRange Class", () => {
 				SELECT * FROM public.jestdatemultirange
 			`);
 
-			expect(result.rows[0].datemultirange).toStrictEqual(
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"
-				)
-			);
+			expect(result.rows[0].datemultirange).toStrictEqual(DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01),[2025-01-08,2026-01-01)}"));
 			expect(result.rows[0]._datemultirange).toStrictEqual([
-				DateMultiRange.from(
-					"{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01)}"
-				),
-				DateMultiRange.from("{[2025-01-08,2026-01-01),[2027-01-08,2028-01-01)}")
+				DateMultiRange.from("{[1999-01-08,2022-01-01),[2023-01-08,2024-01-01)}"),
+				DateMultiRange.from("{[2025-01-08,2026-01-01),[2027-01-08,2028-01-01)}"),
 			]);
 		} catch (err) {
 			error = err;

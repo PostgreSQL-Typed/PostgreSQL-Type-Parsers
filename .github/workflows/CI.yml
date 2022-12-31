@@ -34,5 +34,7 @@ jobs:
         run: pnpm i --frozen-lockfile
       - name: Build package
         run: pnpm build
+      - name: Run linter
+        run: pnpm lint:ci
       - name: Run tests
         run: pnpm test:ci

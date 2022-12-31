@@ -31,11 +31,7 @@ interface CircleConstructor {
 }
 
 const Circle: CircleConstructor = {
-	from(
-		arg: string | Circle | CircleObject | number,
-		y?: number,
-		radius?: number
-	): Circle {
+	from(arg: string | Circle | CircleObject | number, y?: number, radius?: number): Circle {
 		if (typeof arg === "string") {
 			if (arg.match(/^<\(\d+(\.\d+)?,\d+(\.\d+)?\),\d+(\.\d+)?>$/)) {
 				const [x, y, radius] = arg
@@ -45,31 +41,23 @@ const Circle: CircleConstructor = {
 				return new CircleClass({
 					x,
 					y,
-					radius
+					radius,
 				});
 			}
 			throw new Error("Invalid Circle string");
-		} else if (Circle.isCircle(arg)) {
-			return new CircleClass(arg.toJSON());
-		} else if (typeof arg === "number") {
-			if (typeof y === "number" && typeof radius === "number") {
-				return new CircleClass({ x: arg, y, radius });
-			} else {
-				throw new Error("Invalid Circle array, invalid numbers");
-			}
+		} else if (Circle.isCircle(arg)) return new CircleClass(arg.toJSON());
+		else if (typeof arg === "number") {
+			if (typeof y === "number" && typeof radius === "number") return new CircleClass({ x: arg, y, radius });
+			else throw new Error("Invalid Circle array, invalid numbers");
 		} else {
-			if (
-				!("x" in arg && typeof arg.x === "number") ||
-				!("y" in arg && typeof arg.y === "number") ||
-				!("radius" in arg && typeof arg.radius === "number")
-			)
+			if (!("x" in arg && typeof arg.x === "number") || !("y" in arg && typeof arg.y === "number") || !("radius" in arg && typeof arg.radius === "number"))
 				throw new Error("Invalid Circle object");
 			return new CircleClass(arg);
 		}
 	},
 	isCircle(obj: any): obj is Circle {
 		return obj instanceof CircleClass;
-	}
+	},
 };
 
 class CircleClass implements Circle {
@@ -91,22 +79,14 @@ class CircleClass implements Circle {
 		return {
 			x: this._x,
 			y: this._y,
-			radius: this._radius
+			radius: this._radius,
 		};
 	}
 
 	equals(otherCircle: string | Circle | CircleObject): boolean {
-		if (typeof otherCircle === "string") {
-			return otherCircle === this.toString();
-		} else if (Circle.isCircle(otherCircle)) {
-			return otherCircle.toString() === this.toString();
-		} else {
-			return (
-				otherCircle.x === this._x &&
-				otherCircle.y === this._y &&
-				otherCircle.radius === this._radius
-			);
-		}
+		if (typeof otherCircle === "string") return otherCircle === this.toString();
+		else if (Circle.isCircle(otherCircle)) return otherCircle.toString() === this.toString();
+		else return otherCircle.x === this._x && otherCircle.y === this._y && otherCircle.radius === this._radius;
 	}
 
 	get x(): number {

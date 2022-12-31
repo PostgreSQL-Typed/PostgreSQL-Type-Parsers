@@ -15,35 +15,31 @@ describe("LineSegment Class", () => {
 	it("should create a line segment from a object", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		expect(segment).not.toBeNull();
 	});
 
 	it("should error when creating a line segment from an invalid object", () => {
-		expect(() => LineSegment.from({} as any)).toThrow(
-			"Invalid LineSegment object"
-		);
+		expect(() => LineSegment.from({} as any)).toThrow("Invalid LineSegment object");
 	});
 
 	it("should create a line segment from a raw object", () => {
 		const segment = LineSegment.from({
 			a: {
 				x: 1,
-				y: 2
+				y: 2,
 			},
 			b: {
 				x: 3,
-				y: 4
-			}
+				y: 4,
+			},
 		});
 		expect(segment).not.toBeNull();
 	});
 
 	it("should error when creating a line segment from an invalid raw object", () => {
-		expect(() => LineSegment.from({} as any)).toThrow(
-			"Invalid LineSegment object"
-		);
+		expect(() => LineSegment.from({} as any)).toThrow("Invalid LineSegment object");
 	});
 
 	it("should create a line segment from points", () => {
@@ -52,26 +48,22 @@ describe("LineSegment Class", () => {
 	});
 
 	it("should error when creating a line segment from invalid points", () => {
-		expect(() => LineSegment.from(Point.from(1, 2), {} as any)).toThrow(
-			"Invalid LineSegment array, invalid points"
-		);
+		expect(() => LineSegment.from(Point.from(1, 2), {} as any)).toThrow("Invalid LineSegment array, invalid points");
 	});
 
 	it("isLineSegment()", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		expect(LineSegment.isLineSegment(segment)).toStrictEqual(true);
-		expect(
-			LineSegment.isLineSegment({ a: Point.from(1, 2), b: Point.from(3, 4) })
-		).toStrictEqual(false);
+		expect(LineSegment.isLineSegment({ a: Point.from(1, 2), b: Point.from(3, 4) })).toStrictEqual(false);
 	});
 
 	it("toString()", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		expect(segment.toString()).toStrictEqual("[(1,2),(3,4)]");
 	});
@@ -79,31 +71,31 @@ describe("LineSegment Class", () => {
 	it("toJSON()", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		expect(segment.toJSON()).toEqual({
 			a: {
 				x: 1,
-				y: 2
+				y: 2,
 			},
 			b: {
 				x: 3,
-				y: 4
-			}
+				y: 4,
+			},
 		});
 	});
 
 	it("equals()", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 
 		expect(
 			segment.equals(
 				LineSegment.from({
 					a: Point.from(1, 2),
-					b: Point.from(3, 4)
+					b: Point.from(3, 4),
 				})
 			)
 		).toStrictEqual(true);
@@ -111,7 +103,7 @@ describe("LineSegment Class", () => {
 			segment.equals(
 				LineSegment.from({
 					a: Point.from(1, 2),
-					b: Point.from(3, 5)
+					b: Point.from(3, 5),
 				})
 			)
 		).toStrictEqual(false);
@@ -119,7 +111,7 @@ describe("LineSegment Class", () => {
 			segment.equals(
 				LineSegment.from({
 					a: Point.from(1, 2),
-					b: Point.from(3, 4)
+					b: Point.from(3, 4),
 				}).toJSON()
 			)
 		).toStrictEqual(true);
@@ -127,7 +119,7 @@ describe("LineSegment Class", () => {
 			segment.equals(
 				LineSegment.from({
 					a: Point.from(1, 2),
-					b: Point.from(3, 5)
+					b: Point.from(3, 5),
 				}).toJSON()
 			)
 		).toStrictEqual(false);
@@ -135,7 +127,7 @@ describe("LineSegment Class", () => {
 			segment.equals(
 				LineSegment.from({
 					a: Point.from(1, 2),
-					b: Point.from(3, 4)
+					b: Point.from(3, 4),
 				}).toString()
 			)
 		).toStrictEqual(true);
@@ -143,7 +135,7 @@ describe("LineSegment Class", () => {
 			segment.equals(
 				LineSegment.from({
 					a: Point.from(1, 2),
-					b: Point.from(3, 5)
+					b: Point.from(3, 5),
 				}).toString()
 			)
 		).toStrictEqual(false);
@@ -152,7 +144,7 @@ describe("LineSegment Class", () => {
 	it("get a", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		expect(segment.a).toStrictEqual(Point.from(1, 2));
 	});
@@ -160,7 +152,7 @@ describe("LineSegment Class", () => {
 	it("get b", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		expect(segment.b).toStrictEqual(Point.from(3, 4));
 	});
@@ -168,7 +160,7 @@ describe("LineSegment Class", () => {
 	it("set a", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		segment.a = Point.from(5, 6);
 		expect(segment.a).toStrictEqual(Point.from(5, 6));
@@ -177,7 +169,7 @@ describe("LineSegment Class", () => {
 	it("set b", () => {
 		const segment = LineSegment.from({
 			a: Point.from(1, 2),
-			b: Point.from(3, 4)
+			b: Point.from(3, 4),
 		});
 		segment.b = Point.from(7, 8);
 		expect(segment.b).toStrictEqual(Point.from(7, 8));
@@ -190,7 +182,7 @@ describe("LineSegment Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "point.test.ts"
+			application_name: "point.test.ts",
 		});
 
 		await client.connect();
@@ -219,18 +211,18 @@ describe("LineSegment Class", () => {
 			expect(result.rows[0].lseg).toStrictEqual(
 				LineSegment.from({
 					a: Point.from(1.1, 2.2),
-					b: Point.from(3.3, 4.4)
+					b: Point.from(3.3, 4.4),
 				})
 			);
 			expect(result.rows[0]._lseg).toStrictEqual([
 				LineSegment.from({
 					a: Point.from(1.1, 2.2),
-					b: Point.from(3.3, 4.4)
+					b: Point.from(3.3, 4.4),
 				}),
 				LineSegment.from({
 					a: Point.from(5.5, 6.6),
-					b: Point.from(7.7, 8.8)
-				})
+					b: Point.from(7.7, 8.8),
+				}),
 			]);
 		} catch (err) {
 			error = err;

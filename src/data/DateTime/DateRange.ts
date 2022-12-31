@@ -12,10 +12,7 @@ type RawDateRangeObject = RawRangeObject<DateObject>;
 
 type DateRange = Range<Date, DateObject>;
 
-const DateRange: RangeConstructor<Date, DateObject> = getRange<
-	Date,
-	DateObject
->(Date, Date.isDate, "DateRange");
+const DateRange: RangeConstructor<Date, DateObject> = getRange<Date, DateObject>(Date, Date.isDate, "DateRange");
 
 types.setTypeParser(DataType.daterange as any, parser(DateRange));
 types.setTypeParser(DataType._daterange as any, arrayParser(DateRange));

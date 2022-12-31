@@ -1,5 +1,5 @@
 export enum OffsetDirection {
 	plus = "plus",
-	minus = "minus"
+	minus = "minus",
 }
 export type OffsetDirectionType = "plus" | "minus";

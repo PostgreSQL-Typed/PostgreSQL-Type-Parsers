@@ -24,9 +24,4 @@ export * from "./data/UUID/UUID";
 export * from "./types/IPType";
 export * from "./types/Offset";
 export * from "./types/OffsetDirection";
-export {
-	LowerRange,
-	LowerRangeType,
-	UpperRange,
-	UpperRangeType
-} from "./util/Range";
+export { LowerRange, LowerRangeType, UpperRange, UpperRangeType } from "./util/Range";

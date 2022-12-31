@@ -3,7 +3,7 @@ import { ObjectFunction } from "../types/ObjectFunction";
 
 enum LowerRange {
 	include = "[",
-	exclude = "("
+	exclude = "(",
 }
 type LowerRangeType = "[" | "(";
 
@@ -11,7 +11,7 @@ const lowerRange = ["[", "("];
 
 enum UpperRange {
 	include = "]",
-	exclude = ")"
+	exclude = ")",
 }
 type UpperRangeType = "]" | ")";
 
@@ -32,14 +32,7 @@ interface RawRangeObject<DataTypeObject> {
 interface Range<DataType, DataTypeObject> {
 	toString(): string;
 	toJSON(): RawRangeObject<DataTypeObject>;
-	equals(
-		otherRange:
-			| string
-			| Range<DataType, DataTypeObject>
-			| RangeObject<DataType>
-			| RawRangeObject<DataTypeObject>
-			| [DataType, DataType]
-	): boolean;
+	equals(otherRange: string | Range<DataType, DataTypeObject> | RangeObject<DataType> | RawRangeObject<DataTypeObject> | [DataType, DataType]): boolean;
 	isWithinRange(value: DataType | DataTypeObject): boolean;
 
 	lower: LowerRange | LowerRangeType;
@@ -51,12 +44,7 @@ interface Range<DataType, DataTypeObject> {
 interface RangeConstructor<DataType, DataTypeObject> {
 	from(value1: DataType, value2: DataType): Range<DataType, DataTypeObject>;
 	from(value: [DataType, DataType]): Range<DataType, DataTypeObject>;
-	from(
-		data:
-			| Range<DataType, DataTypeObject>
-			| RangeObject<DataType>
-			| RawRangeObject<DataTypeObject>
-	): Range<DataType, DataTypeObject>;
+	from(data: Range<DataType, DataTypeObject> | RangeObject<DataType> | RawRangeObject<DataTypeObject>): Range<DataType, DataTypeObject>;
 	from(str: string): Range<DataType, DataTypeObject>;
 	/**
 	 * Returns `true` if `obj` is a `Range` of the same type as `this`, `false` otherwise.
@@ -76,88 +64,59 @@ const getRange = <
 	isObjectFunc: (obj: any) => obj is DataType,
 	identifier: string
 ) => {
-	const Object = object as ObjectFunction<
-		DataType,
-		DataType | DataTypeObject | string
-	>;
+	const Object = object as ObjectFunction<DataType, DataType | DataTypeObject | string>,
+		Range: RangeConstructor<DataType, DataTypeObject> = {
+			//@ts-expect-error - This is a hack to get around the error.
+			from(
+				arg: string | Range<DataType, DataTypeObject> | RangeObject<DataType> | RawRangeObject<DataTypeObject> | DataType | [DataType, DataType],
+				extraValue: DataType
+			): Range<DataType, DataTypeObject> {
+				if (typeof arg === "string") {
+					if (arg === "empty") {
+						return new RangeClass({
+							lower: LowerRange.include,
+							upper: UpperRange.include,
+							value: null,
+						});
+					}
 
-	const Range: RangeConstructor<DataType, DataTypeObject> = {
-		//@ts-expect-error - This is a hack to get around the error.
-		from(
-			arg:
-				| string
-				| Range<DataType, DataTypeObject>
-				| RangeObject<DataType>
-				| RawRangeObject<DataTypeObject>
-				| DataType
-				| [DataType, DataType],
-			extraValue: DataType
-		): Range<DataType, DataTypeObject> {
-			if (typeof arg === "string") {
-				if (arg === "empty") {
+					const [lower, upper] = [arg.at(0), arg.at(-1)];
+					if (!lower || !lowerRange.includes(lower) || !upper || !upperRange.includes(upper)) throw new Error(`Invalid ${identifier} string`);
+
+					const value = arg
+						.slice(1, -1)
+						.split(",")
+						.map(v => v.replace(/"/g, ""))
+						.map(v => v.replace(/\\/g, ""))
+						.map(Object.from);
+
+					if (value.length !== 2) throw new Error(`Invalid ${identifier} string`);
+
 					return new RangeClass({
-						lower: LowerRange.include,
-						upper: UpperRange.include,
-						value: null
+						lower: lower as LowerRange,
+						upper: upper as UpperRange,
+						value: value as [DataType, DataType],
 					});
-				}
-
-				const [lower, upper] = [arg.at(0), arg.at(-1)];
-				if (
-					!lower ||
-					!lowerRange.includes(lower) ||
-					!upper ||
-					!upperRange.includes(upper)
-				)
-					throw new Error(`Invalid ${identifier} string`);
-
-				const value = arg
-					.slice(1, -1)
-					.split(",")
-					.map(v => v.replace(/"/g, ""))
-					.map(v => v.replace(/\\/g, ""))
-					.map(Object.from);
-
-				if (value.length !== 2) throw new Error(`Invalid ${identifier} string`);
-
-				return new RangeClass({
-					lower: lower as LowerRange,
-					upper: upper as UpperRange,
-					value: value as [DataType, DataType]
-				});
-			} else if (Range.isRange(arg)) {
-				return new RangeClass(arg.toJSON());
-			} else if (Array.isArray(arg) || isObjectFunc(arg)) {
-				if (isObjectFunc(arg) && isObjectFunc(extraValue)) {
-					return new RangeClass({
-						lower: LowerRange.include,
-						upper: UpperRange.exclude,
-						value: [arg as DataType, extraValue]
-					});
+				} else if (Range.isRange(arg)) return new RangeClass(arg.toJSON());
+				else if (Array.isArray(arg) || isObjectFunc(arg)) {
+					if (isObjectFunc(arg) && isObjectFunc(extraValue)) {
+						return new RangeClass({
+							lower: LowerRange.include,
+							upper: UpperRange.exclude,
+							value: [arg as DataType, extraValue],
+						});
+					} else if (Array.isArray(arg) && arg.every(isObjectFunc) && arg.length === 2) {
+						return new RangeClass({
+							lower: LowerRange.include,
+							upper: UpperRange.exclude,
+							value: arg as [DataType, DataType],
+						});
+					} else {
+						if (Array.isArray(arg) && arg.length > 2) throw new Error(`Invalid ${identifier} array, too many values`);
+						else if (Array.isArray(arg) && arg.length < 2) throw new Error(`Invalid ${identifier} array, too few values`);
+						throw new Error(`Invalid ${identifier} array, invalid ${identifier.replace("Range", "")}s`);
+					}
 				} else if (
-					Array.isArray(arg) &&
-					arg.every(isObjectFunc) &&
-					arg.length === 2
-				) {
-					return new RangeClass({
-						lower: LowerRange.include,
-						upper: UpperRange.exclude,
-						value: arg as [DataType, DataType]
-					});
-				} else {
-					if (Array.isArray(arg) && arg.length > 2)
-						throw new Error(`Invalid ${identifier} array, too many values`);
-					else if (Array.isArray(arg) && arg.length < 2)
-						throw new Error(`Invalid ${identifier} array, too few values`);
-					throw new Error(
-						`Invalid ${identifier} array, invalid ${identifier.replace(
-							"Range",
-							""
-						)}s`
-					);
-				}
-			} else {
-				if (
 					"lower" in arg &&
 					lowerRange.includes(arg.lower) &&
 					"upper" in arg &&
@@ -166,10 +125,8 @@ const getRange = <
 					(arg.value === null || Array.isArray(arg.value))
 				) {
 					if (arg.value !== null) {
-						if (arg.value.length > 2)
-							throw new Error(`Invalid ${identifier} object, too many values`);
-						else if (arg.value.length < 2)
-							throw new Error(`Invalid ${identifier} object, too few values`);
+						if (arg.value.length > 2) throw new Error(`Invalid ${identifier} object, too many values`);
+						else if (arg.value.length < 2) throw new Error(`Invalid ${identifier} object, too few values`);
 						try {
 							arg.value = arg.value.map(Object.from) as [DataType, DataType];
 						} catch {
@@ -177,16 +134,13 @@ const getRange = <
 						}
 					}
 					return new RangeClass(arg);
-				} else {
-					throw new Error(`Invalid ${identifier} object, 2`);
-				}
-			}
-		},
-		isRange(obj: any): obj is Range<DataType, DataTypeObject> {
-			//@ts-expect-error - This is a hack to get around the fact that the value is private
-			return obj instanceof RangeClass && obj._identifier === identifier;
-		}
-	};
+				} else throw new Error(`Invalid ${identifier} object, 2`);
+			},
+			isRange(obj: any): obj is Range<DataType, DataTypeObject> {
+				//@ts-expect-error - This is a hack to get around the fact that the value is private
+				return obj instanceof RangeClass && obj._identifier === identifier;
+			},
+		};
 
 	class RangeClass implements Range<DataType, DataTypeObject> {
 		private _identifier = identifier;
@@ -197,70 +151,43 @@ const getRange = <
 		constructor(data: RangeObject<DataType> | RawRangeObject<DataTypeObject>) {
 			this._lower = data.lower;
 			this._upper = data.upper;
-			if (data.value === null) {
-				this._value = null;
-			} else {
-				if ((data.value as (DataType | DataTypeObject)[]).every(isObjectFunc)) {
-					this._value = data.value as [DataType, DataType];
-				} else {
-					this._value = data.value.map(Object.from) as [DataType, DataType];
-				}
-			}
+			if (data.value === null) this._value = null;
+			else if ((data.value as (DataType | DataTypeObject)[]).every(isObjectFunc)) this._value = data.value as [DataType, DataType];
+			else this._value = data.value.map(Object.from) as [DataType, DataType];
 
 			if (
 				this._value &&
-				((this._lower === LowerRange.include &&
-					this._upper === UpperRange.exclude) ||
-					(this._lower === LowerRange.exclude &&
-						this._upper === UpperRange.include)) &&
+				((this._lower === LowerRange.include && this._upper === UpperRange.exclude) ||
+					(this._lower === LowerRange.exclude && this._upper === UpperRange.include)) &&
 				this._value[0].equals(this._value[1])
-			) {
+			)
 				this._value = null;
-			}
 		}
 
 		toString(): string {
-			if (this._value === null) {
-				return "empty";
-			}
-			return `${
-				this._lower
-			}${this._value[0].toString()},${this._value[1].toString()}${this._upper}`;
+			if (this._value === null) return "empty";
+
+			return `${this._lower}${this._value[0].toString()},${this._value[1].toString()}${this._upper}`;
 		}
 
 		toJSON(): RawRangeObject<DataTypeObject> {
 			return {
 				lower: this._lower,
 				upper: this._upper,
-				value:
-					(this._value?.map(v => v.toJSON()) as [
-						DataTypeObject,
-						DataTypeObject
-					]) ?? null
+				value: (this._value?.map(v => v.toJSON()) as [DataTypeObject, DataTypeObject]) ?? null,
 			};
 		}
 
-		equals(
-			otherRange:
-				| string
-				| Range<DataType, DataTypeObject>
-				| RangeObject<DataType>
-				| RawRangeObject<DataTypeObject>
-				| [DataType, DataType]
-		): boolean {
-			if (typeof otherRange === "string") {
-				return otherRange === this.toString();
-			} else if (Range.isRange(otherRange)) {
-				return otherRange.toString() === this.toString();
-			} else if (Array.isArray(otherRange) && otherRange.every(isObjectFunc)) {
+		equals(otherRange: string | Range<DataType, DataTypeObject> | RangeObject<DataType> | RawRangeObject<DataTypeObject> | [DataType, DataType]): boolean {
+			if (typeof otherRange === "string") return otherRange === this.toString();
+			else if (Range.isRange(otherRange)) return otherRange.toString() === this.toString();
+			else if (Array.isArray(otherRange) && otherRange.every(isObjectFunc)) {
 				return (
 					Array.isArray(this._value) &&
 					this._lower === LowerRange.include &&
 					this._upper === UpperRange.exclude &&
 					otherRange.length === this._value.length &&
-					otherRange.every((val, index) =>
-						val.equals((this._value as DataType[])[index])
-					)
+					otherRange.every((val, index) => val.equals((this._value as DataType[])[index]))
 				);
 			} else {
 				return (
@@ -269,59 +196,36 @@ const getRange = <
 					((Array.isArray(otherRange.value) &&
 						Array.isArray(this._value) &&
 						otherRange.value.length === this._value.length &&
-						(otherRange.value as (DataType | DataTypeObject)[]).every(
-							(val, index) =>
-								Object.from(val).equals((this._value as DataType[])[index])
-						)) ||
+						(otherRange.value as (DataType | DataTypeObject)[]).every((val, index) => Object.from(val).equals((this._value as DataType[])[index]))) ||
 						(otherRange.value === null && this._value === null))
 				);
 			}
 		}
 
 		private _greaterThan(value1: DataType, value2: DataType) {
-			if (
-				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
-				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
-			)
-				return (
-					value1.toDateTime("utc").toISO() > value2.toDateTime("utc").toISO()
-				);
+			if ((Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) || (TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2)))
+				return value1.toDateTime("utc").toISO() > value2.toDateTime("utc").toISO();
 
 			return value1.toString() > value2.toString();
 		}
 
 		private _greaterThanOrEqual(value1: DataType, value2: DataType) {
-			if (
-				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
-				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
-			)
-				return (
-					value1.toDateTime("utc").toISO() >= value2.toDateTime("utc").toISO()
-				);
+			if ((Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) || (TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2)))
+				return value1.toDateTime("utc").toISO() >= value2.toDateTime("utc").toISO();
 
 			return value1.toString() >= value2.toString();
 		}
 
 		private _lessThan(value1: DataType, value2: DataType) {
-			if (
-				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
-				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
-			)
-				return (
-					value1.toDateTime("utc").toISO() < value2.toDateTime("utc").toISO()
-				);
+			if ((Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) || (TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2)))
+				return value1.toDateTime("utc").toISO() < value2.toDateTime("utc").toISO();
 
 			return value1.toString() < value2.toString();
 		}
 
 		private _lessThanOrEqual(value1: DataType, value2: DataType) {
-			if (
-				(Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) ||
-				(TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2))
-			)
-				return (
-					value1.toDateTime("utc").toISO() <= value2.toDateTime("utc").toISO()
-				);
+			if ((Timestamp.isTimestamp(value1) && Timestamp.isTimestamp(value2)) || (TimestampTZ.isTimestampTZ(value1) && TimestampTZ.isTimestampTZ(value2)))
+				return value1.toDateTime("utc").toISO() <= value2.toDateTime("utc").toISO();
 
 			return value1.toString() <= value2.toString();
 		}
@@ -330,12 +234,8 @@ const getRange = <
 			if (this._value === null) return false;
 			const valueObj = isObjectFunc(value) ? value : Object.from(value);
 			return (
-				(this._lower === LowerRange.include
-					? this._greaterThanOrEqual(valueObj, this._value[0])
-					: this._greaterThan(valueObj, this._value[0])) &&
-				(this._upper === UpperRange.include
-					? this._lessThanOrEqual(valueObj, this._value[1])
-					: this._lessThan(valueObj, this._value[1]))
+				(this._lower === LowerRange.include ? this._greaterThanOrEqual(valueObj, this._value[0]) : this._greaterThan(valueObj, this._value[0])) &&
+				(this._upper === UpperRange.include ? this._lessThanOrEqual(valueObj, this._value[1]) : this._lessThan(valueObj, this._value[1]))
 			);
 		}
 
@@ -344,8 +244,7 @@ const getRange = <
 		}
 
 		set lower(value: LowerRange | LowerRangeType) {
-			if (!lowerRange.includes(value))
-				throw new Error("Invalid lower range argument");
+			if (!lowerRange.includes(value)) throw new Error("Invalid lower range argument");
 			this._lower = value;
 		}
 
@@ -354,8 +253,7 @@ const getRange = <
 		}
 
 		set upper(value: UpperRange | UpperRangeType) {
-			if (!upperRange.includes(value))
-				throw new Error("Invalid upper range argument");
+			if (!upperRange.includes(value)) throw new Error("Invalid upper range argument");
 			this._upper = value;
 		}
 
@@ -363,16 +261,10 @@ const getRange = <
 			return this._value;
 		}
 
-		set value(
-			value: [DataType, DataType] | [DataTypeObject, DataTypeObject] | null
-		) {
-			if (value === null) {
-				this._value = null;
-			} else if ((value as (DataType | DataTypeObject)[]).every(isObjectFunc)) {
-				this._value = value as [DataType, DataType];
-			} else {
-				this._value = value.map(Object.from) as [DataType, DataType];
-			}
+		set value(value: [DataType, DataType] | [DataTypeObject, DataTypeObject] | null) {
+			if (value === null) this._value = null;
+			else if ((value as (DataType | DataTypeObject)[]).every(isObjectFunc)) this._value = value as [DataType, DataType];
+			else this._value = value.map(Object.from) as [DataType, DataType];
 		}
 
 		get empty(): boolean {
@@ -383,14 +275,4 @@ const getRange = <
 	return Range;
 };
 
-export {
-	getRange,
-	RangeConstructor,
-	Range,
-	RangeObject,
-	RawRangeObject,
-	LowerRange,
-	LowerRangeType,
-	UpperRange,
-	UpperRangeType
-};
+export { getRange, RangeConstructor, Range, RangeObject, RawRangeObject, LowerRange, LowerRangeType, UpperRange, UpperRangeType };

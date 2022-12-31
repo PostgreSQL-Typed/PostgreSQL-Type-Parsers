@@ -44,17 +44,8 @@ interface Timestamp {
 }
 
 interface TimestampConstructor {
-	from(
-		year: number,
-		month: number,
-		day: number,
-		hour: number,
-		minute: number,
-		second: number
-	): Timestamp;
-	from(
-		data: Timestamp | TimestampObject | globalThis.Date | DateTime
-	): Timestamp;
+	from(year: number, month: number, day: number, hour: number, minute: number, second: number): Timestamp;
+	from(data: Timestamp | TimestampObject | globalThis.Date | DateTime): Timestamp;
 	from(str: string): Timestamp;
 	/**
 	 * Returns `true` if `obj` is a `Timestamp`, `false` otherwise.
@@ -64,13 +55,7 @@ interface TimestampConstructor {
 
 const Timestamp: TimestampConstructor = {
 	from(
-		arg:
-			| string
-			| Timestamp
-			| TimestampObject
-			| globalThis.Date
-			| DateTime
-			| number,
+		arg: string | Timestamp | TimestampObject | globalThis.Date | DateTime | number,
 		month?: number,
 		day?: number,
 		hour?: number,
@@ -78,17 +63,12 @@ const Timestamp: TimestampConstructor = {
 		second?: number
 	): Timestamp {
 		if (typeof arg === "string") {
-			if (
-				arg.match(
-					/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])(\s|T)([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?/
-				)
-			) {
+			if (arg.match(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])(\s|T)([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?/)) {
 				const [date, , time] = arg.split(/(\s|T)/),
 					[year, month, day] = date.split("-").map(c => parseInt(c)),
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					[hour, minute, second, milisecond] = time
-						.match(
-							/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?/
-						)!
+						.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?/)!
 						.slice(1)
 						.map(c => parseFloat(c));
 
@@ -98,7 +78,7 @@ const Timestamp: TimestampConstructor = {
 					day,
 					hour,
 					minute,
-					second: second + (milisecond ? milisecond : 0)
+					second: second + (milisecond || 0),
 				});
 			}
 			throw new Error("Invalid Timestamp string");
@@ -107,34 +87,24 @@ const Timestamp: TimestampConstructor = {
 			if (
 				newlyMadeTimestamp
 					.toString()
-					.match(
-						/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/
-					)
+					.match(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/)
 			)
 				return newlyMadeTimestamp;
 			throw new Error("Invalid Timestamp class");
 		} else if (typeof arg === "number") {
-			if (
-				typeof month === "number" &&
-				typeof day === "number" &&
-				typeof hour === "number" &&
-				typeof minute === "number" &&
-				typeof second === "number"
-			) {
+			if (typeof month === "number" && typeof day === "number" && typeof hour === "number" && typeof minute === "number" && typeof second === "number") {
 				const newlyMadeTimestamp = new TimestampClass({
 					year: arg,
 					month,
 					day,
 					hour,
 					minute,
-					second
+					second,
 				});
 				if (
 					newlyMadeTimestamp
 						.toString()
-						.match(
-							/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/
-						)
+						.match(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/)
 				)
 					return newlyMadeTimestamp;
 				throw new Error("Invalid Timestamp arguments");
@@ -147,7 +117,7 @@ const Timestamp: TimestampConstructor = {
 				day: arg.day,
 				hour: arg.hour,
 				minute: arg.minute,
-				second: arg.second + (arg.millisecond ? arg.millisecond / 1000 : 0)
+				second: arg.second + (arg.millisecond ? arg.millisecond / 1000 : 0),
 			});
 		} else if (arg instanceof globalThis.Date) {
 			return new TimestampClass({
@@ -156,7 +126,7 @@ const Timestamp: TimestampConstructor = {
 				day: arg.getDate(),
 				hour: arg.getHours(),
 				minute: arg.getMinutes(),
-				second: arg.getSeconds() + arg.getMilliseconds() / 1000
+				second: arg.getSeconds() + arg.getMilliseconds() / 1000,
 			});
 		} else {
 			if (
@@ -175,17 +145,14 @@ const Timestamp: TimestampConstructor = {
 					"second" in arg &&
 					typeof arg.second === "number"
 				)
-			) {
+			)
 				throw new Error("Invalid Timestamp object");
-			}
 
 			const newlyMadeTimestamp = new TimestampClass(arg);
 			if (
 				newlyMadeTimestamp
 					.toString()
-					.match(
-						/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/
-					)
+					.match(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/)
 			)
 				return newlyMadeTimestamp;
 
@@ -194,7 +161,7 @@ const Timestamp: TimestampConstructor = {
 	},
 	isTimestamp(obj: any): obj is Timestamp {
 		return obj instanceof TimestampClass;
-	}
+	},
 };
 
 class TimestampClass implements Timestamp {
@@ -219,15 +186,11 @@ class TimestampClass implements Timestamp {
 	}
 
 	private _formatDate(): string {
-		return `${this._year}-${this._prefix(this._month)}-${this._prefix(
-			this._day
-		)}`;
+		return `${this._year}-${this._prefix(this._month)}-${this._prefix(this._day)}`;
 	}
 
 	private _formatTime(): string {
-		return `${this._prefix(this._hour)}:${this._prefix(
-			this._minute
-		)}:${this._prefix(this._second)}`;
+		return `${this._prefix(this._hour)}:${this._prefix(this._minute)}:${this._prefix(this._second)}`;
 	}
 
 	toString(): string {
@@ -245,16 +208,14 @@ class TimestampClass implements Timestamp {
 			day: this._day,
 			hour: this._hour,
 			minute: this._minute,
-			second: this._second
+			second: this._second,
 		};
 	}
 
 	equals(otherTimestamp: string | Timestamp | TimestampObject): boolean {
-		if (typeof otherTimestamp === "string") {
-			return otherTimestamp === this.toString();
-		} else if (Timestamp.isTimestamp(otherTimestamp)) {
-			return otherTimestamp.toString() === this.toString();
-		} else {
+		if (typeof otherTimestamp === "string") return otherTimestamp === this.toString();
+		else if (Timestamp.isTimestamp(otherTimestamp)) return otherTimestamp.toString() === this.toString();
+		else {
 			return (
 				otherTimestamp.year === this._year &&
 				otherTimestamp.month === this._month &&
@@ -333,7 +294,7 @@ class TimestampClass implements Timestamp {
 		return Date.from({
 			year: this._year,
 			month: this._month,
-			day: this._day
+			day: this._day,
 		});
 	}
 
@@ -341,7 +302,7 @@ class TimestampClass implements Timestamp {
 		return Time.from({
 			hour: this._hour,
 			minute: this._minute,
-			second: this._second
+			second: this._second,
 		});
 	}
 
@@ -354,7 +315,7 @@ class TimestampClass implements Timestamp {
 				hour: this._hour,
 				minute: this._minute,
 				second: parseInt(this._second.toString().split(".")[0]),
-				millisecond: parseInt(this._second.toString().split(".")[1])
+				millisecond: parseInt(this._second.toString().split(".")[1]),
 			},
 			{ zone }
 		);

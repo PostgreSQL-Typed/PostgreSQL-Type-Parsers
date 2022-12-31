@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { Client } from "pg";
 
 import { Box } from "../../src";
@@ -27,9 +28,7 @@ describe("Box Class", () => {
 	});
 
 	it("should error when creating a box from invalid numbers", () => {
-		expect(() => Box.from(1, 2, 3, "a" as any)).toThrow(
-			"Invalid Box array, invalid numbers"
-		);
+		expect(() => Box.from(1, 2, 3, "a" as any)).toThrow("Invalid Box array, invalid numbers");
 	});
 
 	it("isBox()", () => {
@@ -53,18 +52,10 @@ describe("Box Class", () => {
 
 		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 }))).toBe(true);
 		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 5 }))).toBe(false);
-		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 }).toJSON())).toBe(
-			true
-		);
-		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 5 }).toJSON())).toBe(
-			false
-		);
-		expect(
-			box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 }).toString())
-		).toBe(true);
-		expect(
-			box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 5 }).toString())
-		).toBe(false);
+		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 }).toJSON())).toBe(true);
+		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 5 }).toJSON())).toBe(false);
+		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 4 }).toString())).toBe(true);
+		expect(box.equals(Box.from({ x1: 1, y1: 2, x2: 3, y2: 5 }).toString())).toBe(false);
 	});
 
 	it("get x1", () => {
@@ -118,7 +109,7 @@ describe("Box Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "box.test.ts"
+			application_name: "box.test.ts",
 		});
 
 		await client.connect();
@@ -144,13 +135,8 @@ describe("Box Class", () => {
 				SELECT * FROM public.jestbox
 			`);
 
-			expect(result.rows[0].box).toStrictEqual(
-				Box.from({ x1: 3, y1: 4, x2: 1, y2: 2 })
-			);
-			expect(result.rows[0]._box).toStrictEqual([
-				Box.from({ x1: 3.3, y1: 4.4, x2: 1.1, y2: 2.2 }),
-				Box.from({ x1: 7.7, y1: 8.8, x2: 5.5, y2: 6.6 })
-			]);
+			expect(result.rows[0].box).toStrictEqual(Box.from({ x1: 3, y1: 4, x2: 1, y2: 2 }));
+			expect(result.rows[0]._box).toStrictEqual([Box.from({ x1: 3.3, y1: 4.4, x2: 1.1, y2: 2.2 }), Box.from({ x1: 7.7, y1: 8.8, x2: 5.5, y2: 6.6 })]);
 		} catch (err) {
 			error = err;
 		}

@@ -19,7 +19,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date).not.toBeNull();
 	});
@@ -32,7 +32,7 @@ describe("Date Class", () => {
 			Date.from({
 				year: 2022,
 				month: 9,
-				day: "2"
+				day: "2",
 			} as any);
 		}).toThrow("Invalid Date object");
 	});
@@ -62,14 +62,14 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(Date.isDate(date)).toBe(true);
 		expect(
 			Date.isDate({
 				year: 2022,
 				month: 9,
-				day: 2
+				day: 2,
 			})
 		).toBe(false);
 	});
@@ -78,7 +78,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.toString()).toBe("2022-09-02");
 	});
@@ -87,12 +87,12 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.toJSON()).toEqual({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 	});
 
@@ -100,7 +100,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 
 		expect(
@@ -108,7 +108,7 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 2
+					day: 2,
 				})
 			)
 		).toBe(true);
@@ -117,7 +117,7 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 3
+					day: 3,
 				})
 			)
 		).toBe(false);
@@ -126,7 +126,7 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 2
+					day: 2,
 				}).toJSON()
 			)
 		).toBe(true);
@@ -135,7 +135,7 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 3
+					day: 3,
 				}).toJSON()
 			)
 		).toBe(false);
@@ -144,7 +144,7 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 2
+					day: 2,
 				}).toString()
 			)
 		).toBe(true);
@@ -153,7 +153,7 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 3
+					day: 3,
 				}).toString()
 			)
 		).toBe(false);
@@ -163,7 +163,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.year).toBe(2022);
 	});
@@ -172,7 +172,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		date.year = 2023;
 		expect(date.year).toBe(2023);
@@ -182,7 +182,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.month).toBe(9);
 	});
@@ -191,7 +191,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		date.month = 10;
 		expect(date.month).toBe(10);
@@ -201,7 +201,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.day).toBe(2);
 	});
@@ -210,7 +210,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		date.day = 3;
 		expect(date.day).toBe(3);
@@ -220,14 +220,14 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.toDateTime()).toStrictEqual(
 			DateTime.fromObject(
 				{
 					year: 2022,
 					month: 9,
-					day: 2
+					day: 2,
 				},
 				{ zone: "local" }
 			)
@@ -238,7 +238,7 @@ describe("Date Class", () => {
 		const date = Date.from({
 			year: 2022,
 			month: 9,
-			day: 2
+			day: 2,
 		});
 		expect(date.toJSDate()).toBeInstanceOf(globalThis.Date);
 	});
@@ -250,7 +250,7 @@ describe("Date Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "date.test.ts"
+			application_name: "date.test.ts",
 		});
 
 		await client.connect();
@@ -280,20 +280,20 @@ describe("Date Class", () => {
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 2
+					day: 2,
 				})
 			);
 			expect(result.rows[0]._date).toStrictEqual([
 				Date.from({
 					year: 1997,
 					month: 8,
-					day: 24
+					day: 24,
 				}),
 				Date.from({
 					year: 2022,
 					month: 9,
-					day: 2
-				})
+					day: 2,
+				}),
 			]);
 		} catch (err) {
 			error = err;

@@ -34,26 +34,19 @@ interface UUIDConstructor {
 const UUID: UUIDConstructor = {
 	from(arg: string | UUID | UUIDObject): UUID {
 		if (typeof arg === "string") {
-			if (
-				arg.match(
-					/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i
-				)
-			) {
+			if (arg.match(/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i)) {
 				return new UUIDClass({
-					UUID: arg
+					UUID: arg,
 				});
 			}
 			throw new Error("Invalid UUID string");
-		} else if (UUID.isUUID(arg)) {
-			return new UUIDClass(arg.toJSON());
-		} else {
+		} else if (UUID.isUUID(arg)) return new UUIDClass(arg.toJSON());
+		else {
 			if (
 				typeof arg === "object" &&
 				"UUID" in arg &&
 				typeof arg.UUID === "string" &&
-				arg.UUID.match(
-					/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i
-				)
+				arg.UUID.match(/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i)
 			)
 				return new UUIDClass(arg);
 			throw new Error("Invalid UUID object");
@@ -61,12 +54,12 @@ const UUID: UUIDConstructor = {
 	},
 	generate(options?: RandomUUIDOptions): UUID {
 		return new UUIDClass({
-			UUID: randomUUID(options)
+			UUID: randomUUID(options),
 		});
 	},
 	isUUID(obj: any): obj is UUID {
 		return obj instanceof UUIDClass;
-	}
+	},
 };
 
 class UUIDClass implements UUID {
@@ -82,20 +75,14 @@ class UUIDClass implements UUID {
 
 	toJSON(): UUIDObject {
 		return {
-			UUID: this._UUID
+			UUID: this._UUID,
 		};
 	}
 
 	equals(otherUUID: string | UUID | UUIDObject): boolean {
-		if (typeof otherUUID === "string") {
-			return otherUUID.toLowerCase() === this.toString().toLowerCase();
-		} else if (UUID.isUUID(otherUUID)) {
-			return (
-				otherUUID.toString().toLowerCase() === this.toString().toLowerCase()
-			);
-		} else {
-			return otherUUID.UUID.toLowerCase() === this._UUID.toLowerCase();
-		}
+		if (typeof otherUUID === "string") return otherUUID.toLowerCase() === this.toString().toLowerCase();
+		else if (UUID.isUUID(otherUUID)) return otherUUID.toString().toLowerCase() === this.toString().toLowerCase();
+		else return otherUUID.UUID.toLowerCase() === this._UUID.toLowerCase();
 	}
 
 	get UUID(): string {
@@ -103,12 +90,7 @@ class UUIDClass implements UUID {
 	}
 
 	set UUID(UUID: string) {
-		if (
-			!UUID.match(
-				/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i
-			)
-		)
-			throw new Error("Invalid UUID");
+		if (!UUID.match(/^([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/i)) throw new Error("Invalid UUID");
 		this._UUID = UUID;
 	}
 }

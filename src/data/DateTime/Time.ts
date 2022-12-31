@@ -42,47 +42,29 @@ interface TimeConstructor {
 }
 
 const Time: TimeConstructor = {
-	from(
-		arg: string | Time | TimeObject | globalThis.Date | DateTime | number,
-		minute?: number,
-		second?: number
-	): Time {
+	from(arg: string | Time | TimeObject | globalThis.Date | DateTime | number, minute?: number, second?: number): Time {
 		if (typeof arg === "string") {
-			if (
-				arg.match(
-					/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/
-				)
-			) {
+			if (arg.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/)) {
 				const [hour, minute, second] = arg.split(":").map(c => parseInt(c));
 				return new TimeClass({
-					hour: hour,
-					minute: minute,
-					second: second
+					hour,
+					minute,
+					second,
 				});
 			}
 			throw new Error("Invalid Time string");
 		} else if (Time.isTime(arg)) {
 			const newlyMadeTime = new TimeClass(arg.toJSON());
-			if (
-				newlyMadeTime
-					.toString()
-					.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)
-			)
-				return newlyMadeTime;
+			if (newlyMadeTime.toString().match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)) return newlyMadeTime;
 			throw new Error("Invalid Time class");
 		} else if (typeof arg === "number") {
 			if (typeof minute === "number" && typeof second === "number") {
 				const newlyMadeTime = new TimeClass({
 					hour: arg,
-					minute: minute,
-					second: second
+					minute,
+					second,
 				});
-				if (
-					newlyMadeTime
-						.toString()
-						.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)
-				)
-					return newlyMadeTime;
+				if (newlyMadeTime.toString().match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)) return newlyMadeTime;
 				throw new Error("Invalid Time array, numbers only");
 			}
 			throw new Error("Invalid Time array, numbers only");
@@ -90,13 +72,13 @@ const Time: TimeConstructor = {
 			return new TimeClass({
 				hour: arg.hour,
 				minute: arg.minute,
-				second: arg.second
+				second: arg.second,
 			});
 		} else if (arg instanceof globalThis.Date) {
 			return new TimeClass({
 				hour: arg.getHours(),
 				minute: arg.getMinutes(),
-				second: arg.getSeconds()
+				second: arg.getSeconds(),
 			});
 		} else {
 			if (
@@ -109,24 +91,18 @@ const Time: TimeConstructor = {
 					"second" in arg &&
 					typeof arg.second === "number"
 				)
-			) {
+			)
 				throw new Error("Invalid Time object");
-			}
 
 			const newlyMadeTime = new TimeClass(arg);
-			if (
-				newlyMadeTime
-					.toString()
-					.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)
-			)
-				return newlyMadeTime;
+			if (newlyMadeTime.toString().match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/)) return newlyMadeTime;
 
 			throw new Error("Invalid Time object");
 		}
 	},
 	isTime(obj: any): obj is Time {
 		return obj instanceof TimeClass;
-	}
+	},
 };
 
 class TimeClass implements Time {
@@ -145,31 +121,21 @@ class TimeClass implements Time {
 	}
 
 	toString(): string {
-		return `${this._prefix(this._hour)}:${this._prefix(
-			this._minute
-		)}:${this._prefix(this._second)}`;
+		return `${this._prefix(this._hour)}:${this._prefix(this._minute)}:${this._prefix(this._second)}`;
 	}
 
 	toJSON(): TimeObject {
 		return {
 			hour: this._hour,
 			minute: this._minute,
-			second: this._second
+			second: this._second,
 		};
 	}
 
 	equals(otherTime: string | Time | TimeObject): boolean {
-		if (typeof otherTime === "string") {
-			return otherTime === this.toString();
-		} else if (Time.isTime(otherTime)) {
-			return otherTime.toString() === this.toString();
-		} else {
-			return (
-				otherTime.hour === this._hour &&
-				otherTime.minute === this._minute &&
-				otherTime.second === this._second
-			);
-		}
+		if (typeof otherTime === "string") return otherTime === this.toString();
+		else if (Time.isTime(otherTime)) return otherTime.toString() === this.toString();
+		else return otherTime.hour === this._hour && otherTime.minute === this._minute && otherTime.second === this._second;
 	}
 
 	get hour(): number {
@@ -210,7 +176,7 @@ class TimeClass implements Time {
 			{
 				hour: this._hour,
 				minute: this._minute,
-				second: this._second
+				second: this._second,
 			},
 			{ zone }
 		);

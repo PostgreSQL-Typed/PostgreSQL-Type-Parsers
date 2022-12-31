@@ -4,5 +4,5 @@ const tsPreset = require("ts-jest/jest-preset");
 module.exports = {
 	...tsPreset,
 	rootDir: "__tests__",
-	testMatch: ["**/*.test.ts"]
+	testMatch: ["**/*.test.ts"],
 };

@@ -12,10 +12,7 @@ type RawTimestampRangeObject = RawRangeObject<TimestampObject>;
 
 type TimestampRange = Range<Timestamp, TimestampObject>;
 
-const TimestampRange: RangeConstructor<Timestamp, TimestampObject> = getRange<
-	Timestamp,
-	TimestampObject
->(Timestamp, Timestamp.isTimestamp, "TimestampRange");
+const TimestampRange: RangeConstructor<Timestamp, TimestampObject> = getRange<Timestamp, TimestampObject>(Timestamp, Timestamp.isTimestamp, "TimestampRange");
 
 types.setTypeParser(DataType.tsrange as any, parser(TimestampRange));
 types.setTypeParser(DataType._tsrange as any, arrayParser(TimestampRange));

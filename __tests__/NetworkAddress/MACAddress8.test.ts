@@ -15,12 +15,8 @@ describe("MACAddress8 Class", () => {
 	});
 
 	it("should error when creating a MAC address from an invalid string", () => {
-		expect(() =>
-			MACAddress8.from("08:00:2b:01:02:03:04:05:06:07")
-		).toThrowError("Invalid MACAddress8, too many octets");
-		expect(() => MACAddress8.from("08:00:2b:01:02:03")).toThrowError(
-			"Invalid MACAddress8, too few octets"
-		);
+		expect(() => MACAddress8.from("08:00:2b:01:02:03:04:05:06:07")).toThrowError("Invalid MACAddress8, too many octets");
+		expect(() => MACAddress8.from("08:00:2b:01:02:03")).toThrowError("Invalid MACAddress8, too few octets");
 	});
 
 	it("should create a MAC address from a number", () => {
@@ -29,14 +25,12 @@ describe("MACAddress8 Class", () => {
 	});
 
 	it("should error when creating a MAC address from an invalid number", () => {
-		expect(() => MACAddress8.from(BigInt("9576508035632137221"))).toThrowError(
-			"MACAddress8 must be 64-bit"
-		);
+		expect(() => MACAddress8.from(BigInt("9576508035632137221"))).toThrowError("MACAddress8 must be 64-bit");
 	});
 
 	it("should create a MAC address from a object", () => {
 		const address1 = MACAddress8.from({
-			MACAddress8: "08:00:2b:01:02:03:04:05"
+			MACAddress8: "08:00:2b:01:02:03:04:05",
 		});
 		expect(address1).not.toBeNull();
 		const address2 = MACAddress8.from({ MACAddress8: "08002b0102030405" });
@@ -44,20 +38,14 @@ describe("MACAddress8 Class", () => {
 	});
 
 	it("should error when creating a MAC address from an invalid object", () => {
-		expect(() =>
-			MACAddress8.from({ MACAddress8: "08:00:2b:01:02:03:04:05:06:07" })
-		).toThrowError("Invalid MACAddress8, too many octets");
-		expect(() =>
-			MACAddress8.from({ MACAddress8: "08:00:2b:01:02:03" })
-		).toThrowError("Invalid MACAddress8, too few octets");
+		expect(() => MACAddress8.from({ MACAddress8: "08:00:2b:01:02:03:04:05:06:07" })).toThrowError("Invalid MACAddress8, too many octets");
+		expect(() => MACAddress8.from({ MACAddress8: "08:00:2b:01:02:03" })).toThrowError("Invalid MACAddress8, too few octets");
 	});
 
 	it("isMACAddress8()", () => {
 		const address = MACAddress8.from("08:00:2b:01:02:03:04:05");
 		expect(MACAddress8.isMACAddress8(address)).toBe(true);
-		expect(
-			MACAddress8.isMACAddress8({ MACAddress8: "08:00:2b:01:02:03:04:05" })
-		).toBe(false);
+		expect(MACAddress8.isMACAddress8({ MACAddress8: "08:00:2b:01:02:03:04:05" })).toBe(false);
 	});
 
 	it("toString()", () => {
@@ -73,31 +61,19 @@ describe("MACAddress8 Class", () => {
 	it("toJSON()", () => {
 		const address = MACAddress8.from("08:00:2b:01:02:03:04:05");
 		expect(address.toJSON()).toEqual({
-			MACAddress8: "08:00:2b:01:02:03:04:05"
+			MACAddress8: "08:00:2b:01:02:03:04:05",
 		});
 	});
 
 	it("equals()", () => {
 		const address = MACAddress8.from("08:00:2b:01:02:03:04:05");
 
-		expect(address.equals(MACAddress8.from("08:00:2b:01:02:03:04:05"))).toBe(
-			true
-		);
-		expect(address.equals(MACAddress8.from("08:00:2b:01:02:04:03:05"))).toBe(
-			false
-		);
-		expect(
-			address.equals(MACAddress8.from("08:00:2b:01:02:03:04:05").toJSON())
-		).toBe(true);
-		expect(
-			address.equals(MACAddress8.from("08:00:2b:01:02:04:03:05").toJSON())
-		).toBe(false);
-		expect(
-			address.equals(MACAddress8.from("08:00:2b:01:02:03:04:05").toString())
-		).toBe(true);
-		expect(
-			address.equals(MACAddress8.from("08:00:2b:01:02:04:03:05").toString())
-		).toBe(false);
+		expect(address.equals(MACAddress8.from("08:00:2b:01:02:03:04:05"))).toBe(true);
+		expect(address.equals(MACAddress8.from("08:00:2b:01:02:04:03:05"))).toBe(false);
+		expect(address.equals(MACAddress8.from("08:00:2b:01:02:03:04:05").toJSON())).toBe(true);
+		expect(address.equals(MACAddress8.from("08:00:2b:01:02:04:03:05").toJSON())).toBe(false);
+		expect(address.equals(MACAddress8.from("08:00:2b:01:02:03:04:05").toString())).toBe(true);
+		expect(address.equals(MACAddress8.from("08:00:2b:01:02:04:03:05").toString())).toBe(false);
 	});
 
 	it("get MACAddress8", () => {
@@ -118,7 +94,7 @@ describe("MACAddress8 Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "macaddr8.test.ts"
+			application_name: "macaddr8.test.ts",
 		});
 
 		await client.connect();
@@ -144,13 +120,8 @@ describe("MACAddress8 Class", () => {
 				SELECT * FROM public.jestmacaddr8
 			`);
 
-			expect(result.rows[0].macaddr8).toStrictEqual(
-				MACAddress8.from("08:00:2b:01:02:03:04:05")
-			);
-			expect(result.rows[0]._macaddr8).toStrictEqual([
-				MACAddress8.from("08:00:2b:01:02:03:04:05"),
-				MACAddress8.from("01:02:03:04:05:06:07:08")
-			]);
+			expect(result.rows[0].macaddr8).toStrictEqual(MACAddress8.from("08:00:2b:01:02:03:04:05"));
+			expect(result.rows[0]._macaddr8).toStrictEqual([MACAddress8.from("08:00:2b:01:02:03:04:05"), MACAddress8.from("01:02:03:04:05:06:07:08")]);
 		} catch (err) {
 			error = err;
 		}

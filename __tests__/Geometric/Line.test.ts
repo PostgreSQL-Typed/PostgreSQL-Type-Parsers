@@ -27,9 +27,7 @@ describe("Line Class", () => {
 	});
 
 	it("should error when creating a line from invalid numbers", () => {
-		expect(() => Line.from(1, 2, {} as any)).toThrow(
-			"Invalid Line array, invalid numbers"
-		);
+		expect(() => Line.from(1, 2, {} as any)).toThrow("Invalid Line array, invalid numbers");
 	});
 
 	it("isLine()", () => {
@@ -99,7 +97,7 @@ describe("Line Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "line.test.ts"
+			application_name: "line.test.ts",
 		});
 
 		await client.connect();
@@ -129,20 +127,20 @@ describe("Line Class", () => {
 				Line.from({
 					a: 1.1,
 					b: 2.2,
-					c: 3.3
+					c: 3.3,
 				})
 			);
 			expect(result.rows[0]._line).toStrictEqual([
 				Line.from({
 					a: 1.1,
 					b: 2.2,
-					c: 3.3
+					c: 3.3,
 				}),
 				Line.from({
 					a: 4.4,
 					b: 5.5,
-					c: 6.6
-				})
+					c: 6.6,
+				}),
 			]);
 		} catch (err) {
 			error = err;

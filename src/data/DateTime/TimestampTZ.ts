@@ -61,9 +61,7 @@ interface TimestampTZConstructor {
 		offsetMinute: number,
 		offsetDirection: OffsetDirection | OffsetDirectionType
 	): TimestampTZ;
-	from(
-		data: TimestampTZ | TimestampTZObject | globalThis.Date | DateTime
-	): TimestampTZ;
+	from(data: TimestampTZ | TimestampTZObject | globalThis.Date | DateTime): TimestampTZ;
 	from(str: string): TimestampTZ;
 	/**
 	 * Returns `true` if `obj` is a `TimestampTZ`, `false` otherwise.
@@ -73,13 +71,7 @@ interface TimestampTZConstructor {
 
 const TimestampTZ: TimestampTZConstructor = {
 	from(
-		arg:
-			| string
-			| TimestampTZ
-			| TimestampTZObject
-			| globalThis.Date
-			| DateTime
-			| number,
+		arg: string | TimestampTZ | TimestampTZObject | globalThis.Date | DateTime | number,
 		month?: number,
 		day?: number,
 		hour?: number,
@@ -97,20 +89,14 @@ const TimestampTZ: TimestampTZConstructor = {
 			) {
 				const [date, , timeRaw] = arg.split(/(\s|T)(?![+-])/),
 					[time, operator, offsetRaw] = timeRaw.split(/(Z|\s?[+-])/),
-					direction =
-						operator.trim() === "Z" || operator.trim() === "+"
-							? OffsetDirection.plus
-							: OffsetDirection.minus,
+					direction = operator.trim() === "Z" || operator.trim() === "+" ? OffsetDirection.plus : OffsetDirection.minus,
 					[year, month, day] = date.split("-").map(c => parseInt(c)),
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					[hour, minute, second, milisecond] = time
-						.match(
-							/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/
-						)!
+						.match(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?$/)!
 						.slice(1)
 						.map(c => parseFloat(c)),
-					[offsetHour, offsetMinute] = offsetRaw
-						.split(":")
-						.map(c => parseInt(c));
+					[offsetHour, offsetMinute] = offsetRaw.split(":").map(c => parseInt(c));
 
 				return new TimestampTZClass({
 					year,
@@ -118,30 +104,25 @@ const TimestampTZ: TimestampTZConstructor = {
 					day,
 					hour,
 					minute,
-					second: second + (milisecond ? milisecond : 0),
+					second: second + (milisecond || 0),
 					offset: {
-						hour: offsetHour ? offsetHour : 0,
-						minute: offsetMinute ? offsetMinute : 0,
-						direction
-					}
+						hour: offsetHour || 0,
+						minute: offsetMinute || 0,
+						direction,
+					},
 				});
 			}
 
-			if (
-				arg.match(
-					/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?\s(\w*)$/
-				)
-			) {
+			if (arg.match(/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?\s(\w*)$/)) {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				const matches = arg.match(
 						/^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(\.[0-9]?[0-9]?[0-9])?\s(\w*)$/
 					)!,
 					zone = matches[8],
-					[year, month, day, hour, minute, second, milisecond] = matches
-						.slice(1, 8)
-						.map(x => parseFloat(x));
+					[year, month, day, hour, minute, second, milisecond] = matches.slice(1, 8).map(x => parseFloat(x)),
+					offset = validateTimeZone(zone);
 
-				const offset = validateTimeZone(zone);
-				if (offset === false) throw new Error(`Invalid TimestampTZ string`);
+				if (offset === false) throw new Error("Invalid TimestampTZ string");
 
 				const offsetHour = Math.floor(Math.abs(offset) / 60),
 					offsetMinute = Math.abs(offset) % 60;
@@ -152,15 +133,12 @@ const TimestampTZ: TimestampTZConstructor = {
 					day,
 					hour,
 					minute,
-					second: second + (milisecond ? milisecond : 0),
+					second: second + (milisecond || 0),
 					offset: {
 						hour: offsetHour,
 						minute: offsetMinute,
-						direction:
-							Math.sign(offset) === -1
-								? OffsetDirection.minus
-								: OffsetDirection.plus
-					}
+						direction: Math.sign(offset) === -1 ? OffsetDirection.minus : OffsetDirection.plus,
+					},
 				});
 			}
 			throw new Error("Invalid TimestampTZ string");
@@ -185,8 +163,7 @@ const TimestampTZ: TimestampTZConstructor = {
 				typeof offsetHour === "number" &&
 				typeof offsetMinute === "number" &&
 				typeof offsetDirection === "string" &&
-				(offsetDirection === OffsetDirection.plus ||
-					offsetDirection === OffsetDirection.minus)
+				(offsetDirection === OffsetDirection.plus || offsetDirection === OffsetDirection.minus)
 			) {
 				const newlyMadeTimestampTZ = new TimestampTZClass({
 					year: arg,
@@ -198,8 +175,8 @@ const TimestampTZ: TimestampTZConstructor = {
 					offset: {
 						hour: offsetHour,
 						minute: offsetMinute,
-						direction: offsetDirection
-					}
+						direction: offsetDirection,
+					},
 				});
 				if (
 					newlyMadeTimestampTZ
@@ -209,16 +186,11 @@ const TimestampTZ: TimestampTZConstructor = {
 						)
 				)
 					return newlyMadeTimestampTZ;
-				throw new Error(
-					"Invalid TimestampTZ array, numbers and OffsetDirection"
-				);
+				throw new Error("Invalid TimestampTZ array, numbers and OffsetDirection");
 			}
 			throw new Error("Invalid TimestampTZ array, numbers and OffsetDirection");
-		} else if (arg instanceof DateTime || arg instanceof globalThis.Date) {
-			return TimestampTZ.from(
-				arg instanceof DateTime ? arg.toISO() : arg.toISOString()
-			);
-		} else {
+		} else if (arg instanceof DateTime || arg instanceof globalThis.Date) return TimestampTZ.from(arg instanceof DateTime ? arg.toISO() : arg.toISOString());
+		else {
 			if (
 				typeof arg === "object" &&
 				"year" in arg &&
@@ -241,8 +213,7 @@ const TimestampTZ: TimestampTZConstructor = {
 				typeof arg.offset.minute === "number" &&
 				"direction" in arg.offset &&
 				typeof arg.offset.direction === "string" &&
-				(arg.offset.direction === OffsetDirection.plus ||
-					arg.offset.direction === OffsetDirection.minus)
+				(arg.offset.direction === OffsetDirection.plus || arg.offset.direction === OffsetDirection.minus)
 			) {
 				const newlyMadeTimestamp = new TimestampTZClass(arg);
 				if (
@@ -260,7 +231,7 @@ const TimestampTZ: TimestampTZConstructor = {
 	},
 	isTimestampTZ(obj: any): obj is TimestampTZ {
 		return obj instanceof TimestampTZClass;
-	}
+	},
 };
 
 class TimestampTZClass implements TimestampTZ {
@@ -282,7 +253,7 @@ class TimestampTZClass implements TimestampTZ {
 		this._offset = {
 			hour: parseInt(data.offset.hour.toString()),
 			minute: parseInt(data.offset.minute.toString()),
-			direction: data.offset.direction
+			direction: data.offset.direction,
 		};
 		this._removeNaN();
 	}
@@ -303,21 +274,15 @@ class TimestampTZClass implements TimestampTZ {
 	}
 
 	private _formatDate(): string {
-		return `${this._year}-${this._prefix(this._month)}-${this._prefix(
-			this._day
-		)}`;
+		return `${this._year}-${this._prefix(this._month)}-${this._prefix(this._day)}`;
 	}
 
 	private _formatTime(): string {
-		return `${this._prefix(this._hour)}:${this._prefix(
-			this._minute
-		)}:${this._prefix(this._second)}`;
+		return `${this._prefix(this._hour)}:${this._prefix(this._minute)}:${this._prefix(this._second)}`;
 	}
 
 	private _formatOffset(): string {
-		return `${
-			this._offset.direction === OffsetDirection.minus ? "-" : "+"
-		}${this._prefix(this._offset.hour)}:${this._prefix(this._offset.minute)}`;
+		return `${this._offset.direction === OffsetDirection.minus ? "-" : "+"}${this._prefix(this._offset.hour)}:${this._prefix(this._offset.minute)}`;
 	}
 
 	toString(): string {
@@ -336,16 +301,14 @@ class TimestampTZClass implements TimestampTZ {
 			hour: this._hour,
 			minute: this._minute,
 			second: this._second,
-			offset: this._offset
+			offset: this._offset,
 		};
 	}
 
 	equals(otherTimestampTZ: string | TimestampTZ | TimestampTZObject): boolean {
-		if (typeof otherTimestampTZ === "string") {
-			return otherTimestampTZ === this.toString();
-		} else if (TimestampTZ.isTimestampTZ(otherTimestampTZ)) {
-			return isISOEquivalent(otherTimestampTZ.toISO(), this.toISO());
-		} else {
+		if (typeof otherTimestampTZ === "string") return otherTimestampTZ === this.toString();
+		else if (TimestampTZ.isTimestampTZ(otherTimestampTZ)) return isISOEquivalent(otherTimestampTZ.toISO(), this.toISO());
+		else {
 			return (
 				otherTimestampTZ.year === this._year &&
 				otherTimestampTZ.month === this._month &&
@@ -429,17 +392,10 @@ class TimestampTZClass implements TimestampTZ {
 
 	set offset(offset: Offset) {
 		offset.hour = parseInt(offset.hour.toString());
-		if (offset.hour < 0 || offset.hour > 23)
-			throw new Error("Invalid offset hour");
+		if (offset.hour < 0 || offset.hour > 23) throw new Error("Invalid offset hour");
 		offset.minute = parseInt(offset.minute.toString());
-		if (offset.minute < 0 || offset.minute > 59)
-			throw new Error("Invalid offset minute");
-		if (
-			!([OffsetDirection.minus, OffsetDirection.plus] as string[]).includes(
-				offset.direction
-			)
-		)
-			throw new Error("Invalid offset direction");
+		if (offset.minute < 0 || offset.minute > 59) throw new Error("Invalid offset minute");
+		if (!([OffsetDirection.minus, OffsetDirection.plus] as string[]).includes(offset.direction)) throw new Error("Invalid offset direction");
 
 		this._offset = offset;
 	}
@@ -448,7 +404,7 @@ class TimestampTZClass implements TimestampTZ {
 		return Date.from({
 			year: this._year,
 			month: this._month,
-			day: this._day
+			day: this._day,
 		});
 	}
 
@@ -457,7 +413,7 @@ class TimestampTZClass implements TimestampTZ {
 			hour: this._hour,
 			minute: this._minute,
 			second: this._second,
-			offset: this._offset
+			offset: this._offset,
 		});
 	}
 

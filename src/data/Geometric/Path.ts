@@ -18,9 +18,7 @@ interface RawPathObject {
 interface Path {
 	toString(): string;
 	toJSON(): RawPathObject;
-	equals(
-		otherPath: string | Path | PathObject | RawPathObject | Point[]
-	): boolean;
+	equals(otherPath: string | Path | PathObject | RawPathObject | Point[]): boolean;
 
 	points: Point[];
 	connection: "open" | "closed";
@@ -38,16 +36,9 @@ interface PathConstructor {
 }
 
 const Path: PathConstructor = {
-	from(
-		arg: string | Path | PathObject | RawPathObject | Point | Point[],
-		...extraPoints: Point[]
-	): Path {
+	from(arg: string | Path | PathObject | RawPathObject | Point | Point[], ...extraPoints: Point[]): Path {
 		if (typeof arg === "string") {
-			if (
-				arg.match(
-					/^\(\(\d+(\.\d+)?,\d+(\.\d+)?\)(,\(\d+(\.\d+)?,\d+(\.\d+)?\))*\)$/
-				)
-			) {
+			if (arg.match(/^\(\(\d+(\.\d+)?,\d+(\.\d+)?\)(,\(\d+(\.\d+)?,\d+(\.\d+)?\))*\)$/)) {
 				const points = arg
 					.slice(1, -1)
 					.split("),(")
@@ -56,13 +47,9 @@ const Path: PathConstructor = {
 					.map(p => Point.from(p));
 				return new PathClass({
 					points,
-					connection: "open"
+					connection: "open",
 				});
-			} else if (
-				arg.match(
-					/^\[\(\d+(\.\d+)?,\d+(\.\d+)?\)(,\(\d+(\.\d+)?,\d+(\.\d+)?\))*\]$/
-				)
-			) {
+			} else if (arg.match(/^\[\(\d+(\.\d+)?,\d+(\.\d+)?\)(,\(\d+(\.\d+)?,\d+(\.\d+)?\))*\]$/)) {
 				const points = arg
 					.slice(1, -1)
 					.split("),(")
@@ -71,7 +58,7 @@ const Path: PathConstructor = {
 					.map(p => Point.from(p));
 				return new PathClass({
 					points,
-					connection: "closed"
+					connection: "closed",
 				});
 			}
 			throw new Error("Invalid Path string");
@@ -79,25 +66,17 @@ const Path: PathConstructor = {
 			if (arg.points.length) return new PathClass(arg.toJSON());
 			else throw new Error("Invalid Path object, too few points");
 		} else if (Array.isArray(arg) || Point.isPoint(arg)) {
-			if (![...(Point.isPoint(arg) ? [arg] : arg)].length)
-				throw new Error("Invalid Path object, too few points");
+			if (![...(Point.isPoint(arg) ? [arg] : arg)].length) throw new Error("Invalid Path object, too few points");
 
-			if (
-				[...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints].every(
-					Point.isPoint
-				)
-			) {
+			if ([...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints].every(Point.isPoint)) {
 				return new PathClass({
 					points: [...(Point.isPoint(arg) ? [arg] : arg), ...extraPoints],
-					connection: "open"
+					connection: "open",
 				});
-			} else {
-				throw new Error("Invalid Path array, invalid points");
-			}
+			} else throw new Error("Invalid Path array, invalid points");
 		} else {
 			if (!("points" in arg)) throw new Error("Invalid Path object");
-			if (!arg.points.length)
-				throw new Error("Invalid Path object, too few points");
+			if (!arg.points.length) throw new Error("Invalid Path object, too few points");
 			if (!arg.points.every(Point.isPoint)) {
 				try {
 					arg.points = arg.points.map(Point.from);
@@ -105,14 +84,13 @@ const Path: PathConstructor = {
 					throw new Error("Invalid Path object, invalid points");
 				}
 			}
-			if (arg.connection !== "open" && arg.connection !== "closed")
-				throw new Error("Invalid Path object, invalid connection");
+			if (arg.connection !== "open" && arg.connection !== "closed") throw new Error("Invalid Path object, invalid connection");
 			return new PathClass(arg);
 		}
 	},
 	isPath(obj: any): obj is Path {
 		return obj instanceof PathClass;
-	}
+	},
 };
 
 class PathClass implements Path {
@@ -121,36 +99,26 @@ class PathClass implements Path {
 
 	constructor(data: PathObject | RawPathObject) {
 		this._connection = data.connection;
-		if (data.points.every(Point.isPoint)) {
-			this._points = data.points as Point[];
-		} else {
-			this._points = data.points.map(Point.from);
-		}
+		if (data.points.every(Point.isPoint)) this._points = data.points as Point[];
+		else this._points = data.points.map(Point.from);
 	}
 
 	toString(): string {
-		if (this._connection === "open") {
-			return `(${this._points.map(p => p.toString()).join(",")})`;
-		} else {
-			return `[${this._points.map(p => p.toString()).join(",")}]`;
-		}
+		if (this._connection === "open") return `(${this._points.map(p => p.toString()).join(",")})`;
+		else return `[${this._points.map(p => p.toString()).join(",")}]`;
 	}
 
 	toJSON(): RawPathObject {
 		return {
 			points: this._points.map(p => p.toJSON()),
-			connection: this._connection
+			connection: this._connection,
 		};
 	}
 
-	equals(
-		otherPath: string | Path | PathObject | RawPathObject | Point[]
-	): boolean {
-		if (typeof otherPath === "string") {
-			return otherPath === this.toString();
-		} else if (Path.isPath(otherPath)) {
-			return otherPath.toString() === this.toString();
-		} else if (Array.isArray(otherPath) && otherPath.every(Point.isPoint)) {
+	equals(otherPath: string | Path | PathObject | RawPathObject | Point[]): boolean {
+		if (typeof otherPath === "string") return otherPath === this.toString();
+		else if (Path.isPath(otherPath)) return otherPath.toString() === this.toString();
+		else if (Array.isArray(otherPath) && otherPath.every(Point.isPoint)) {
 			return (
 				Array.isArray(this._points) &&
 				this._connection === "open" &&
@@ -163,9 +131,7 @@ class PathClass implements Path {
 				Array.isArray(this._points) &&
 				otherPath.connection === this._connection &&
 				otherPath.points.length === this._points.length &&
-				otherPath.points.every((val, index) =>
-					Point.from(val).equals(this._points[index])
-				)
+				otherPath.points.every((val, index) => Point.from(val).equals(this._points[index]))
 			);
 		}
 	}

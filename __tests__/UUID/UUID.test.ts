@@ -11,21 +11,11 @@ describe("UUID Class", () => {
 	});
 
 	it("should error when creating a uuid from an invalid string", () => {
-		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1")).toThrow(
-			"Invalid UUID string"
-		);
-		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111")).toThrow(
-			"Invalid UUID string"
-		);
-		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G")).toThrow(
-			"Invalid UUID string"
-		);
-		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g")).toThrow(
-			"Invalid UUID string"
-		);
-		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 ")).toThrow(
-			"Invalid UUID string"
-		);
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1")).toThrow("Invalid UUID string");
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111")).toThrow("Invalid UUID string");
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G")).toThrow("Invalid UUID string");
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g")).toThrow("Invalid UUID string");
+		expect(() => UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 ")).toThrow("Invalid UUID string");
 	});
 
 	it("should create a uuid from a object", () => {
@@ -34,21 +24,11 @@ describe("UUID Class", () => {
 	});
 
 	it("should error when creating a uuid from an invalid object", () => {
-		expect(() =>
-			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1" })
-		).toThrow("Invalid UUID object");
-		expect(() =>
-			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111" })
-		).toThrow("Invalid UUID object");
-		expect(() =>
-			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G" })
-		).toThrow("Invalid UUID object");
-		expect(() =>
-			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g" })
-		).toThrow("Invalid UUID object");
-		expect(() =>
-			UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 " })
-		).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 " })).toThrow("Invalid UUID object");
 	});
 
 	it("should create a uuid from a newly generated uuid", () => {
@@ -59,9 +39,7 @@ describe("UUID Class", () => {
 	it("isUUID()", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
 		expect(UUID.isUUID(uuid)).toBe(true);
-		expect(UUID.isUUID({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" })).toBe(
-			false
-		);
+		expect(UUID.isUUID({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" })).toBe(false);
 	});
 
 	it("toString()", () => {
@@ -72,31 +50,19 @@ describe("UUID Class", () => {
 	it("toJSON()", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
 		expect(uuid.toJSON()).toEqual({
-			UUID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+			UUID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
 		});
 	});
 
 	it("equals()", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
 
-		expect(uuid.equals(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"))).toBe(
-			true
-		);
-		expect(uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11"))).toBe(
-			false
-		);
-		expect(
-			uuid.equals(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11").toJSON())
-		).toBe(true);
-		expect(
-			uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11").toJSON())
-		).toBe(false);
-		expect(
-			uuid.equals(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11").toString())
-		).toBe(true);
-		expect(
-			uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11").toString())
-		).toBe(false);
+		expect(uuid.equals(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"))).toBe(true);
+		expect(uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11"))).toBe(false);
+		expect(uuid.equals(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11").toJSON())).toBe(true);
+		expect(uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11").toJSON())).toBe(false);
+		expect(uuid.equals(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11").toString())).toBe(true);
+		expect(uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11").toString())).toBe(false);
 	});
 
 	it("get UUID", () => {
@@ -117,7 +83,7 @@ describe("UUID Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "uuid.test.ts"
+			application_name: "uuid.test.ts",
 		});
 
 		await client.connect();
@@ -143,13 +109,8 @@ describe("UUID Class", () => {
 				SELECT * FROM public.jestuuid
 			`);
 
-			expect(result.rows[0].uuid).toStrictEqual(
-				UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11")
-			);
-			expect(result.rows[0]._uuid).toStrictEqual([
-				UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"),
-				UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11")
-			]);
+			expect(result.rows[0].uuid).toStrictEqual(UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"));
+			expect(result.rows[0]._uuid).toStrictEqual([UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11"), UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11")]);
 		} catch (err) {
 			error = err;
 		}

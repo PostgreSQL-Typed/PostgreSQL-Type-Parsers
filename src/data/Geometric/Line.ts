@@ -41,24 +41,16 @@ const Line: LineConstructor = {
 				return new LineClass({
 					a,
 					b,
-					c
+					c,
 				});
 			}
 			throw new Error("Invalid Line string");
-		} else if (Line.isLine(arg)) {
-			return new LineClass(arg.toJSON());
-		} else if (typeof arg === "number") {
-			if (typeof b === "number" && typeof c === "number") {
-				return new LineClass({ a: arg, b, c });
-			} else {
-				throw new Error("Invalid Line array, invalid numbers");
-			}
+		} else if (Line.isLine(arg)) return new LineClass(arg.toJSON());
+		else if (typeof arg === "number") {
+			if (typeof b === "number" && typeof c === "number") return new LineClass({ a: arg, b, c });
+			else throw new Error("Invalid Line array, invalid numbers");
 		} else {
-			if (
-				!("a" in arg && typeof arg.a === "number") ||
-				!("b" in arg && typeof arg.b === "number") ||
-				!("c" in arg && typeof arg.c === "number")
-			)
+			if (!("a" in arg && typeof arg.a === "number") || !("b" in arg && typeof arg.b === "number") || !("c" in arg && typeof arg.c === "number"))
 				throw new Error("Invalid Line object");
 
 			return new LineClass(arg);
@@ -66,7 +58,7 @@ const Line: LineConstructor = {
 	},
 	isLine(obj: any): obj is Line {
 		return obj instanceof LineClass;
-	}
+	},
 };
 
 class LineClass implements Line {
@@ -88,22 +80,14 @@ class LineClass implements Line {
 		return {
 			a: this._a,
 			b: this._b,
-			c: this._c
+			c: this._c,
 		};
 	}
 
 	equals(otherLine: string | Line | LineObject): boolean {
-		if (typeof otherLine === "string") {
-			return otherLine === this.toString();
-		} else if (Line.isLine(otherLine)) {
-			return otherLine.toString() === this.toString();
-		} else {
-			return (
-				otherLine.a === this._a &&
-				otherLine.b === this._b &&
-				otherLine.c === this._c
-			);
-		}
+		if (typeof otherLine === "string") return otherLine === this.toString();
+		else if (Line.isLine(otherLine)) return otherLine.toString() === this.toString();
+		else return otherLine.a === this._a && otherLine.b === this._b && otherLine.c === this._c;
 	}
 
 	get a(): number {

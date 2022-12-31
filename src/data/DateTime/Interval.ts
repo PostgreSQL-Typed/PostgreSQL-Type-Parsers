@@ -40,15 +40,7 @@ interface Interval {
 }
 
 interface IntervalConstructor {
-	from(
-		years: number,
-		months: number,
-		days: number,
-		hours: number,
-		minutes: number,
-		seconds: number,
-		milliseconds: number
-	): Interval;
+	from(years: number, months: number, days: number, hours: number, minutes: number, seconds: number, milliseconds: number): Interval;
 	from(data: Interval | IntervalObject): Interval;
 	from(str: string): Interval;
 	/**
@@ -80,29 +72,18 @@ const Interval: IntervalConstructor = {
 				intervalRegex = new RegExp(
 					`^\\s*${[yearRegex, monthRegex, dayRegex, timeRegex]
 						// All parts of an interval are optional
-						.map(str => "(?:" + str + ")?")
+						.map(str => `(?:${str})?`)
 						.join("\\s*")}\\s*$`
 				),
 				matches = intervalRegex.exec(arg);
 			if (!matches) {
-				const ISORegex = new RegExp(
-						/P(-?\d*Y)?(-?\d*M)?(-?\d*D)?T(-?\d*H)?(-?\d*M)?(-?\d*(\.\d{1,6})?S)?/g
-					),
+				const ISORegex = new RegExp(/P(-?\d*Y)?(-?\d*M)?(-?\d*D)?T(-?\d*H)?(-?\d*M)?(-?\d*(\.\d{1,6})?S)?/g),
 					isoMatches = ISORegex.exec(arg);
 
 				if (!isoMatches) throw new Error("Invalid Interval string");
 
-				const [
-					,
-					yearsString,
-					monthsString,
-					daysString,
-					hoursString,
-					minutesString,
-					secondsString
-				] = isoMatches;
-
-				const years = parseInt(yearsString || "0") || 0,
+				const [, yearsString, monthsString, daysString, hoursString, minutesString, secondsString] = isoMatches,
+					years = parseInt(yearsString || "0") || 0,
 					months = parseInt(monthsString || "0") || 0,
 					days = parseInt(daysString || "0") || 0,
 					hours = parseInt(hoursString || "0") || 0,
@@ -118,36 +99,23 @@ const Interval: IntervalConstructor = {
 					hours,
 					minutes,
 					seconds,
-					milliseconds
+					milliseconds,
 				});
 			}
 
-			const [
-					,
-					yearsString,
-					monthsString,
-					daysString,
-					plusMinusTime,
-					hoursString,
-					minutesString,
-					secondsString
-				] = matches,
+			const [, yearsString, monthsString, daysString, plusMinusTime, hoursString, minutesString, secondsString] = matches,
 				timeMultiplier = plusMinusTime === "-" ? -1 : 1,
 				years = yearsString ? parseInt(yearsString, 10) : 0,
 				months = monthsString ? parseInt(monthsString, 10) : 0,
 				days = daysString ? parseInt(daysString, 10) : 0,
 				hours = hoursString ? timeMultiplier * parseInt(hoursString, 10) : 0,
-				minutes = minutesString
-					? timeMultiplier * parseInt(minutesString, 10)
-					: 0,
+				minutes = minutesString ? timeMultiplier * parseInt(minutesString, 10) : 0,
 				secondsFloat = parseFloat(secondsString) || 0,
 				// secondsFloat is guaranteed to be >= 0, so floor is safe
 				absSeconds = Math.floor(secondsFloat),
 				seconds = timeMultiplier * absSeconds,
 				// Without the rounding, we end up with decimals like 455.99999999999994 instead of 456
-				milliseconds =
-					Math.round(timeMultiplier * (secondsFloat - absSeconds) * 1_000_000) /
-					1_000;
+				milliseconds = Math.round(timeMultiplier * (secondsFloat - absSeconds) * 1_000_000) / 1_000;
 
 			return new IntervalClass({
 				years,
@@ -156,11 +124,10 @@ const Interval: IntervalConstructor = {
 				hours,
 				minutes,
 				seconds,
-				milliseconds
+				milliseconds,
 			});
-		} else if (Interval.isInterval(arg)) {
-			return new IntervalClass(arg.toJSON());
-		} else if (typeof arg === "number") {
+		} else if (Interval.isInterval(arg)) return new IntervalClass(arg.toJSON());
+		else if (typeof arg === "number") {
 			if (
 				typeof months === "number" &&
 				typeof days === "number" &&
@@ -176,7 +143,7 @@ const Interval: IntervalConstructor = {
 					hours,
 					minutes,
 					seconds,
-					milliseconds
+					milliseconds,
 				});
 			}
 			throw new Error("Invalid Interval array, numbers only");
@@ -190,13 +157,7 @@ const Interval: IntervalConstructor = {
 				(!("minutes" in arg) || typeof arg.minutes === "number") &&
 				(!("seconds" in arg) || typeof arg.seconds === "number") &&
 				(!("milliseconds" in arg) || typeof arg.milliseconds === "number") &&
-				("years" in arg ||
-					"months" in arg ||
-					"days" in arg ||
-					"hours" in arg ||
-					"minutes" in arg ||
-					"seconds" in arg ||
-					"milliseconds" in arg)
+				("years" in arg || "months" in arg || "days" in arg || "hours" in arg || "minutes" in arg || "seconds" in arg || "milliseconds" in arg)
 			)
 				return new IntervalClass(arg);
 			throw new Error("Invalid Interval object");
@@ -204,7 +165,7 @@ const Interval: IntervalConstructor = {
 	},
 	isInterval(obj: any): obj is Interval {
 		return obj instanceof IntervalClass;
-	}
+	},
 };
 
 class IntervalClass implements Interval {
@@ -227,21 +188,11 @@ class IntervalClass implements Interval {
 	}
 
 	toString(): string {
-		const properties: IntervalProperties[] = [
-				"years",
-				"months",
-				"days",
-				"hours",
-				"minutes",
-				"seconds"
-			],
-			filtered = properties.filter(
-				key => this[`_${key}`] !== undefined && this[`_${key}`] !== 0
-			);
+		const properties: IntervalProperties[] = ["years", "months", "days", "hours", "minutes", "seconds"],
+			filtered = properties.filter(key => typeof this[`_${key}`] !== "undefined" && this[`_${key}`] !== 0);
 
 		// In addition to `properties`, we need to account for fractions of seconds.
-		if (this.milliseconds && !filtered.includes("seconds"))
-			filtered.push("seconds");
+		if (this.milliseconds && !filtered.includes("seconds")) filtered.push("seconds");
 
 		if (!filtered.length) return "0";
 
@@ -251,18 +202,12 @@ class IntervalClass implements Interval {
 
 				// Account for fractional part of seconds,
 				// remove trailing zeroes.
-				if (property === "seconds" && this.milliseconds) {
-					value = (value + this.milliseconds / 1_000)
-						.toFixed(6)
-						.replace(/\.?0+$/, "");
-				}
+				if (property === "seconds" && this.milliseconds) value = (value + this.milliseconds / 1_000).toFixed(6).replace(/\.?0+$/, "");
 
 				// fractional seconds will be a string, all others are number
 				const isSingular = String(value) === "1",
 					// Remove plural 's' when the value is singular
-					formattedProperty = isSingular
-						? property.replace(/s$/, "")
-						: property;
+					formattedProperty = isSingular ? property.replace(/s$/, "") : property;
 
 				return `${value} ${formattedProperty}`;
 			})
@@ -289,15 +234,14 @@ class IntervalClass implements Interval {
 			days: "D",
 			hours: "H",
 			minutes: "M",
-			seconds: "S"
+			seconds: "S",
 		};
 
 		let value: string | number = this[property];
 
 		// Account for fractional part of seconds,
 		// remove trailing zeroes.
-		if (property === "seconds" && this.milliseconds)
-			value = (value + this.milliseconds / 1_000).toFixed(6).replace(/0+$/, "");
+		if (property === "seconds" && this.milliseconds) value = (value + this.milliseconds / 1_000).toFixed(6).replace(/0+$/, "");
 
 		if (short && !value) return "";
 
@@ -305,27 +249,24 @@ class IntervalClass implements Interval {
 	}
 
 	toJSON(): IntervalObject {
-		return {
-			years: this._years === 0 ? undefined : this._years,
-			months: this._months === 0 ? undefined : this._months,
-			days: this._days === 0 ? undefined : this._days,
-			hours: this._hours === 0 ? undefined : this._hours,
-			minutes: this._minutes === 0 ? undefined : this._minutes,
-			seconds: this._seconds === 0 ? undefined : this._seconds,
-			milliseconds: this._milliseconds === 0 ? undefined : this._milliseconds
-		};
+		const returnObject: IntervalObject = {};
+
+		if (this._years !== 0) returnObject.years = this._years;
+		if (this._months !== 0) returnObject.months = this._months;
+		if (this._days !== 0) returnObject.days = this._days;
+		if (this._hours !== 0) returnObject.hours = this._hours;
+		if (this._minutes !== 0) returnObject.minutes = this._minutes;
+		if (this._seconds !== 0) returnObject.seconds = this._seconds;
+		if (this._milliseconds !== 0) returnObject.milliseconds = this._milliseconds;
+
+		return returnObject;
 	}
 
 	equals(otherInterval: string | Interval | IntervalObject): boolean {
-		if (typeof otherInterval === "string") {
-			return (
-				otherInterval === this.toString() ||
-				otherInterval === this.toISOString() ||
-				otherInterval === this.toISOString(true)
-			);
-		} else if (Interval.isInterval(otherInterval)) {
-			return otherInterval.toString() === this.toString();
-		} else {
+		if (typeof otherInterval === "string")
+			return otherInterval === this.toString() || otherInterval === this.toISOString() || otherInterval === this.toISOString(true);
+		else if (Interval.isInterval(otherInterval)) return otherInterval.toString() === this.toString();
+		else {
 			return (
 				(otherInterval.years ?? 0) === (this._years ?? 0) &&
 				(otherInterval.months ?? 0) === (this._months ?? 0) &&

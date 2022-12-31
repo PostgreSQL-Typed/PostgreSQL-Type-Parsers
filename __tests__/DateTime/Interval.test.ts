@@ -14,7 +14,7 @@ describe("Interval Class", () => {
 				hours: 1,
 				minutes: 2,
 				seconds: 3,
-				milliseconds: 0
+				milliseconds: 0,
 			})
 		).toBe(true);
 
@@ -28,7 +28,7 @@ describe("Interval Class", () => {
 				hours: 1,
 				minutes: 2,
 				seconds: 3,
-				milliseconds: 456
+				milliseconds: 456,
 			})
 		).toBe(true);
 
@@ -42,7 +42,7 @@ describe("Interval Class", () => {
 				hours: 0,
 				minutes: 0,
 				seconds: 0,
-				milliseconds: 0
+				milliseconds: 0,
 			})
 		).toBe(true);
 
@@ -56,7 +56,7 @@ describe("Interval Class", () => {
 				hours: 0,
 				minutes: 0,
 				seconds: -3,
-				milliseconds: 0
+				milliseconds: 0,
 			})
 		).toBe(true);
 
@@ -70,7 +70,7 @@ describe("Interval Class", () => {
 				hours: 0,
 				minutes: 0,
 				seconds: -3,
-				milliseconds: -456
+				milliseconds: -456,
 			})
 		).toBe(true);
 	});
@@ -86,7 +86,7 @@ describe("Interval Class", () => {
 				hours: 1,
 				minutes: 2,
 				seconds: 3,
-				milliseconds: 0
+				milliseconds: 0,
 			})
 		).toBe(true);
 	});
@@ -102,15 +102,13 @@ describe("Interval Class", () => {
 				hours: 1,
 				minutes: 2,
 				seconds: 3,
-				milliseconds: 0
+				milliseconds: 0,
 			})
 		).toBe(true);
 	});
 
 	it("should error when creating a interval from a invalid string", () => {
-		expect(() => Interval.from("I guess 2 days seems fine")).toThrow(
-			"Invalid Interval string"
-		);
+		expect(() => Interval.from("I guess 2 days seems fine")).toThrow("Invalid Interval string");
 	});
 
 	it("should create a interval from numbers", () => {
@@ -124,15 +122,13 @@ describe("Interval Class", () => {
 				hours: 4,
 				minutes: 5,
 				seconds: 6,
-				milliseconds: 7
+				milliseconds: 7,
 			})
 		).toBe(true);
 	});
 
 	it("should error when creating a interval from a invalid numbers", () => {
-		expect(() => Interval.from(1, 2, 3, 4, 5, 6, "7" as any)).toThrow(
-			"Invalid Interval array, numbers only"
-		);
+		expect(() => Interval.from(1, 2, 3, 4, 5, 6, "7" as any)).toThrow("Invalid Interval array, numbers only");
 	});
 
 	it("should create a interval from an object", () => {
@@ -143,7 +139,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			minutes: 5,
 			seconds: 6,
-			milliseconds: 7
+			milliseconds: 7,
 		});
 		expect(interval).not.toBeNull();
 	});
@@ -158,7 +154,7 @@ describe("Interval Class", () => {
 				hours: 4,
 				minutes: 5,
 				seconds: 6,
-				milliseconds: "7" as any
+				milliseconds: "7" as any,
 			})
 		).toThrow("Invalid Interval object");
 	});
@@ -167,14 +163,14 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(Interval.isInterval(interval)).toBe(true);
 		expect(
 			Interval.isInterval({
 				seconds: 3,
 				minutes: 2,
-				hours: 1
+				hours: 1,
 			})
 		).toBe(false);
 	});
@@ -183,7 +179,7 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval.toString()).toBe("1 hour 2 minutes 3 seconds");
 	});
@@ -193,7 +189,7 @@ describe("Interval Class", () => {
 			days: 4,
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval.toISOString()).toBe("P0Y0M4DT1H2M3S");
 	});
@@ -203,7 +199,7 @@ describe("Interval Class", () => {
 			days: 4,
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval.toISOString(true)).toBe("P4DT1H2M3S");
 	});
@@ -212,12 +208,12 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval.toJSON()).toEqual({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 	});
 
@@ -225,7 +221,7 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 
 		expect(
@@ -233,7 +229,7 @@ describe("Interval Class", () => {
 				Interval.from({
 					seconds: 3,
 					minutes: 2,
-					hours: 1
+					hours: 1,
 				})
 			)
 		).toBe(true);
@@ -242,7 +238,7 @@ describe("Interval Class", () => {
 				Interval.from({
 					seconds: 3,
 					minutes: 2,
-					hours: 2
+					hours: 2,
 				}).toString()
 			)
 		).toBe(false);
@@ -251,7 +247,7 @@ describe("Interval Class", () => {
 				Interval.from({
 					seconds: 3,
 					minutes: 2,
-					hours: 1
+					hours: 1,
 				}).toJSON()
 			)
 		).toBe(true);
@@ -260,7 +256,7 @@ describe("Interval Class", () => {
 				Interval.from({
 					seconds: 3,
 					minutes: 2,
-					hours: 2
+					hours: 2,
 				}).toISOString()
 			)
 		).toBe(false);
@@ -269,7 +265,7 @@ describe("Interval Class", () => {
 				Interval.from({
 					seconds: 3,
 					minutes: 2,
-					hours: 1
+					hours: 1,
 				}).toISOString(true)
 			)
 		).toBe(true);
@@ -279,7 +275,7 @@ describe("Interval Class", () => {
 		const interval1 = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval1.years).toBe(0);
 
@@ -287,7 +283,7 @@ describe("Interval Class", () => {
 			years: 1,
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 
 		expect(interval2.years).toBe(1);
@@ -297,7 +293,7 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		interval.years = 1;
 
@@ -308,7 +304,7 @@ describe("Interval Class", () => {
 		const interval1 = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval1.months).toBe(0);
 
@@ -316,7 +312,7 @@ describe("Interval Class", () => {
 			months: 1,
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 
 		expect(interval2.months).toBe(1);
@@ -326,7 +322,7 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		interval.months = 1;
 
@@ -337,7 +333,7 @@ describe("Interval Class", () => {
 		const interval1 = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		expect(interval1.days).toBe(0);
 
@@ -345,7 +341,7 @@ describe("Interval Class", () => {
 			days: 1,
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 
 		expect(interval2.days).toBe(1);
@@ -355,7 +351,7 @@ describe("Interval Class", () => {
 		const interval = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 		interval.days = 1;
 
@@ -365,14 +361,14 @@ describe("Interval Class", () => {
 	it("get hours", () => {
 		const interval1 = Interval.from({
 			seconds: 3,
-			minutes: 2
+			minutes: 2,
 		});
 		expect(interval1.hours).toBe(0);
 
 		const interval2 = Interval.from({
 			seconds: 3,
 			minutes: 2,
-			hours: 1
+			hours: 1,
 		});
 
 		expect(interval2.hours).toBe(1);
@@ -381,7 +377,7 @@ describe("Interval Class", () => {
 	it("set hours", () => {
 		const interval = Interval.from({
 			seconds: 3,
-			minutes: 2
+			minutes: 2,
 		});
 		interval.hours = 1;
 
@@ -390,13 +386,13 @@ describe("Interval Class", () => {
 
 	it("get minutes", () => {
 		const interval1 = Interval.from({
-			seconds: 3
+			seconds: 3,
 		});
 		expect(interval1.minutes).toBe(0);
 
 		const interval2 = Interval.from({
 			seconds: 3,
-			minutes: 2
+			minutes: 2,
 		});
 
 		expect(interval2.minutes).toBe(2);
@@ -404,7 +400,7 @@ describe("Interval Class", () => {
 
 	it("set minutes", () => {
 		const interval = Interval.from({
-			seconds: 3
+			seconds: 3,
 		});
 		interval.minutes = 2;
 
@@ -413,7 +409,7 @@ describe("Interval Class", () => {
 
 	it("get seconds", () => {
 		const interval = Interval.from({
-			seconds: 3
+			seconds: 3,
 		});
 
 		expect(interval.seconds).toBe(3);
@@ -421,7 +417,7 @@ describe("Interval Class", () => {
 
 	it("set seconds", () => {
 		const interval = Interval.from({
-			seconds: 3
+			seconds: 3,
 		});
 		interval.seconds = 2;
 
@@ -430,7 +426,7 @@ describe("Interval Class", () => {
 
 	it("get milliseconds", () => {
 		const interval = Interval.from({
-			seconds: 3
+			seconds: 3,
 		});
 
 		expect(interval.milliseconds).toBe(0);
@@ -438,7 +434,7 @@ describe("Interval Class", () => {
 
 	it("set milliseconds", () => {
 		const interval = Interval.from({
-			seconds: 3
+			seconds: 3,
 		});
 		interval.milliseconds = 2;
 
@@ -453,7 +449,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalMilliseconds).toBe(37065906007);
@@ -467,7 +463,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalSeconds).toBe(37065906.007);
@@ -481,7 +477,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalMinutes).toBe(617765.1001166666);
@@ -495,7 +491,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalHours).toBe(10296.085001944444);
@@ -509,7 +505,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalDays).toBe(429.0035417476852);
@@ -523,7 +519,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalMonths).toBe(14.300118058256173);
@@ -537,7 +533,7 @@ describe("Interval Class", () => {
 			hours: 4,
 			days: 3,
 			months: 2,
-			years: 1
+			years: 1,
 		});
 
 		expect(interval.totalYears).toBe(1.1916765048546811);
@@ -550,7 +546,7 @@ describe("Interval Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "interval.test.ts"
+			application_name: "interval.test.ts",
 		});
 
 		await client.connect();
@@ -584,7 +580,7 @@ describe("Interval Class", () => {
 					hours: 4,
 					days: 3,
 					months: 2,
-					years: 1
+					years: 1,
 				})
 			);
 			expect(result.rows[0]._interval).toStrictEqual([
@@ -595,7 +591,7 @@ describe("Interval Class", () => {
 					hours: 4,
 					days: 3,
 					months: 2,
-					years: 1
+					years: 1,
 				}),
 				Interval.from({
 					milliseconds: 1,
@@ -604,8 +600,8 @@ describe("Interval Class", () => {
 					hours: 4,
 					days: 5,
 					months: 6,
-					years: 7
-				})
+					years: 7,
+				}),
 			]);
 		} catch (err) {
 			error = err;

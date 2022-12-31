@@ -22,18 +22,10 @@ describe("TimestampTZ Class", () => {
 	});
 
 	it("should error when creating a timestamptz from an invalid string", () => {
-		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789")).toThrow(
-			"Invalid TimestampTZ string"
-		);
-		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:")).toThrow(
-			"Invalid TimestampTZ string"
-		);
-		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:0")).toThrow(
-			"Invalid TimestampTZ string"
-		);
-		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:00:00")).toThrow(
-			"Invalid TimestampTZ string"
-		);
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789")).toThrow("Invalid TimestampTZ string");
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:")).toThrow("Invalid TimestampTZ string");
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:0")).toThrow("Invalid TimestampTZ string");
+		expect(() => TimestampTZ.from("2004-10-19 04:05:06.789+01:00:00")).toThrow("Invalid TimestampTZ string");
 	});
 
 	it("should create a timestamptz from a object", () => {
@@ -47,8 +39,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz1).not.toBeNull();
 		const timestamptz2 = TimestampTZ.from({
@@ -61,16 +53,14 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "minus"
-			}
+				direction: "minus",
+			},
 		});
 		expect(timestamptz2).not.toBeNull();
 	});
 
 	it("should error when creating a timestamptz from an invalid object", () => {
-		expect(() => TimestampTZ.from({} as any)).toThrow(
-			"Invalid TimestampTZ object"
-		);
+		expect(() => TimestampTZ.from({} as any)).toThrow("Invalid TimestampTZ object");
 		expect(() =>
 			TimestampTZ.from({
 				year: 2004,
@@ -82,8 +72,8 @@ describe("TimestampTZ Class", () => {
 				offset: {
 					hour: 1,
 					minute: 0,
-					direction: "invalid"
-				}
+					direction: "invalid",
+				},
 			} as any)
 		).toThrow("Invalid TimestampTZ object");
 	});
@@ -96,9 +86,7 @@ describe("TimestampTZ Class", () => {
 	});
 
 	it("should error when creating a timestamptz from invalid numbers", () => {
-		expect(() =>
-			TimestampTZ.from(2004, 10, 19, 4, 5, 6, 1, 0, "invalid" as any)
-		).toThrow("Invalid TimestampTZ array, numbers and OffsetDirection");
+		expect(() => TimestampTZ.from(2004, 10, 19, 4, 5, 6, 1, 0, "invalid" as any)).toThrow("Invalid TimestampTZ array, numbers and OffsetDirection");
 	});
 
 	it("should create a timestamptz from a DateTime", () => {
@@ -110,16 +98,14 @@ describe("TimestampTZ Class", () => {
 				hour: 4,
 				minute: 5,
 				second: 6,
-				millisecond: 789
+				millisecond: 789,
 			}).setZone("America/New_York")
 		);
 		expect(timestamp).not.toBeNull();
 	});
 
 	it("should create a timestamptz from a JavaScript Date", () => {
-		const timestamp = TimestampTZ.from(
-			new globalThis.Date(2004, 10, 19, 4, 5, 6, 789)
-		);
+		const timestamp = TimestampTZ.from(new globalThis.Date(2004, 10, 19, 4, 5, 6, 789));
 		expect(timestamp).not.toBeNull();
 	});
 
@@ -137,8 +123,8 @@ describe("TimestampTZ Class", () => {
 				offset: {
 					hour: 1,
 					minute: 0,
-					direction: "minus"
-				}
+					direction: "minus",
+				},
 			})
 		).toBe(false);
 	});
@@ -154,8 +140,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.toString()).toBe("2004-10-19 04:05:06.789 +01:00");
 	});
@@ -171,8 +157,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.toISO()).toBe("2004-10-19T04:05:06.789+01:00");
 	});
@@ -188,8 +174,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.toJSON()).toEqual({
 			year: 2004,
@@ -201,8 +187,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 	});
 
@@ -217,8 +203,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 
 		expect(
@@ -233,8 +219,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				})
 			)
 		).toBe(true);
@@ -250,8 +236,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				})
 			)
 		).toBe(false);
@@ -267,8 +253,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				}).toJSON()
 			)
 		).toBe(true);
@@ -284,8 +270,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				}).toJSON()
 			)
 		).toBe(false);
@@ -301,8 +287,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "plus"
-					}
+						direction: "plus",
+					},
 				}).toString()
 			)
 		).toBe(true);
@@ -318,8 +304,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				}).toString()
 			)
 		).toBe(false);
@@ -335,8 +321,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 1,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				})
 			)
 		).toBe(true);
@@ -352,8 +338,8 @@ describe("TimestampTZ Class", () => {
 					offset: {
 						hour: 2,
 						minute: 0,
-						direction: "minus"
-					}
+						direction: "minus",
+					},
 				})
 			)
 		).toBe(false);
@@ -370,8 +356,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.year).toBe(2004);
 	});
@@ -387,8 +373,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.year = 2023;
 		expect(timestamptz.year).toBe(2023);
@@ -405,8 +391,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.month).toBe(10);
 	});
@@ -422,8 +408,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.month = 4;
 		expect(timestamptz.month).toBe(4);
@@ -440,8 +426,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.day).toBe(19);
 	});
@@ -457,8 +443,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.day = 3;
 		expect(timestamptz.day).toBe(3);
@@ -475,8 +461,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.hour).toBe(4);
 	});
@@ -492,8 +478,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.hour = 12;
 		expect(timestamptz.hour).toBe(12);
@@ -510,8 +496,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.minute).toBe(5);
 	});
@@ -527,8 +513,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.minute = 10;
 		expect(timestamptz.minute).toBe(10);
@@ -545,8 +531,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.second).toBe(6.123);
 	});
@@ -562,8 +548,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.second = 3;
 		expect(timestamptz.second).toBe(3);
@@ -580,13 +566,13 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.offset).toEqual({
 			hour: 1,
 			minute: 0,
-			direction: "plus"
+			direction: "plus",
 		});
 	});
 
@@ -601,18 +587,18 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		timestamptz.offset = {
 			hour: 2,
 			minute: 0,
-			direction: "minus"
+			direction: "minus",
 		};
 		expect(timestamptz.offset).toEqual({
 			hour: 2,
 			minute: 0,
-			direction: "minus"
+			direction: "minus",
 		});
 	});
 
@@ -627,14 +613,14 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.toDate()).toEqual(
 			Date.from({
 				year: 2004,
 				month: 10,
-				day: 19
+				day: 19,
 			})
 		);
 	});
@@ -650,8 +636,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.toTimeTZ()).toEqual(
 			TimeTZ.from({
@@ -661,8 +647,8 @@ describe("TimestampTZ Class", () => {
 				offset: {
 					hour: 1,
 					minute: 0,
-					direction: "plus"
-				}
+					direction: "plus",
+				},
 			})
 		);
 	});
@@ -678,12 +664,10 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
-		expect(timestamptz.toDateTime()).toStrictEqual(
-			DateTime.fromISO("2004-10-19T04:05:06+01:00")
-		);
+		expect(timestamptz.toDateTime()).toStrictEqual(DateTime.fromISO("2004-10-19T04:05:06+01:00"));
 	});
 
 	it("toJSDate()", () => {
@@ -697,8 +681,8 @@ describe("TimestampTZ Class", () => {
 			offset: {
 				hour: 1,
 				minute: 0,
-				direction: "plus"
-			}
+				direction: "plus",
+			},
 		});
 		expect(timestamptz.toJSDate()).toBeInstanceOf(globalThis.Date);
 	});
@@ -710,7 +694,7 @@ describe("TimestampTZ Class", () => {
 			user: "postgres",
 			database: "postgres",
 			port: 5432,
-			application_name: "timestamptz.test.ts"
+			application_name: "timestamptz.test.ts",
 		});
 
 		await client.connect();
@@ -736,12 +720,10 @@ describe("TimestampTZ Class", () => {
 				SELECT * FROM public.jesttimestamptz
 			`);
 
-			expect(result.rows[0].timestamptz).toStrictEqual(
-				TimestampTZ.from("2004-10-19 05:05:06.789 +00:00")
-			);
+			expect(result.rows[0].timestamptz).toStrictEqual(TimestampTZ.from("2004-10-19 05:05:06.789 +00:00"));
 			expect(result.rows[0]._timestamptz).toStrictEqual([
 				TimestampTZ.from("2004-10-19 03:05:06.789 +00:00"),
-				TimestampTZ.from("2004-10-19 15:23:54.678 +00:00")
+				TimestampTZ.from("2004-10-19 15:23:54.678 +00:00"),
 			]);
 		} catch (err) {
 			error = err;
