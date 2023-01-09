@@ -53,7 +53,7 @@ describe("Int4Range Class", () => {
 		const int4Range = Int4Range.from({
 			lower: LowerRange.include,
 			upper: UpperRange.exclude,
-			value: [{ Int4: 1 }, { Int4: 3 }],
+			value: [{ int4: 1 }, { int4: 3 }],
 		});
 		expect(int4Range).not.toBeNull();
 	});
@@ -65,18 +65,18 @@ describe("Int4Range Class", () => {
 	});
 
 	it("should create a int4 range from arguments", () => {
-		const int4Range = Int4Range.from(Int4.from({ Int4: 1 }), Int4.from({ Int4: 3 }));
+		const int4Range = Int4Range.from(Int4.from({ int4: 1 }), Int4.from({ int4: 3 }));
 		expect(int4Range).not.toBeNull();
 	});
 
 	it("should error when creating a int4 range from an invalid arguments", () => {
 		expect(() => {
-			Int4Range.from(Int4.from({ Int4: 1 }), "int4" as any);
+			Int4Range.from(Int4.from({ int4: 1 }), "int4" as any);
 		}).toThrow("Invalid Int4Range array, invalid Int4s");
 	});
 
 	it("should create a int4 range from array", () => {
-		const int4Range = Int4Range.from([Int4.from({ Int4: 1 }), Int4.from({ Int4: 3 })]);
+		const int4Range = Int4Range.from([Int4.from({ int4: 1 }), Int4.from({ int4: 3 })]);
 		expect(int4Range).not.toBeNull();
 	});
 
@@ -106,7 +106,7 @@ describe("Int4Range Class", () => {
 			Int4Range.isRange({
 				lower: LowerRange.include,
 				upper: UpperRange.exclude,
-				value: [Int4.from({ Int4: 1 }), Int4.from({ Int4: 3 })],
+				value: [Int4.from({ int4: 1 }), Int4.from({ int4: 3 })],
 			})
 		).toBe(false);
 	});
@@ -130,28 +130,28 @@ describe("Int4Range Class", () => {
 		expect(int4Range1.toJSON()).toStrictEqual({
 			lower: LowerRange.include,
 			upper: UpperRange.exclude,
-			value: [{ Int4: 1 }, { Int4: 3 }],
+			value: [{ int4: 1 }, { int4: 3 }],
 		});
 
 		const int4Range2 = Int4Range.from("[1,3]");
 		expect(int4Range2.toJSON()).toStrictEqual({
 			lower: LowerRange.include,
 			upper: UpperRange.include,
-			value: [{ Int4: 1 }, { Int4: 3 }],
+			value: [{ int4: 1 }, { int4: 3 }],
 		});
 
 		const int4Range3 = Int4Range.from("(1,3)");
 		expect(int4Range3.toJSON()).toStrictEqual({
 			lower: LowerRange.exclude,
 			upper: UpperRange.exclude,
-			value: [{ Int4: 1 }, { Int4: 3 }],
+			value: [{ int4: 1 }, { int4: 3 }],
 		});
 
 		const int4Range4 = Int4Range.from("(1,3]");
 		expect(int4Range4.toJSON()).toStrictEqual({
 			lower: LowerRange.exclude,
 			upper: UpperRange.include,
-			value: [{ Int4: 1 }, { Int4: 3 }],
+			value: [{ int4: 1 }, { int4: 3 }],
 		});
 	});
 
@@ -189,7 +189,7 @@ describe("Int4Range Class", () => {
 
 	it("get value()", () => {
 		const int4Range = Int4Range.from("[1,3)");
-		expect(int4Range.value).toStrictEqual([Int4.from({ Int4: 1 }), Int4.from({ Int4: 3 })]);
+		expect(int4Range.value).toStrictEqual([Int4.from({ int4: 1 }), Int4.from({ int4: 3 })]);
 	});
 
 	it("set value()", () => {

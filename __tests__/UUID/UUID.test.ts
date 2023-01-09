@@ -19,16 +19,16 @@ describe("UUID Class", () => {
 	});
 
 	it("should create a uuid from a object", () => {
-		const uuid = UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" });
+		const uuid = UUID.from({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" });
 		expect(uuid).not.toBeNull();
 	});
 
 	it("should error when creating a uuid from an invalid object", () => {
-		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1" })).toThrow("Invalid UUID object");
-		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111" })).toThrow("Invalid UUID object");
-		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G" })).toThrow("Invalid UUID object");
-		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g" })).toThrow("Invalid UUID object");
-		expect(() => UUID.from({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 " })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A111" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1G" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1g" })).toThrow("Invalid UUID object");
+		expect(() => UUID.from({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A1 " })).toThrow("Invalid UUID object");
 	});
 
 	it("should create a uuid from a newly generated uuid", () => {
@@ -39,7 +39,7 @@ describe("UUID Class", () => {
 	it("isUUID()", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
 		expect(UUID.isUUID(uuid)).toBe(true);
-		expect(UUID.isUUID({ UUID: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" })).toBe(false);
+		expect(UUID.isUUID({ uuid: "A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11" })).toBe(false);
 	});
 
 	it("toString()", () => {
@@ -50,7 +50,7 @@ describe("UUID Class", () => {
 	it("toJSON()", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
 		expect(uuid.toJSON()).toEqual({
-			UUID: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+			uuid: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
 		});
 	});
 
@@ -65,15 +65,15 @@ describe("UUID Class", () => {
 		expect(uuid.equals(UUID.from("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11").toString())).toBe(false);
 	});
 
-	it("get UUID", () => {
+	it("get uuid", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
-		expect(uuid.UUID).toBe("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+		expect(uuid.uuid).toBe("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
 	});
 
-	it("set UUID", () => {
+	it("set uuid", () => {
 		const uuid = UUID.from("A0EEBC99-9C0B-4EF8-BB6D-6BB9BD380A11");
-		uuid.UUID = "A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11";
-		expect(uuid.UUID).toBe("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11");
+		uuid.uuid = "A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11";
+		expect(uuid.uuid).toBe("A0EEBC99-8C0B-4EF8-BB6D-6BB9BD380A11");
 	});
 
 	it("should be returned from PostgreSQL", async () => {

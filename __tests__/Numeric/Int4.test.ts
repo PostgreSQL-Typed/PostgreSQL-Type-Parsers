@@ -27,19 +27,19 @@ describe("Int4 Class", () => {
 	});
 
 	it("should create a Int4 from a object", () => {
-		const int4 = Int4.from({ Int4: 1 });
+		const int4 = Int4.from({ int4: 1 });
 		expect(int4).not.toBeNull();
 	});
 
 	it("should error when creating a Int4 from an invalid object", () => {
-		expect(() => Int4.from({ Int4: "1" as any })).toThrow("Invalid Int4 object");
-		expect(() => Int4.from({ Int4: 0.5 })).toThrow("Invalid Int4 object");
+		expect(() => Int4.from({ int4: "1" as any })).toThrow("Invalid Int4 object");
+		expect(() => Int4.from({ int4: 0.5 })).toThrow("Invalid Int4 object");
 	});
 
 	it("isInt4()", () => {
 		const int4 = Int4.from(1);
 		expect(Int4.isInt4(int4)).toBe(true);
-		expect(Int4.isInt4({ Int4: 1 })).toBe(false);
+		expect(Int4.isInt4({ int4: 1 })).toBe(false);
 	});
 
 	it("toString()", () => {
@@ -65,15 +65,15 @@ describe("Int4 Class", () => {
 		expect(int4.equals(Int4.from(2).toNumber())).toBe(false);
 	});
 
-	it("get Int4", () => {
+	it("get int4", () => {
 		const int4 = Int4.from(1);
-		expect(int4.Int4).toBe(1);
+		expect(int4.int4).toBe(1);
 	});
 
-	it("set Int4", () => {
+	it("set int4", () => {
 		const int4 = Int4.from(1);
-		int4.Int4 = 2;
-		expect(int4.Int4).toBe(2);
+		int4.int4 = 2;
+		expect(int4.int4).toBe(2);
 	});
 
 	it("should be returned from PostgreSQL", async () => {

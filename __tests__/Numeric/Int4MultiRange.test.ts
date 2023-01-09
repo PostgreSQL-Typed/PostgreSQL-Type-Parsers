@@ -33,17 +33,17 @@ describe("Int4MultiRange Class", () => {
 				{
 					lower: LowerRange.include,
 					upper: UpperRange.exclude,
-					value: [{ Int4: 1 }, { Int4: 3 }],
+					value: [{ int4: 1 }, { int4: 3 }],
 				},
 				{
 					lower: "(",
 					upper: "]",
-					value: [{ Int4: 11 }, { Int4: 13 }],
+					value: [{ int4: 11 }, { int4: 13 }],
 				},
 				{
 					lower: LowerRange.include,
 					upper: "]",
-					value: [{ Int4: 21 }, { Int4: 23 }],
+					value: [{ int4: 21 }, { int4: 23 }],
 				},
 			],
 		});
@@ -102,17 +102,17 @@ describe("Int4MultiRange Class", () => {
 				{
 					lower: "[",
 					upper: ")",
-					value: [{ Int4: 1 }, { Int4: 3 }],
+					value: [{ int4: 1 }, { int4: 3 }],
 				},
 				{
 					lower: "[",
 					upper: ")",
-					value: [{ Int4: 11 }, { Int4: 13 }],
+					value: [{ int4: 11 }, { int4: 13 }],
 				},
 				{
 					lower: "[",
 					upper: ")",
-					value: [{ Int4: 21 }, { Int4: 23 }],
+					value: [{ int4: 21 }, { int4: 23 }],
 				},
 			],
 		});

@@ -27,19 +27,19 @@ describe("Int2 Class", () => {
 	});
 
 	it("should create a Int2 from a object", () => {
-		const int2 = Int2.from({ Int2: 1 });
+		const int2 = Int2.from({ int2: 1 });
 		expect(int2).not.toBeNull();
 	});
 
 	it("should error when creating a Int2 from an invalid object", () => {
-		expect(() => Int2.from({ Int2: "1" as any })).toThrow("Invalid Int2 object");
-		expect(() => Int2.from({ Int2: 0.5 })).toThrow("Invalid Int2 object");
+		expect(() => Int2.from({ int2: "1" as any })).toThrow("Invalid Int2 object");
+		expect(() => Int2.from({ int2: 0.5 })).toThrow("Invalid Int2 object");
 	});
 
 	it("isInt2()", () => {
 		const int2 = Int2.from(1);
 		expect(Int2.isInt2(int2)).toBe(true);
-		expect(Int2.isInt2({ Int2: 1 })).toBe(false);
+		expect(Int2.isInt2({ int2: 1 })).toBe(false);
 	});
 
 	it("toString()", () => {
@@ -65,15 +65,15 @@ describe("Int2 Class", () => {
 		expect(int2.equals(Int2.from(2).toNumber())).toBe(false);
 	});
 
-	it("get Int2", () => {
+	it("get int2", () => {
 		const int2 = Int2.from(1);
-		expect(int2.Int2).toBe(1);
+		expect(int2.int2).toBe(1);
 	});
 
-	it("set Int2", () => {
+	it("set int2", () => {
 		const int2 = Int2.from(1);
-		int2.Int2 = 2;
-		expect(int2.Int2).toBe(2);
+		int2.int2 = 2;
+		expect(int2.int2).toBe(2);
 	});
 
 	it("should be returned from PostgreSQL", async () => {
