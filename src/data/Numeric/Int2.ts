@@ -87,8 +87,8 @@ class Int2Class implements Int2 {
 		return this._int2;
 	}
 
-	set int2(Int2: number) {
-		if (Int2 % 1 === 0 && Int2 >= -32768 && Int2 <= 32767) this._int2 = Int2;
+	set int2(int2: number) {
+		if (int2 % 1 === 0 && int2 >= -32768 && int2 <= 32767) this._int2 = int2;
 		else throw new Error("Invalid Int2");
 	}
 }

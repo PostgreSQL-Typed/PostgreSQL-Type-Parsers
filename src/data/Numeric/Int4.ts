@@ -87,8 +87,8 @@ class Int4Class implements Int4 {
 		return this._int4;
 	}
 
-	set int4(Int4: number) {
-		if (Int4 % 1 === 0 && Int4 >= -2147483648 && Int4 <= 2147483647) this._int4 = Int4;
+	set int4(int4: number) {
+		if (int4 % 1 === 0 && int4 >= -2147483648 && int4 <= 2147483647) this._int4 = int4;
 		else throw new Error("Invalid Int4");
 	}
 }
