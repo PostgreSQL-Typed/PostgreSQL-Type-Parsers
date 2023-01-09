@@ -30,6 +30,7 @@ Easy to use types for PostgreSQL data types
   - [Numeric Types](#numeric-types)
     - [Int2](#int2)
     - [Int4](#int4)
+    - [Int4MultiRange](#int4multirange)
     - [Int4Range](#int4range)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
@@ -1165,6 +1166,7 @@ macAddress1.equals(macAddress2); // true
 
 - [Int2](#int2)
 - [Int4](#int4)
+- [Int4MultiRange](#int4multirange)
 - [Int4Range](#int4range)
 
 ### Int2
@@ -1235,6 +1237,56 @@ int41.toNumber(); // 1
 
 //* It has a `equals()` method that returns whether two Int4s are equal:
 int41.equals(int42); // true
+```
+
+### Int4MultiRange
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int4multirange`][multirange]
+- [`_int4multirange`][multirange] (`int4multirange[]`)
+
+```ts
+import { Int4MultiRange, Int4 } from "postgresql-type-parsers";
+
+//* Int4MultiRange can be created in the following ways:
+const int4MultiRange1 = Int4MultiRange.from("{[1,9),[11, 19)}");
+const int4MultiRange2 = Int4MultiRange.from({
+	ranges: [Int4.from("[1,9)"), Int4.from("[11, 19)")],
+});
+const int4MultiRange3 = Int4MultiRange.from([Int4.from("[1,9)"), Int4.from("[11, 19)")]);
+const int4MultiRange4 = Int4MultiRange.from(Int4.from("[1,9)"), Int4.from("[11, 19)"));
+const int4MultiRange5 = Int4MultiRange.from({
+	ranges: [
+		{
+			lower: LowerRange.include,
+			upper: UpperRange.exclude,
+			value: [{ Int4: 1 }, { Int4: 9 }],
+		},
+		{
+			lower: "(",
+			upper: "]",
+			value: [{ Int4: 11 }, { Int4: 19 }],
+		},
+	],
+});
+
+//* To verify if a value is a int4 multi range, use the `isMultiRange` method:
+if (Int4MultiRange.isMultiRange(int4MultiRange1)) {
+	console.log("int4MultiRange1 is a int4 multi range");
+}
+
+//* Afterwards, you can get/set the properties of the int4 multi range:
+int4MultiRange1.ranges; // [Int4, Int4]
+
+//* It has a `toString()` method that returns a string representation of the int4 multi range:
+int4MultiRange1.toString(); // "{[1,9),[11, 19)}"
+
+//* It has a `toJSON()` method that returns a JSON representation of the int4 multi range:
+int4MultiRange1.toJSON(); // { ranges: [{ lower: "[", upper: ")", value: [Int4, Int4] }, { lower: "[", upper: ")", value: [Int4, Int4] }] }
+
+//* It has a `equals()` method that returns whether two int4 multi ranges are equal:
+int4MultiRange1.equals(int4MultiRange2); // true
 ```
 
 ### Int4Range
