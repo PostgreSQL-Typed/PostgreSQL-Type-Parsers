@@ -33,6 +33,7 @@ Easy to use types for PostgreSQL data types
     - [Int4MultiRange](#int4multirange)
     - [Int4Range](#int4range)
     - [Int8](#int8)
+    - [Int8MultiRange](#int8multirange)
     - [Int8Range](#int8range)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
@@ -1171,6 +1172,7 @@ macAddress1.equals(macAddress2); // true
 - [Int4MultiRange](#int4multirange)
 - [Int4Range](#int4range)
 - [Int8](#int8)
+- [Int8MultiRange](#int8multirange)
 - [Int8Range](#int8range)
 
 ### Int2
@@ -1284,7 +1286,7 @@ if (Int4MultiRange.isMultiRange(int4MultiRange1)) {
 int4MultiRange1.ranges; // [Int4, Int4]
 
 //* It has a `toString()` method that returns a string representation of the int4 multi range:
-int4MultiRange1.toString(); // "{[1,9),[11, 19)}"
+int4MultiRange1.toString(); // "{[1,9),[11,19)}"
 
 //* It has a `toJSON()` method that returns a JSON representation of the int4 multi range:
 int4MultiRange1.toJSON(); // { ranges: [{ lower: "[", upper: ")", value: [Int4, Int4] }, { lower: "[", upper: ")", value: [Int4, Int4] }] }
@@ -1398,6 +1400,56 @@ int81.toBigint(); // BigInt(1)
 
 //* It has a `equals()` method that returns whether two Int8s are equal:
 int81.equals(int82); // true
+```
+
+### Int8MultiRange
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int8multirange`][multirange]
+- [`_int8multirange`][multirange] (`int8multirange[]`)
+
+```ts
+import { Int8MultiRange, Int8 } from "postgresql-type-parsers";
+
+//* Int8MultiRange can be created in the following ways:
+const int8MultiRange1 = Int8MultiRange.from("{[1,9),[11, 19)}");
+const int8MultiRange2 = Int8MultiRange.from({
+	ranges: [Int8.from("[1,9)"), Int8.from("[11, 19)")],
+});
+const int8MultiRange3 = Int8MultiRange.from([Int8.from("[1,9)"), Int8.from("[11, 19)")]);
+const int8MultiRange4 = Int8MultiRange.from(Int8.from("[1,9)"), Int8.from("[11, 19)"));
+const int8MultiRange5 = Int8MultiRange.from({
+	ranges: [
+		{
+			lower: LowerRange.include,
+			upper: UpperRange.exclude,
+			value: [{ Int8: BigInt(1) }, { Int8: BigInt(9) }],
+		},
+		{
+			lower: "(",
+			upper: "]",
+			value: [{ Int8: BigInt(11) }, { Int8: BigInt(19) }],
+		},
+	],
+});
+
+//* To verify if a value is a int8 multi range, use the `isMultiRange` method:
+if (Int8MultiRange.isMultiRange(int8MultiRange1)) {
+	console.log("int8MultiRange1 is a int8 multi range");
+}
+
+//* Afterwards, you can get/set the properties of the int8 multi range:
+int8MultiRange1.ranges; // [Int8, Int8]
+
+//* It has a `toString()` method that returns a string representation of the int8 multi range:
+int8MultiRange1.toString(); // "{[1,9),[11,19)}"
+
+//* It has a `toJSON()` method that returns a JSON representation of the int8 multi range:
+int8MultiRange1.toJSON(); // { ranges: [{ lower: "[", upper: ")", value: [Int8, Int8] }, { lower: "[", upper: ")", value: [Int8, Int8] }] }
+
+//* It has a `equals()` method that returns whether two int8 multi ranges are equal:
+int8MultiRange1.equals(int8MultiRange2); // true
 ```
 
 ### Int8Range
