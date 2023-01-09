@@ -29,6 +29,7 @@ Easy to use types for PostgreSQL data types
     - [MACAddress8](#macaddress8)
   - [Numeric Types](#numeric-types)
     - [Int2](#int2)
+    - [Int4](#int4)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1162,6 +1163,7 @@ macAddress1.equals(macAddress2); // true
 ## Numeric Types
 
 - [Int2](#int2)
+- [Int4](#int4)
 
 ### Int2
 
@@ -1196,6 +1198,41 @@ int21.toNumber(); // 1
 
 //* It has a `equals()` method that returns whether two Int2s are equal:
 int21.equals(int22); // true
+```
+
+### Int4
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int4`][int]
+- [`_int4`][int] (`int4[]`)
+
+```ts
+import { Int4 } from "postgresql-type-parsers";
+
+//* Int4s can be created in the following ways:
+const int41 = Int4.from(1);
+const int42 = Int4.from({
+	int4: 1,
+});
+const int43 = Int4.from("1");
+
+//* To verify if a value is an Int4, use the `isInt4` method:
+if (Int4.isInt4(int41)) {
+	console.log("int41 is an Int4");
+}
+
+//* Afterwards, you can get/set the properties of the Int4:
+int41.int4; // 1
+
+//* It has a `toString()` method that returns a string representation of the Int4:
+int41.toString(); // "1"
+
+//* It has a `toNumber()` method that returns a number representation of the Int4:
+int41.toNumber(); // 1
+
+//* It has a `equals()` method that returns whether two Int4s are equal:
+int41.equals(int42); // true
 ```
 
 ## UUID Type
