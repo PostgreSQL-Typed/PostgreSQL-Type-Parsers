@@ -24,6 +24,7 @@ export * from "./data/Numeric/Int2";
 export * from "./data/Numeric/Int4";
 export * from "./data/Numeric/Int4MultiRange";
 export * from "./data/Numeric/Int4Range";
+export * from "./data/Numeric/Int8";
 export * from "./data/UUID/UUID";
 export * from "./types/IPType";
 export * from "./types/Offset";

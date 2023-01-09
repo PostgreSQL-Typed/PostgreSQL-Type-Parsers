@@ -32,6 +32,7 @@ Easy to use types for PostgreSQL data types
     - [Int4](#int4)
     - [Int4MultiRange](#int4multirange)
     - [Int4Range](#int4range)
+    - [Int8](#int8)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1168,6 +1169,7 @@ macAddress1.equals(macAddress2); // true
 - [Int4](#int4)
 - [Int4MultiRange](#int4multirange)
 - [Int4Range](#int4range)
+- [Int8](#int8)
 
 ### Int2
 
@@ -1358,6 +1360,42 @@ int4Range7.value; // null
 
 //* It has a `isWithinRange()` method that returns whether a int4 is within the range:
 int4Range1.isWithinRange(Int4.from("7")); // true
+```
+
+### Int8
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int8`][int]
+- [`_int8`][int] (`int8[]`)
+
+```ts
+import { Int8 } from "postgresql-type-parsers";
+
+//* Int8s can be created in the following ways:
+const int81 = Int8.from(1);
+const int82 = Int8.from({
+	int8: 1,
+});
+const int83 = Int8.from("1");
+const int84 = Int8.from(BigInt("1"));
+
+//* To verify if a value is an Int8, use the `isInt8` method:
+if (Int8.isInt8(int81)) {
+	console.log("int81 is an Int8");
+}
+
+//* Afterwards, you can get/set the properties of the Int8:
+int81.int8; // BigInt(1)
+
+//* It has a `toString()` method that returns a string representation of the Int8:
+int81.toString(); // "1"
+
+//* It has a `toBigint()` method that returns a number representation of the Int8:
+int81.toBigint(); // BigInt(1)
+
+//* It has a `equals()` method that returns whether two Int8s are equal:
+int81.equals(int82); // true
 ```
 
 ## UUID Type
