@@ -33,6 +33,7 @@ Easy to use types for PostgreSQL data types
     - [Int4MultiRange](#int4multirange)
     - [Int4Range](#int4range)
     - [Int8](#int8)
+    - [Int8Range](#int8range)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1170,6 +1171,7 @@ macAddress1.equals(macAddress2); // true
 - [Int4MultiRange](#int4multirange)
 - [Int4Range](#int4range)
 - [Int8](#int8)
+- [Int8Range](#int8range)
 
 ### Int2
 
@@ -1396,6 +1398,77 @@ int81.toBigint(); // BigInt(1)
 
 //* It has a `equals()` method that returns whether two Int8s are equal:
 int81.equals(int82); // true
+```
+
+### Int8Range
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int8range`][range]
+- [`_int8range`][range] (`int8range[]`)
+
+```ts
+import { Int8, Int8Range, LowerRange, UpperRange } from "postgresql-type-parsers";
+
+//* Int8Range can be created in the following ways:
+const int8Range1 = Int8Range.from("[1,9)");
+const int8Range2 = Int8Range.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		{ int8: BigInt(1) }, // lowerValue
+		{ int8: BigInt(9) }, // upperValue
+	],
+});
+const int8Range3 = Int8Range.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		Int8.from({ int8: BigInt(1) }), // lowerValue
+		Int8.from({ int8: BigInt(9) }), // upperValue
+	],
+});
+const int8Range4 = Int8Range.from(
+	Int8.from({ int8: BigInt(1) }), // lowerValue
+	Int8.from({ int8: BigInt(9) }) // upperValue
+); // Defaults to [lowerValue, upperValue)
+const int8Range5 = Int8Range.from([
+	Int8.from({ int8: BigInt(1) }), //lowerValue
+	Int8.from({ int8: BigInt(9) }), //upperValue
+]); // Defaults to [lowerValue, upperValue)
+
+//* To verify if a value is a int8 range, use the `isRange` method:
+if (Int8Range.isRange(int8Range1)) {
+	console.log("int8Range1 is a int8 range");
+}
+
+//* Afterwards, you can get/set the properties of the int8 range:
+int8Range1.lower; // LowerRange.include
+int8Range1.upper; // UpperRange.exclude
+int8Range1.value; // [Int8 { int8: BigInt(1) }, Int8 { int8: BigInt(9) }]
+
+//* It has a `toString()` method that returns a string representation of the int8 range:
+int8Range1.toString(); // "[1,9)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the int8 range:
+int8Range1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: [ { int8: BigInt(1) }, { int8: BigInt(9) } ] }
+
+//* It has a `equals()` method that returns whether two int8 ranges are equal:
+int8Range1.equals(int8Range2); // true
+
+//* It has a `empty` readonly property that returns whether the int8 range is empty:
+int8Range1.empty; // false
+const int8Range6 = Int8Range.from("[1,1)");
+int8Range6.empty; // true
+const int8Range7 = Int8Range.from("empty");
+int8Range7.empty; // true
+
+//! Note that if a Int8Range is empty, it will have a `null` value.
+int8Range6.value; // null
+int8Range7.value; // null
+
+//* It has a `isWithinRange()` method that returns whether a int8 is within the range:
+int8Range1.isWithinRange(Int8.from("7")); // true
 ```
 
 ## UUID Type
