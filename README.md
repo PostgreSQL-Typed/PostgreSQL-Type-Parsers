@@ -30,6 +30,7 @@ Easy to use types for PostgreSQL data types
   - [Numeric Types](#numeric-types)
     - [Int2](#int2)
     - [Int4](#int4)
+    - [Int4Range](#int4range)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1164,6 +1165,7 @@ macAddress1.equals(macAddress2); // true
 
 - [Int2](#int2)
 - [Int4](#int4)
+- [Int4Range](#int4range)
 
 ### Int2
 
@@ -1233,6 +1235,77 @@ int41.toNumber(); // 1
 
 //* It has a `equals()` method that returns whether two Int4s are equal:
 int41.equals(int42); // true
+```
+
+### Int4Range
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int4range`][range]
+- [`_int4range`][range] (`int4range[]`)
+
+```ts
+import { Int4, Int4Range, LowerRange, UpperRange } from "postgresql-type-parsers";
+
+//* Int4Range can be created in the following ways:
+const int4Range1 = Int4Range.from("[1,9)");
+const int4Range2 = Int4Range.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		{ int4: 1 }, // lowerValue
+		{ int4: 9 }, // upperValue
+	],
+});
+const int4Range3 = Int4Range.from({
+	lower: LowerRange.include,
+	upper: UpperRange.exclude,
+	value: [
+		Int4.from({ int4: 1 }), // lowerValue
+		Int4.from({ int4: 9 }), // upperValue
+	],
+});
+const int4Range4 = Int4Range.from(
+	Int4.from({ int4: 1 }), // lowerValue
+	Int4.from({ int4: 9 }) // upperValue
+); // Defaults to [lowerValue, upperValue)
+const int4Range5 = Int4Range.from([
+	Int4.from({ int4: 1 }), //lowerValue
+	Int4.from({ int4: 9 }), //upperValue
+]); // Defaults to [lowerValue, upperValue)
+
+//* To verify if a value is a int4 range, use the `isRange` method:
+if (Int4Range.isRange(int4Range1)) {
+	console.log("int4Range1 is a int4 range");
+}
+
+//* Afterwards, you can get/set the properties of the int4 range:
+int4Range1.lower; // LowerRange.include
+int4Range1.upper; // UpperRange.exclude
+int4Range1.value; // [Int4 { int4: 1 }, Int4 { int4: 9 }]
+
+//* It has a `toString()` method that returns a string representation of the int4 range:
+int4Range1.toString(); // "[1,9)"
+
+//* It has a `toJSON()` method that returns a JSON representation of the int4 range:
+int4Range1.toJSON(); // { lower: LowerRange.include, upper: UpperRange.exclude, value: [ { int4: 1 }, { int4: 9 } ] }
+
+//* It has a `equals()` method that returns whether two int4 ranges are equal:
+int4Range1.equals(int4Range2); // true
+
+//* It has a `empty` readonly property that returns whether the int4 range is empty:
+int4Range1.empty; // false
+const int4Range6 = Int4Range.from("[1,1)");
+int4Range6.empty; // true
+const int4Range7 = Int4Range.from("empty");
+int4Range7.empty; // true
+
+//! Note that if a Int4Range is empty, it will have a `null` value.
+int4Range6.value; // null
+int4Range7.value; // null
+
+//* It has a `isWithinRange()` method that returns whether a int4 is within the range:
+int4Range1.isWithinRange(Int4.from("7")); // true
 ```
 
 ## UUID Type
