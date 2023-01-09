@@ -27,6 +27,8 @@ Easy to use types for PostgreSQL data types
     - [IPAddress](#ipaddress)
     - [MACAddress](#macaddress)
     - [MACAddress8](#macaddress8)
+  - [Numeric Types](#numeric-types)
+    - [Int2](#int2)
   - [UUID Type](#uuid-type)
     - [UUID](#uuid)
 
@@ -1157,6 +1159,45 @@ macAddress1.toJSON(); // { MACAddress8: "08:00:2b:01:02:03:04:05" }
 macAddress1.equals(macAddress2); // true
 ```
 
+## Numeric Types
+
+- [Int2](#int2)
+
+### Int2
+
+Used to represent the following PostgreSQL data type(s):
+
+- [`int2`][int]
+- [`_int2`][int] (`int2[]`)
+
+```ts
+import { Int2 } from "postgresql-type-parsers";
+
+//* Int2s can be created in the following ways:
+const int21 = Int2.from(1);
+const int22 = Int2.from({
+	int2: 1,
+});
+const int23 = Int2.from("1");
+
+//* To verify if a value is an Int2, use the `isInt2` method:
+if (Int2.isInt2(int21)) {
+	console.log("int21 is an Int2");
+}
+
+//* Afterwards, you can get/set the properties of the Int2:
+int21.int2; // 1
+
+//* It has a `toString()` method that returns a string representation of the Int2:
+int21.toString(); // "1"
+
+//* It has a `toNumber()` method that returns a number representation of the Int2:
+int21.toNumber(); // 1
+
+//* It has a `equals()` method that returns whether two Int2s are equal:
+int21.equals(int22); // true
+```
+
 ## UUID Type
 
 - [UUID](#uuid)
@@ -1202,6 +1243,7 @@ uuid1.equals(uuid2); // true
 [circle]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-CIRCLE
 [datetime]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-DATETIME-INPUT
 [inet]: https://www.postgresql.org/docs/current/datatype-net-types.html#DATATYPE-INET
+[int]: https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-INT
 [interval]: https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-INPUT
 [line]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LINE
 [lseg]: https://www.postgresql.org/docs/current/datatype-geometric.html#DATATYPE-LSEG
