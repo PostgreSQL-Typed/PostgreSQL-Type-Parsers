@@ -1,4 +1,5 @@
-import { Timestamp, TimestampTZ } from "../../src";
+import { Timestamp } from "../../src/data/DateTime/Timestamp";
+import { TimestampTZ } from "../../src/data/DateTime/TimestampTZ";
 import { ObjectFunction } from "../types/ObjectFunction";
 
 enum LowerRange {
